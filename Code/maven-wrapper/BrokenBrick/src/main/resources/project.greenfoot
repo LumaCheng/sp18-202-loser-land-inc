@@ -6,8 +6,7 @@
 class.com.loserland.worlds.MyWorld.image=burlap.jpg
 class.com.loserland.worlds.MyWorld.superclass=greenfoot.World
 
-class.com.loserland.actors.CoverPage.image=menu.png
-class.com.loserland.actors.CoverPage.superclass=greenfoot.Actor
+
 
 class.com.loserland.actors.GameOver.superclass=greenfoot.Actor
 class.com.loserland.actors.GameOver.image=GameOver.png

@@ -68,6 +68,7 @@ public class MyWorld extends World
         addObject (fader, 400, 300);
         // import menu 
         menu = new CoverPage();
+        menu.setImage("menu.png");
         addObject (menu, 350,260);
 
         /** Offset = space between each
