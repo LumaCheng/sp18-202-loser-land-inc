@@ -1,7 +1,9 @@
+package com.loserland.actors;
+
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class Paddle here.
+ * Write a description of class com.loserland.actors.Paddle here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
@@ -12,9 +14,9 @@ public class Paddle extends Actor
     private Ball ball ;  
     private int enlarge ;
     private int shrink;        
-    
+
     /**
-     * Act - do whatever the Paddle wants to do. This method is called whenever
+     * Act - do whatever the com.loserland.actors.Paddle wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
 
@@ -37,7 +39,7 @@ public class Paddle extends Actor
             }                   
         }
         // sends information to expandImage method where it stretches the paddle
-        else if (shrink > -1) {
+        else if	(shrink > -1) {
             shrinkImage(getImage().getWidth()-1);
             // expand by 1 more animation
             shrink++;
@@ -85,7 +87,7 @@ public class Paddle extends Actor
         if(haveBall()) 
         {
             // calls method in ball for ball to move along with paddle
-            ball.move(distance);    
+            ball.move(distance);	
         }
 
     }
