@@ -5,9 +5,9 @@ import com.loserland.actors.*;
 
 /**
  * Write a description of class com.loserland.MyWorld here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ *
+ * @author Jiaqi Qin
+ * @version 2018-04-13
  */
 public class MyWorld extends World
 {
@@ -50,7 +50,7 @@ public class MyWorld extends World
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(700, 520, 1); 
+        super(700, 520, 1);
         // Sets the order of display of Actors
         setPaintOrder(CoverPage.class,GameOver.class, Fader.class,Ball.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
         // create new paddle and ball

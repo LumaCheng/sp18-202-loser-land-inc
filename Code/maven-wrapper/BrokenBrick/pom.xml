@@ -47,7 +47,7 @@
                     </excludes>
                     <archive>
                         <manifest>
-                            <mainClass>com.loserland.DemoApp</mainClass>
+                            <mainClass>com.loserland.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -57,7 +57,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.loserland.DemoApp</mainClass>
+                            <mainClass>com.loserland.App</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

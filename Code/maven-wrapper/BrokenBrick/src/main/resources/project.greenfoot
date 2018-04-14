@@ -48,10 +48,10 @@ class.com.loserland.actors.Lives.superclass=greenfoot.Actor
 #mainWindow.y=100
 
 
-mainWindow.width=1280
-mainWindow.height=705
-mainWindow.y=23
-mainWindow.x=41
+#mainWindow.width=1280
+#mainWindow.height=705
+#mainWindow.y=23
+#mainWindow.x=41
 
 #Unknown
 #Fri Apr 13 17:15:37 PDT 2018
