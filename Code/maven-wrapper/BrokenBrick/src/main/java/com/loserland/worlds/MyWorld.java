@@ -1,5 +1,6 @@
 package com.loserland.worlds;
 
+import com.loserland.context.PropertiesManager;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import com.loserland.actors.*;
 
@@ -43,16 +44,36 @@ public class MyWorld extends World
     // instead of boolean uses integers to meet if statement for main menu. Fixes launch bug where ball launches immediatly after menu.
     private int clickMenu = 1;
 
+
+    //Properties
+    private static PropertiesManager propertiesManager;
+
+    static {
+        propertiesManager = new PropertiesManager("configurations/default.properties");
+    }
+
     /**
      * Constructor for objects of class com.loserland.MyWorld.
      * 
      */
     public MyWorld()
-    {    
+    {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(700, 520, 1);
+        super(Integer.parseInt(propertiesManager.get("world.width")), Integer.parseInt(propertiesManager.get("world.height")), Integer.parseInt(propertiesManager.get("world.cell.size")));
+
         // Sets the order of display of Actors
         setPaintOrder(CoverPage.class,GameOver.class, Fader.class,Ball.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
+
+        //initialize UI components and put place
+        initUI();
+
+        // clears screen instantly to show level 1
+        fader.fadeBackIn();
+        // play background music continuously
+        backgroundMusic.playLoop();
+    }
+
+    private void initUI() {
         // create new paddle and ball
         paddle = new Paddle();
         ball = new Ball();
@@ -60,29 +81,29 @@ public class MyWorld extends World
         addObject(paddle, getWidth()/2, getHeight()-26);
         addObject(aim,paddle.getX(),paddle.getY()-20);
         // Add the score board into the world
-        addObject(scoreBoard,658,511);     
+        addObject(scoreBoard,658,511);
         // Add the level counter to world
-        addObject(levelNum,575,511);  
+        addObject(levelNum,575,511);
         // Create a new fader for this class and add it to the world
         fader = new Fader();
         addObject (fader, 400, 300);
-        // import menu 
+        // import menu
         menu = new CoverPage();
         menu.setImage("menu.png");
         addObject (menu, 350,260);
 
         /** Offset = space between each
-        // vOFFSET = distance between each consequtive line
-        // placed here so gets initalized right after compile, fixes display bug 
+         // vOFFSET = distance between each consequtive line
+         // placed here so gets initalized right after compile, fixes display bug
 
          *  "I"
          */
         for ( int i = 2; i <= 4 ; i++)
-        {   
+        {
 
-            addObject( new Brick(1), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  i), (BRICKHEIGHT * 2)+ (VOFFSET * 2) + (BRICKHEIGHT / 2));  
-            addObject( new Brick(1), (BRICKWIDTH * (2)) + (BRICKWIDTH / 2) + (HOFFSET *  3), (BRICKHEIGHT * (i+1))+ VOFFSET *(i+1) + (BRICKHEIGHT / 2));  
-            addObject( new Brick(1), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  i), (BRICKHEIGHT * 5)+ (VOFFSET * 8) + (BRICKHEIGHT / 2)); 
+            addObject( new Brick(1), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  i), (BRICKHEIGHT * 2)+ (VOFFSET * 2) + (BRICKHEIGHT / 2));
+            addObject( new Brick(1), (BRICKWIDTH * (2)) + (BRICKWIDTH / 2) + (HOFFSET *  3), (BRICKHEIGHT * (i+1))+ VOFFSET *(i+1) + (BRICKHEIGHT / 2));
+            addObject( new Brick(1), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  i), (BRICKHEIGHT * 5)+ (VOFFSET * 8) + (BRICKHEIGHT / 2));
 
         }
         for ( int i = 1; i <= 7 ; i++)
@@ -94,29 +115,25 @@ public class MyWorld extends World
          * "<3" Love
          */
 
-        addObject( new Brick(3), 392, 71);     
-        addObject( new Brick(3), 355,98); 
-        addObject( new Brick(3), 435,94); 
-        addObject( new Brick(3), 335,125); 
-        addObject( new Brick(3), 370,155); 
-        addObject( new Brick(3), 406,181); 
+        addObject( new Brick(3), 392, 71);
+        addObject( new Brick(3), 355,98);
+        addObject( new Brick(3), 435,94);
+        addObject( new Brick(3), 335,125);
+        addObject( new Brick(3), 370,155);
+        addObject( new Brick(3), 406,181);
         addObject( new Brick(3), 455,210);
-        addObject( new Brick(3), 485,94); 
-        addObject( new Brick(3), 525,72); 
-        addObject( new Brick(3), 555,98); 
-        addObject( new Brick(3), 573,125); 
-        addObject( new Brick(3), 545, 153); 
-        addObject( new Brick(3), 510, 183); 
-        addObject( new Brick(3), 460, 120); 
+        addObject( new Brick(3), 485,94);
+        addObject( new Brick(3), 525,72);
+        addObject( new Brick(3), 555,98);
+        addObject( new Brick(3), 573,125);
+        addObject( new Brick(3), 545, 153);
+        addObject( new Brick(3), 510, 183);
+        addObject( new Brick(3), 460, 120);
 
-        //Add life "bar" into world       
+        //Add life "bar" into world
         addObject( live1, 23, 510);
         addObject( live2, 69, 510);
-        addObject( live3, 115, 510);        
-        // clears screen instantly to show level 1
-        fader.fadeBackIn();     
-        // play background music continuously
-        backgroundMusic.playLoop();
+        addObject( live3, 115, 510);
     }
 
     // each act check for death, mouse input and whether to create new level   
