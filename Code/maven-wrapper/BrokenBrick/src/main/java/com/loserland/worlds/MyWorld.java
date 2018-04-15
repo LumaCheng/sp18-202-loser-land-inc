@@ -28,6 +28,9 @@ public class MyWorld extends World
     private ScoreBoard scoreBoard=new ScoreBoard();
     private Counter levelNum = new Counter();;
     private Pointy aim = new Pointy();  
+    private Musicplayer musicplayer = new Musicplayer();
+    private Volumeup volumeup = new Volumeup();
+    private Volumedown volumedown = new Volumedown();
     // a total of 4 lives per game
     private int lives = 4;
     // start score from 0
@@ -46,7 +49,8 @@ public class MyWorld extends World
     private boolean played = false;
     // instead of boolean uses integers to meet if statement for main menu. Fixes launch bug where ball launches immediatly after menu.
     private int clickMenu = 1;
-
+    //volume
+    private int volume = 65;
 
     //Properties
     private static ConfigurationManagerFactory config;
@@ -74,7 +78,7 @@ public class MyWorld extends World
         // clears screen instantly to show level 1
         fader.fadeBackIn();
         // play background music continuously
-        backgroundMusic.playLoop();
+        //backgroundMusic.playLoop();
     }
 
     private void initUI() {
@@ -95,6 +99,10 @@ public class MyWorld extends World
         menu = new CoverPage();
         menu.setImage("menu.png");
         addObject (menu, 350,260);
+        
+        addObject(musicplayer,680,460);   
+        addObject(volumeup,680,430);
+        addObject(volumedown,680,490);
 
         /** Offset = space between each
          // vOFFSET = distance between each consequtive line
@@ -236,7 +244,8 @@ public class MyWorld extends World
         // boolean does NOT work. Since the click from the menu will meet this statement. As a result, ball launches immediatly after menu screen.
         if (clickMenu>2)
         {
-            if(paddle.haveBall() && Greenfoot.mouseClicked(null)) 
+            if(paddle.haveBall() && Greenfoot.mouseClicked(null) && !Greenfoot.mouseClicked(musicplayer)
+                    && !Greenfoot.mouseClicked(volumeup) && !Greenfoot.mouseClicked(volumedown)) 
             {
                 // release ball 
                 start = true;  
@@ -246,6 +255,29 @@ public class MyWorld extends World
                 launchBall(mouseX,mouseY);   
                 // removes pointer
                 removeObject(aim);
+            }
+            if(Greenfoot.mouseClicked(musicplayer)){
+                if(backgroundMusic.isPlaying()){
+                    backgroundMusic.pause();
+                }
+                else{
+                    backgroundMusic.play();
+                    backgroundMusic.setVolume(volume);
+                }
+            }
+            if(Greenfoot.mouseClicked(volumeup) && backgroundMusic.isPlaying() ){
+                volume = volume <= 95 ? volume+5 : volume;
+                backgroundMusic.setVolume(volume);
+                volumeup.update(volume);
+                volumedown.update(volume);
+                
+            }
+            if(Greenfoot.mouseClicked(volumedown) && backgroundMusic.isPlaying()){
+              
+               volume = volume >= 5? volume-5 : volume;
+               backgroundMusic.setVolume(volume);
+               volumeup.update(volume);
+               volumedown.update(volume);
             }
         }
 
