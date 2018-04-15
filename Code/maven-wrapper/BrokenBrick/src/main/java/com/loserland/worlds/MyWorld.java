@@ -39,7 +39,7 @@ public class MyWorld extends World
     private Lives live2 = new Lives();
     private Lives live3 = new Lives();
     // initalize background music, save was "backgroundMusic"
-    GreenfootSound backgroundMusic = new GreenfootSound("bgm-smooth-o.wav");
+    GreenfootSound backgroundMusic;
     // boolean to determine if ball was launched
     private boolean start = false;
     // boolean to determine is gameOver music was played
@@ -63,16 +63,23 @@ public class MyWorld extends World
     public MyWorld()
     {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(config.get(Integer.class, "world.width"), config.get(Integer.class, "world.height"), config.get(Integer.class, "world.cell.size"));
+        super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHTH), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
         setPaintOrder(CoverPage.class,GameOver.class, Fader.class,Ball.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
 
         //initialize UI components and put place
         initUI();
+        initMusic();
 
         // clears screen instantly to show level 1
         fader.fadeBackIn();
+
+
+    }
+
+    private void initMusic() {
+        backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
         // play background music continuously
         backgroundMusic.playLoop();
     }
@@ -93,7 +100,9 @@ public class MyWorld extends World
         addObject (fader, 400, 300);
         // import menu
         menu = new CoverPage();
-        menu.setImage("menu.png");
+        menu.setImage(config.get(GameContext.MENU_IMG));
+//        menu.setImage("menu.png");
+
         addObject (menu, 350,260);
 
         /** Offset = space between each
