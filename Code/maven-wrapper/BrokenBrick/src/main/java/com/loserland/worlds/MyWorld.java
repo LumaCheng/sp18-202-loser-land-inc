@@ -1,5 +1,6 @@
 package com.loserland.worlds;
 
+import com.loserland.context.PropertiesManager;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import com.loserland.actors.*;
 
@@ -43,14 +44,25 @@ public class MyWorld extends World
     // instead of boolean uses integers to meet if statement for main menu. Fixes launch bug where ball launches immediatly after menu.
     private int clickMenu = 1;
 
+
+    //Properties
+    private static PropertiesManager propertiesManager;
+
+    static {
+        propertiesManager = new PropertiesManager("configurations/default.properties");
+
+
+    }
     /**
      * Constructor for objects of class com.loserland.MyWorld.
      * 
      */
     public MyWorld()
-    {    
+    {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(700, 520, 1);
+        super(Integer.parseInt(propertiesManager.get("world.width")), Integer.parseInt(propertiesManager.get("world.height")), Integer.parseInt(propertiesManager.get("world.cell.size")));
+
+
         // Sets the order of display of Actors
         setPaintOrder(CoverPage.class,GameOver.class, Fader.class,Ball.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
         // create new paddle and ball
