@@ -1,5 +1,8 @@
 package com.loserland.worlds;
 
+import com.loserland.context.ConfigurationManagerFactory;
+import com.loserland.context.GameContext;
+import com.loserland.context.PropertiesConfigurationManager;
 import com.loserland.context.PropertiesManager;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import com.loserland.actors.*;
@@ -46,10 +49,11 @@ public class MyWorld extends World
 
 
     //Properties
-    private static PropertiesManager propertiesManager;
+    private static ConfigurationManagerFactory config;
+//    private static PropertiesManager propertiesManager;
 
     static {
-        propertiesManager = new PropertiesManager("configurations/default.properties");
+        config = PropertiesConfigurationManager.getInstance(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     }
 
     /**
@@ -59,7 +63,7 @@ public class MyWorld extends World
     public MyWorld()
     {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(Integer.parseInt(propertiesManager.get("world.width")), Integer.parseInt(propertiesManager.get("world.height")), Integer.parseInt(propertiesManager.get("world.cell.size")));
+        super(config.get(Integer.class, "world.width"), config.get(Integer.class, "world.height"), config.get(Integer.class, "world.cell.size"));
 
         // Sets the order of display of Actors
         setPaintOrder(CoverPage.class,GameOver.class, Fader.class,Ball.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
@@ -212,9 +216,9 @@ public class MyWorld extends World
         if (Greenfoot.mouseClicked(null)) 
         {
             // once clicked, remove menu
-            removeObject(menu); 
-            // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.           
-            clickMenu++;                                   
+            removeObject(menu);
+            // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
+            clickMenu++;
         }
 
         // if ball has launched, move paddle according to user input
