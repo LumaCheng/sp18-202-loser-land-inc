@@ -94,6 +94,7 @@ public class MyWorld extends World
         // import menu
         menu = new CoverPage();
         menu.setImage("menu.png");
+        ball.setImage("ball.png");
         addObject (menu, 350,260);
 
         /** Offset = space between each
