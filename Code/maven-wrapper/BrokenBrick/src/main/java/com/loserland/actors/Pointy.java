@@ -52,7 +52,7 @@ public class Pointy extends Actor implements ControllerObserver
     public void controllerEventReceived(ControllerEvent event) {
 
         if (event.type == CommandType.MOVE) {
-            System.out.println("Receive ControllerEvent");
+            //System.out.println("Receive ControllerEvent");
             turnTowards (event.x, event.y);
         }
     }
