@@ -1,12 +1,10 @@
 package com.loserland.worlds;
 
-import com.loserland.context.ConfigurationManagerFactory;
-import com.loserland.context.GameContext;
-import com.loserland.context.PropertiesConfigurationManager;
-import com.loserland.context.PropertiesManager;
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.*;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import com.loserland.actors.*;
-import org.apache.commons.configuration2.JSONConfiguration;
 
 /**
  * Write a description of class com.loserland.MyWorld here.
@@ -53,20 +51,16 @@ public class MyWorld extends World
     //volume
     private int volume = 65;
 
-
-    //Properties
-    private static ConfigurationManagerFactory config;
-//    private static PropertiesManager propertiesManager;
-
-
+    //Configs
+    private static ConfigFactory configFactory;
+    private static Config config;
 
     static {
-        config = PropertiesConfigurationManager.getInstance(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
-
-
-
-
+        configFactory = ConfigFactory.getInstance();
+        config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     }
+
+    GameStageLoader gameStageLoader;
 
     /**
      * Constructor for objects of class com.loserland.MyWorld.
@@ -87,13 +81,12 @@ public class MyWorld extends World
         // clears screen instantly to show level 1
         fader.fadeBackIn();
 
-
     }
 
     private void initMusic() {
         backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
         // play background music continuously
-        //backgroundMusic.playLoop();
+        backgroundMusic.playLoop();
     }
 
     private void initUI() {
@@ -122,43 +115,12 @@ public class MyWorld extends World
         addObject(volumeup,680,430);
         addObject(volumedown,680,490);
 
-        /** Offset = space between each
-         // vOFFSET = distance between each consequtive line
-         // placed here so gets initalized right after compile, fixes display bug
-
-         *  "I"
-         */
-        for ( int i = 2; i <= 4 ; i++)
-        {
-
-            addObject( new Brick(1), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  i), (BRICKHEIGHT * 2)+ (VOFFSET * 2) + (BRICKHEIGHT / 2));
-            addObject( new Brick(1), (BRICKWIDTH * (2)) + (BRICKWIDTH / 2) + (HOFFSET *  3), (BRICKHEIGHT * (i+1))+ VOFFSET *(i+1) + (BRICKHEIGHT / 2));
-            addObject( new Brick(1), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  i), (BRICKHEIGHT * 5)+ (VOFFSET * 8) + (BRICKHEIGHT / 2));
-
+        gameStageLoader = new GameStageLoader(this);
+        try {
+            gameStageLoader.load();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        for ( int i = 1; i <= 7 ; i++)
-        {
-            addObject( new Brick(6), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  (i*4)), (BRICKHEIGHT *2 )+ (VOFFSET * 21) + (BRICKHEIGHT / 2));
-        }
-
-        /**
-         * "<3" Love
-         */
-
-        addObject( new Brick(3), 392, 71);
-        addObject( new Brick(3), 355,98);
-        addObject( new Brick(3), 435,94);
-        addObject( new Brick(3), 335,125);
-        addObject( new Brick(3), 370,155);
-        addObject( new Brick(3), 406,181);
-        addObject( new Brick(3), 455,210);
-        addObject( new Brick(3), 485,94);
-        addObject( new Brick(3), 525,72);
-        addObject( new Brick(3), 555,98);
-        addObject( new Brick(3), 573,125);
-        addObject( new Brick(3), 545, 153);
-        addObject( new Brick(3), 510, 183);
-        addObject( new Brick(3), 460, 120);
 
         //Add life "bar" into world
         addObject( live1, 23, 510);

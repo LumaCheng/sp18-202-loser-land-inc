@@ -1,28 +1,32 @@
 package com.loserland.context;
 
+import com.loserland.actors.Brick;
 import greenfoot.Actor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameStage {
-    private List<Actor> actors;
-
-
+    private List<GameBrick> bricks;
 
     public GameStage() {
-        actors = new ArrayList<>();
+        bricks = new ArrayList<>();
     }
 
-    public List<Actor> getActors() {
-        return actors;
+    public List<GameBrick> getBricks() {
+        return bricks;
     }
 
-    public void addActor(Actor actor){
-        this.actors.add(actor);
+    public void setBricks(List<GameBrick> bricks) {
+        this.bricks = bricks;
     }
 
-    public enum Stage {
-        DEFAULT,
+    @Override
+    public String toString() {
+        String string = "";
+        for(GameBrick brick: bricks){
+            string +=  "(" + brick.getX() + "," + brick.getY() + ")\n";
+        }
+        return string;
     }
 }
