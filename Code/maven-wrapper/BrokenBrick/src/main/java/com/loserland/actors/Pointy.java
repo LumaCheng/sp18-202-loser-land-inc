@@ -3,7 +3,9 @@ package com.loserland.actors;
 import com.loserland.controller.ControllerEvent;
 import com.loserland.controller.ControllerEvent.CommandType;
 import com.loserland.controller.ControllerObserver;
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import greenfoot.Actor;
+import greenfoot.Greenfoot;
+import greenfoot.MouseInfo;
 
 public class Pointy extends Actor implements ControllerObserver
 {
