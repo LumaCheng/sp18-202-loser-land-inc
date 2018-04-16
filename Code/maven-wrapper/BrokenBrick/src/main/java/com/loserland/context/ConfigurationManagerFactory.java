@@ -19,16 +19,18 @@ public abstract class ConfigurationManagerFactory {
         this.params = new Parameters();
     }
 
-    public static ConfigurationManagerFactory getInstance(String resourceFileName){
-        if (instance == null){
-            synchronized (ConfigurationManagerFactory.class){
-                if(instance == null){
-                    instance = createInstance(resourceFileName);
-                }
-            }
-        }
-        return instance;
-    }
+
+
+//    public static ConfigurationManagerFactory getInstance(String resourceFileName){
+//        if (instance == null){
+//            synchronized (ConfigurationManagerFactory.class){
+//                if(instance == null){
+//                    instance = createInstance(resourceFileName);
+//                }
+//            }
+//        }
+//        return instance;
+//    }
 
     private static ConfigurationManagerFactory createInstance(String resourceFileName) {
         if (resourceFileName.endsWith(".properties")){
@@ -40,13 +42,6 @@ public abstract class ConfigurationManagerFactory {
 
 
     private FileBasedConfigurationBuilder<FileBasedConfiguration> getBuilder(){
-//        if (builder == null) {
-//            synchronized (this.getClass()) {
-//                if (builder == null) {
-//                    builder = createBuilder();
-//                }
-//            }
-//        }
         builder = createBuilder();
         initBuilder(builder);
         return builder;

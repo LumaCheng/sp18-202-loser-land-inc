@@ -13,6 +13,17 @@ public class PropertiesConfigurationManager extends ConfigurationManagerFactory 
     }
 
 
+    public static PropertiesConfigurationManager getInstance(String resourceFileName){
+        if (instance == null){
+            synchronized (ConfigurationManagerFactory.class){
+                if(instance == null){
+                    instance = createInstance(resourceFileName);
+                }
+            }
+        }
+        return instance;
+    }
+
     @Override
     protected FileBasedConfigurationBuilder<FileBasedConfiguration> createBuilder() {
         builder =
