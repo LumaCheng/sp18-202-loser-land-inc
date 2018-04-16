@@ -14,18 +14,16 @@ import com.loserland.actors.ScoreBoard;
 import com.loserland.actors.Smoke;
 import com.loserland.actors.Volumedown;
 import com.loserland.actors.Volumeup;
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
+import com.loserland.context.GameStageLoader;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootSound;
 import greenfoot.MouseInfo;
 import greenfoot.World;
-import com.loserland.configs.Config;
-import com.loserland.configs.ConfigFactory;
-import com.loserland.context.*;
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import com.loserland.actors.*;
 
 /**
  * Write a description of class com.loserland.MyWorld here.
@@ -105,6 +103,8 @@ public class MyWorld extends World
         // clears screen instantly to show level 1
         fader.fadeBackIn();
 
+        controller.addObserver(aim);
+
     }
 
     private void initMusic() {
@@ -114,7 +114,6 @@ public class MyWorld extends World
         //backgroundMusic.playLoop();
         backgroundMusic.playLoop();
 
-        controller.addObserver(aim);
     }
 
     private void initUI() {

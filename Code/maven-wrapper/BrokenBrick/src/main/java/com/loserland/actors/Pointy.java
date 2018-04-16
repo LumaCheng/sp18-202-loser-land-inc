@@ -49,6 +49,11 @@ public class Pointy extends Actor implements ControllerObserver
     }
 
     @Override
+    public boolean isInWorld() {
+        return getWorld() != null;
+    }
+
+    @Override
     public void controllerEventReceived(ControllerEvent event) {
 
         if (event.type == CommandType.MOVE) {

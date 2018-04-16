@@ -21,7 +21,9 @@ public class MouseController extends Controller {
     public void notifyObserver(ControllerEvent event) {
 
         for(ControllerObserver observer : observers) {
-            observer.controllerEventReceived(event);
+            if(observer.isInWorld()) {
+                observer.controllerEventReceived(event);
+            }
         }
 
     }
