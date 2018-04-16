@@ -14,15 +14,18 @@ import com.loserland.actors.ScoreBoard;
 import com.loserland.actors.Smoke;
 import com.loserland.actors.Volumedown;
 import com.loserland.actors.Volumeup;
-import com.loserland.context.ConfigurationManagerFactory;
 import com.loserland.context.GameContext;
-import com.loserland.context.PropertiesConfigurationManager;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootSound;
 import greenfoot.MouseInfo;
 import greenfoot.World;
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.*;
+import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+import com.loserland.actors.*;
 
 /**
  * Write a description of class com.loserland.MyWorld here.
@@ -59,7 +62,7 @@ public class MyWorld extends World
     private Lives live2 = new Lives();
     private Lives live3 = new Lives();
     // initalize background music, save was "backgroundMusic"
-    GreenfootSound backgroundMusic = new GreenfootSound("bgm-smooth-o.wav");
+    GreenfootSound backgroundMusic;
     // boolean to determine if ball was launched
     private boolean start = false;
     // boolean to determine is gameOver music was played
@@ -72,13 +75,16 @@ public class MyWorld extends World
     // TODO: Using factory mode to initialize controller
     private Controller controller = new MouseController();
 
-    //Properties
-    private static ConfigurationManagerFactory config;
-//    private static PropertiesManager propertiesManager;
+    //Configs
+    private static ConfigFactory configFactory;
+    private static Config config;
 
     static {
-        config = PropertiesConfigurationManager.getInstance(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+        configFactory = ConfigFactory.getInstance();
+        config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     }
+
+    GameStageLoader gameStageLoader;
 
     /**
      * Constructor for objects of class com.loserland.MyWorld.
@@ -87,23 +93,28 @@ public class MyWorld extends World
     public MyWorld()
     {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(config.get(Integer.class, "world.width"), config.get(Integer.class, "world.height"), config.get(Integer.class, "world.cell.size"));
+        super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHTH), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
         setPaintOrder(CoverPage.class,GameOver.class, Fader.class,Ball.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
 
         //initialize UI components and put place
         initUI();
+        initMusic();
 
         // clears screen instantly to show level 1
         fader.fadeBackIn();
+
+    }
+
+    private void initMusic() {
+        backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
         // play background music continuously
 
         //backgroundMusic.playLoop();
         backgroundMusic.playLoop();
 
         controller.addObserver(aim);
-
     }
 
     private void initUI() {
@@ -122,7 +133,9 @@ public class MyWorld extends World
         addObject (fader, 400, 300);
         // import menu
         menu = new CoverPage();
-        menu.setImage("menu.png");
+        menu.setImage(config.get(GameContext.MENU_IMG));
+//        menu.setImage("menu.png");
+
         ball.setImage("ball.png");
         addObject (menu, 350,260);
 
@@ -130,43 +143,12 @@ public class MyWorld extends World
         addObject(volumeup,680,430);
         addObject(volumedown,680,490);
 
-        /** Offset = space between each
-         // vOFFSET = distance between each consequtive line
-         // placed here so gets initalized right after compile, fixes display bug
-
-         *  "I"
-         */
-        for ( int i = 2; i <= 4 ; i++)
-        {
-
-            addObject( new Brick(1), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  i), (BRICKHEIGHT * 2)+ (VOFFSET * 2) + (BRICKHEIGHT / 2));
-            addObject( new Brick(1), (BRICKWIDTH * (2)) + (BRICKWIDTH / 2) + (HOFFSET *  3), (BRICKHEIGHT * (i+1))+ VOFFSET *(i+1) + (BRICKHEIGHT / 2));
-            addObject( new Brick(1), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  i), (BRICKHEIGHT * 5)+ (VOFFSET * 8) + (BRICKHEIGHT / 2));
-
+        gameStageLoader = new GameStageLoader(this);
+        try {
+            gameStageLoader.load();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        for ( int i = 1; i <= 7 ; i++)
-        {
-            addObject( new Brick(6), (BRICKWIDTH * (i - 1)) + (BRICKWIDTH / 2) + (HOFFSET *  (i*4)), (BRICKHEIGHT *2 )+ (VOFFSET * 21) + (BRICKHEIGHT / 2));
-        }
-
-        /**
-         * "<3" Love
-         */
-
-        addObject( new Brick(3), 392, 71);
-        addObject( new Brick(3), 355,98);
-        addObject( new Brick(3), 435,94);
-        addObject( new Brick(3), 335,125);
-        addObject( new Brick(3), 370,155);
-        addObject( new Brick(3), 406,181);
-        addObject( new Brick(3), 455,210);
-        addObject( new Brick(3), 485,94);
-        addObject( new Brick(3), 525,72);
-        addObject( new Brick(3), 555,98);
-        addObject( new Brick(3), 573,125);
-        addObject( new Brick(3), 545, 153);
-        addObject( new Brick(3), 510, 183);
-        addObject( new Brick(3), 460, 120);
 
         //Add life "bar" into world
         addObject( live1, 23, 510);
