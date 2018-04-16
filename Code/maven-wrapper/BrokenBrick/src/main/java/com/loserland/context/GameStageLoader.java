@@ -11,17 +11,17 @@ import java.io.IOException;
 
 public class GameStageLoader {
 //    public static final GameStage.Stage DEFAULT_STAGE = GameStage.Stage.DEFAULT;
-
-    //Configs
-    private static ConfigFactory configFactory;
-//    private static Config config;
-    private static Config stageConfig;
-
-    static {
-        configFactory = ConfigFactory.getInstance();
-//        config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
-        stageConfig = configFactory.getConfig(GameContext.GAME_STAGE_CONFIG_FILENAME);
-    }
+//
+////    //Configs
+////    private static ConfigFactory configFactory;
+//////    private static Config config;
+////    private static Config stageConfig;
+////
+////    static {
+////        configFactory = ConfigFactory.getInstance();
+//////        config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+////        stageConfig = configFactory.getConfig(GameContext.GAME_STAGE_CONFIG_FILENAME);
+////    }
 
 
     MyWorld world;
