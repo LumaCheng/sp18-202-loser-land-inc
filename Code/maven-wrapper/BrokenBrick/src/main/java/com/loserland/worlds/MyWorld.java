@@ -55,7 +55,7 @@ public class MyWorld extends World
 
 
     //Properties
-    private static PropertiesConfigurationManager config;
+    private static ConfigurationManagerFactory config;
 //    private static PropertiesManager propertiesManager;
 
 

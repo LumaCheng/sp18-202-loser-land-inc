@@ -32,7 +32,7 @@ public abstract class ConfigurationManagerFactory {
 //        return instance;
 //    }
 
-    private static ConfigurationManagerFactory createInstance(String resourceFileName) {
+    static ConfigurationManagerFactory createInstance(String resourceFileName) {
         if (resourceFileName.endsWith(".properties")){
             return new PropertiesConfigurationManager(resourceFileName);
         } else{
