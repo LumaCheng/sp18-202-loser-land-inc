@@ -1,11 +1,28 @@
 package com.loserland.worlds;
 
+import com.loserland.actors.Ball;
+import com.loserland.actors.Brick;
+import com.loserland.actors.Counter;
+import com.loserland.actors.CoverPage;
+import com.loserland.actors.Fader;
+import com.loserland.actors.GameOver;
+import com.loserland.actors.Lives;
+import com.loserland.actors.Musicplayer;
+import com.loserland.actors.Paddle;
+import com.loserland.actors.Pointy;
+import com.loserland.actors.ScoreBoard;
+import com.loserland.actors.Smoke;
+import com.loserland.actors.Volumedown;
+import com.loserland.actors.Volumeup;
 import com.loserland.context.ConfigurationManagerFactory;
 import com.loserland.context.GameContext;
 import com.loserland.context.PropertiesConfigurationManager;
-import com.loserland.context.PropertiesManager;
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import com.loserland.actors.*;
+import com.loserland.controller.Controller;
+import com.loserland.controller.MouseController;
+import greenfoot.Greenfoot;
+import greenfoot.GreenfootSound;
+import greenfoot.MouseInfo;
+import greenfoot.World;
 
 /**
  * Write a description of class com.loserland.MyWorld here.
@@ -52,6 +69,8 @@ public class MyWorld extends World
     //volume
     private int volume = 65;
 
+    // TODO: Using factory mode to initialize controller
+    private Controller controller = new MouseController();
 
     //Properties
     private static ConfigurationManagerFactory config;
@@ -79,7 +98,12 @@ public class MyWorld extends World
         // clears screen instantly to show level 1
         fader.fadeBackIn();
         // play background music continuously
+
         //backgroundMusic.playLoop();
+        backgroundMusic.playLoop();
+
+        controller.addObserver(aim);
+
     }
 
     private void initUI() {
@@ -103,8 +127,8 @@ public class MyWorld extends World
         addObject (menu, 350,260);
 
         addObject(musicplayer,680,460);
-+       addObject(volumeup,680,430);
-+       addObject(volumedown,680,490);
+        addObject(volumeup,680,430);
+        addObject(volumedown,680,490);
 
         /** Offset = space between each
          // vOFFSET = distance between each consequtive line
@@ -156,6 +180,8 @@ public class MyWorld extends World
         checkLevel();
         checkMouse();
         checkLives();
+        
+        controller.polling();
     }
 
     // checks if player looses life
