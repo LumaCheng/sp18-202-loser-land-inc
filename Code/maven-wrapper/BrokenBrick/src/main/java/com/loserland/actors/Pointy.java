@@ -1,7 +1,11 @@
 package com.loserland.actors;
 
+import com.loserland.controller.ControllerEvent;
+import com.loserland.controller.ControllerEvent.CommandType;
+import com.loserland.controller.ControllerObserver;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-public class Pointy extends Actor
+
+public class Pointy extends Actor implements ControllerObserver
 {
     // declare new instance variable
     private int angle = 270;
@@ -9,7 +13,7 @@ public class Pointy extends Actor
     // each act, check mouse input and rotation   
     public void act() 
     {
-        checkMouse();      
+        //checkMouse();
         setRotation(angle);
     }
     
@@ -20,8 +24,7 @@ public class Pointy extends Actor
         if (mouse != null)
         {
             // pointer turns towers mouse position (coordinate)
-            turnTowards (mouse.getX(), mouse.getY());            
-
+            turnTowards (mouse.getX(), mouse.getY());
         }        
     }
     
@@ -45,4 +48,17 @@ public class Pointy extends Actor
         return angle;
     }
 
+    @Override
+    public boolean isInWorld() {
+        return getWorld() != null;
+    }
+
+    @Override
+    public void controllerEventReceived(ControllerEvent event) {
+
+        if (event.type == CommandType.MOVE) {
+            //System.out.println("Receive ControllerEvent");
+            turnTowards (event.x, event.y);
+        }
+    }
 }
