@@ -20,10 +20,11 @@ import com.loserland.context.GameContext;
 import com.loserland.context.GameStageLoader;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
-import greenfoot.Greenfoot;
-import greenfoot.GreenfootSound;
+import greenfoot.*;
 import greenfoot.MouseInfo;
-import greenfoot.World;
+
+import java.awt.*;
+import java.util.List;
 
 /**
  * Write a description of class com.loserland.MyWorld here.
@@ -453,5 +454,17 @@ public class MyWorld extends World
         paddle.setLocation(getWidth()/2, getHeight()-25);
         addObject(aim,paddle.getX(),paddle.getY()-20);
 
+    }
+
+    public <T extends Actor> boolean hasIntersectingActors(T newActor, Class cls){
+        List<T> actors = getObjects(cls);
+        for (T actor: actors) {
+            if (actor.equals(newActor))
+                continue;
+            Rectangle newRect = new Rectangle(newActor.getX(), newActor.getY(), newActor.getImage().getWidth(), newActor.getImage().getHeight());
+            Rectangle rect = new Rectangle(actor.getX(), actor.getY(), actor.getImage().getWidth(), actor.getImage().getHeight());
+            if (rect.intersects(newRect)) return true;
+        }
+        return false;
     }
 }

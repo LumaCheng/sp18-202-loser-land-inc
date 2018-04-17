@@ -7,6 +7,8 @@ import com.loserland.configs.JsonDeserializer;
 import com.loserland.worlds.MyWorld;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GameStageLoader {
@@ -18,8 +20,13 @@ public class GameStageLoader {
     }
 
     public void load(GameStage stage){
-        for (GameBrick brick: stage.getBricks()){
-            addBricks(brick);
+        List<Brick> bricks = new ArrayList<>();
+        for (GameBrick gameBrick: stage.getBricks()){
+            Brick brick = new Brick(gameBrick.getType());
+            world.addObject(brick, gameBrick.getX(), gameBrick.getY());
+            if (world.hasIntersectingActors(brick, Brick.class)){
+                world.removeObject(brick);
+            }
         }
     }
 
@@ -32,9 +39,5 @@ public class GameStageLoader {
             currentGameStage = GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD);
         }
         load(currentGameStage);
-    }
-
-    public void addBricks(GameBrick brick){
-        world.addObject(new Brick(brick.getType()), brick.getX(), brick.getY());
     }
 }

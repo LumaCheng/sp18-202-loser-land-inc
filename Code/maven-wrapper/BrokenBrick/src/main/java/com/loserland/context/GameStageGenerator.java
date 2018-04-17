@@ -5,21 +5,17 @@ import com.loserland.worlds.MyWorld;
 
 public class GameStageGenerator {
 
-
-
     private static final int BRICK_MARGIN_TOP = 30;
     private static final int BRICK_MARGIN_BOTTOM = 220;
     private static final int BRICK_MARGIN_LEFT = 50;
     private static final int BRICK_MARGIN_RIGHT = 50;
 
-
-
-    private static final int BRICK_NUM_EASY = 10;
-    private static final int BRICK_NUM_MEDIUM = 20;
-    private static final int BRICK_NUM_HARD = 30;
-    private static final double BRICK_PERCENTAGE_1 = 0.6;
+    private static final int BRICK_NUM_EASY = 30;
+    private static final int BRICK_NUM_MEDIUM = 50;
+    private static final int BRICK_NUM_HARD = 100;
+    private static final double BRICK_PERCENTAGE_1 = 0.3;
     private static final double BRICK_PERCENTAGE_2 = 0.3;
-    private static final double BRICK_PERCENTAGE_3 = 0.1;
+    private static final double BRICK_PERCENTAGE_3 = 0.4;
 
     public static enum Difficulty{
         EASY, MEDIUM, HARD
@@ -59,10 +55,10 @@ public class GameStageGenerator {
         int num2 = (int) (brickNum * BRICK_PERCENTAGE_2);
         int num1 = brickNum - num3 - num2;
         for (int i = 0; i < num1; i++) {
-            stage.addBrick(new GameBrick(3, randomX(), randomY()));
+            stage.addBrick(new GameBrick(1, randomX(), randomY()));
         }
         for (int i = 0; i < num2; i++) {
-            stage.addBrick(new GameBrick(3, randomX(), randomY()));
+            stage.addBrick(new GameBrick(2, randomX(), randomY()));
         }
         for (int i = 0; i < num3; i++) {
             stage.addBrick(new GameBrick(3, randomX(), randomY()));
