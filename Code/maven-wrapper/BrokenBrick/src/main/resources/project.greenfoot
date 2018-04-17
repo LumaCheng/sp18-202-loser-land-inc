@@ -15,7 +15,7 @@ class.com.loserland.actors.Test.superclass=greenfoot.Actor
 class.com.loserland.actors.Test.image=Brick4.png
 
 class.com.loserland.actors.Paddle.superclass=greenfoot.Actor
-class.com.loserland.actors.Paddle.image=paddle2.png
+class.com.loserland.actors.Paddle.image=paddle5.png
 
 class.com.loserland.actors.BasicBall.superclass=SmoothMover
 class.com.loserland.actors.BasicBall.image=ball.png
