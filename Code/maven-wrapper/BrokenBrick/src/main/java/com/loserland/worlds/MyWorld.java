@@ -258,7 +258,7 @@ public class MyWorld extends World
                     backgroundMusic.pause();
                 }
                 else{
-                    backgroundMusic.play();
+                    backgroundMusic.playLoop();
                     backgroundMusic.setVolume(volume);
                 }
             }
