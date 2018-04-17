@@ -5,6 +5,12 @@ public class GameBrick {
     private int x;
     private int y;
 
+    public GameBrick(int type, int x, int y){
+        this.type = type;
+        this.x = x;
+        this.y = y;
+    }
+
     public int getType() {
         return type;
     }

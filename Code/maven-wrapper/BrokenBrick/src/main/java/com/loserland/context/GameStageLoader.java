@@ -10,23 +10,8 @@ import java.io.IOException;
 
 
 public class GameStageLoader {
-//    public static final GameStage.Stage DEFAULT_STAGE = GameStage.Stage.DEFAULT;
-//
-////    //Configs
-////    private static ConfigFactory configFactory;
-//////    private static Config config;
-////    private static Config stageConfig;
-////
-////    static {
-////        configFactory = ConfigFactory.getInstance();
-//////        config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
-////        stageConfig = configFactory.getConfig(GameContext.GAME_STAGE_CONFIG_FILENAME);
-////    }
-
-
     MyWorld world;
     GameStage currentGameStage;
-
 
     public GameStageLoader(MyWorld world) {
         this.world = world;
@@ -38,13 +23,13 @@ public class GameStageLoader {
         }
     }
 
-    public void load() throws Exception {
+    public void load() {
         JsonDeserializer jsonDeserializer = new JsonDeserializer();
         try {
             currentGameStage = jsonDeserializer.toObject(GameContext.GAME_STAGE_CONFIG_FILENAME, GameStage.class);
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new Exception("Game stage initialization failed.");
+//            e.printStackTrace();
+            currentGameStage = GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD);
         }
         load(currentGameStage);
     }
