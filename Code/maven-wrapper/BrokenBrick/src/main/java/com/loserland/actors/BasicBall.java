@@ -1,6 +1,6 @@
 package com.loserland.actors;
 
-import com.loserland.Utility.GifImage;
+import com.loserland.utils.GifImage;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import static java.lang.Math.*;
 import com.loserland.worlds.*;

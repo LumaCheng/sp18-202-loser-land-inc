@@ -17,6 +17,9 @@ public class GameStage {
         return bricks;
     }
 
+    public void addBrick(GameBrick brick){
+        bricks.add(brick);
+    }
     public void setBricks(List<GameBrick> bricks) {
         this.bricks = bricks;
     }

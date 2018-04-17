@@ -6,10 +6,11 @@ import com.loserland.context.GameContext;
 import com.loserland.context.GameStageLoader;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
-import greenfoot.Greenfoot;
-import greenfoot.GreenfootSound;
+import greenfoot.*;
 import greenfoot.MouseInfo;
-import greenfoot.World;
+
+import java.awt.*;
+import java.util.List;
 
 
 /**
@@ -64,7 +65,7 @@ public class MyWorld extends World
 
     //Configs
     private static ConfigFactory configFactory;
-    private static Config config;
+    public static Config config;
 
     static {
         configFactory = ConfigFactory.getInstance();
@@ -80,7 +81,7 @@ public class MyWorld extends World
     public MyWorld()
     {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHTH), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
+        super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
         setPaintOrder(CoverPage.class,GameOver.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
@@ -132,11 +133,7 @@ public class MyWorld extends World
         addObject(volumedown,680,490);
 
         gameStageLoader = new GameStageLoader(this);
-        try {
-            gameStageLoader.load();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        gameStageLoader.load();
 
         //Add life "bar" into world
         addObject( live1, 23, 510);
@@ -451,4 +448,15 @@ public class MyWorld extends World
 
     }
 
+    public <T extends Actor> boolean hasIntersectingActors(T newActor, Class cls){
+        List<T> actors = getObjects(cls);
+        for (T actor: actors) {
+            if (actor.equals(newActor))
+                continue;
+            Rectangle newRect = new Rectangle(newActor.getX(), newActor.getY(), newActor.getImage().getWidth(), newActor.getImage().getHeight());
+            Rectangle rect = new Rectangle(actor.getX(), actor.getY(), actor.getImage().getWidth(), actor.getImage().getHeight());
+            if (rect.intersects(newRect)) return true;
+        }
+        return false;
+    }
 }
