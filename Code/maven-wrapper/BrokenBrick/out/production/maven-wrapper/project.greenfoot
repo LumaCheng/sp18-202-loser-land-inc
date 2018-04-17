@@ -17,36 +17,25 @@ class.com.loserland.actors.Test.image=Brick4.png
 class.com.loserland.actors.Paddle.superclass=greenfoot.Actor
 class.com.loserland.actors.Paddle.image=paddle2.png
 
-class.com.loserland.actors.BasicBall.superclass=SmoothMover
-class.com.loserland.actors.BasicBall.image=ball.png
+class.com.loserland.actors.Ball.superclass=SmoothMover
+class.com.loserland.actors.Ball.image=ball.png
 
 class.com.loserland.actors.Brick.superclass=greenfoot.Actor
 class.com.loserland.actors.Brick.image=Brick3.png
 
-class.com.loserland.actors.LargePaddlPower.superclass=greenfoot.Actor
-class.com.loserland.actors.LargePaddlePower.image=enl_pad.png
+class.com.loserland.actors.LargePaddle.superclass=greenfoot.Actor
+class.com.loserland.actors.LargePaddle.image=enl_pad.png
 
-class.com.loserland.actors.SmallPaddlePower.superclass=greenfoot.Actor
-class.com.loserland.actors.SmallPaddlePower.image=shr_pad.png
 
-class.com.loserland.actors.SpeedUpPower.superclass=greenfoot.Actor
-class.com.loserland.actors.SpeedUpPower.image=fast.png
-
-class.com.loserland.actors.SpeedDownPower.superclass=greenfoot.Actor
-class.com.loserland.actors.SpeedDownPower.image=slow.png
-
-class.com.loserland.actors.FireBallPower.superclass=greenfoot.Actor
-class.com.loserland.actors.FireBallPower.image=fire.png
+class.com.loserland.actors.SmallPaddle.superclass=greenfoot.Actor
+class.com.loserland.actors.SmallPaddle.image=shr_pad.png
 
 class.com.loserland.actors.Smoke.superclass=greenfoot.Actor
-class.com.loserland.actors.Smoke.image=smoke.png
+class.Smoke.image=smoke - Copy - Copy.png
 
 class.com.loserland.actors.Fader.superclass=greenfoot.Actor
 class.com.loserland.actors.SmoothMover.superclass=greenfoot.Actor
-
 class.com.loserland.actors.Pointy.superclass=greenfoot.Actor
-class.com.loserland.actors.Pointy.image=aim.png
-
 class.com.loserland.actors.ScoreBoard.superclass=greenfoot.Actor
 class.com.loserland.actors.Lives.superclass=greenfoot.Actor
 

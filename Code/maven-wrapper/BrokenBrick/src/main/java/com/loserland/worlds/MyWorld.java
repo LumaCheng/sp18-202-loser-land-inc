@@ -3,7 +3,6 @@ package com.loserland.worlds;
 import com.loserland.context.ConfigurationManagerFactory;
 import com.loserland.context.GameContext;
 import com.loserland.context.PropertiesConfigurationManager;
-import com.loserland.context.PropertiesManager;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import com.loserland.actors.*;
 
@@ -21,12 +20,13 @@ public class MyWorld extends World
     private final int VOFFSET = 12;
     private final int HOFFSET = 12;
     private Paddle paddle;
-    private Ball ball;
+//    private BasicBall basicBall;
+    private FireBallDecorator ball;
     private Fader fader;
     private CoverPage menu;
     private GameOver gameOver;
     private ScoreBoard scoreBoard=new ScoreBoard();
-    private Counter levelNum = new Counter();;
+    private Counter levelNum = new Counter();
     private Pointy aim = new Pointy();  
     // a total of 4 lives per game
     private int lives = 4;
@@ -66,7 +66,7 @@ public class MyWorld extends World
         super(config.get(Integer.class, "world.width"), config.get(Integer.class, "world.height"), config.get(Integer.class, "world.cell.size"));
 
         // Sets the order of display of Actors
-        setPaintOrder(CoverPage.class,GameOver.class, Fader.class,Ball.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
+        setPaintOrder(CoverPage.class,GameOver.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
 
         //initialize UI components and put place
         initUI();
@@ -80,7 +80,7 @@ public class MyWorld extends World
     private void initUI() {
         // create new paddle and ball
         paddle = new Paddle();
-        ball = new Ball();
+
         // add paddle into world
         addObject(paddle, getWidth()/2, getHeight()-26);
         addObject(aim,paddle.getX(),paddle.getY()-20);
@@ -171,7 +171,7 @@ public class MyWorld extends World
             gameOver = new GameOver();
             addObject (gameOver, 350,260);
             removeObjects(getObjects(Smoke.class)); 
-            removeObjects(getObjects(Ball.class)); 
+            removeObjects(getObjects(BasicBall.class));
             removeObjects(getObjects(Pointy.class));
             // end game when gameover sound is finished playing            
             if (played)
@@ -262,7 +262,7 @@ public class MyWorld extends World
         if(getObjects(Brick.class).isEmpty()) 
         {
             // remove ball from world. Reset into original location. removeObject(ball); does NOT work.
-            removeObjects(getObjects(Ball.class)); 
+            removeObjects(getObjects(BasicBall.class));
             // reset to original location
             resetPosition();
             // increase level by 1 and call upon next level.
@@ -417,6 +417,7 @@ public class MyWorld extends World
         addObject(aim,paddle.getX(),paddle.getY()-20);
 
     }
+
 }
 
  
