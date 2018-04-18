@@ -19,7 +19,7 @@ public class Musicplayer extends Actor
     private GreenfootImage button_1 = new GreenfootImage("play.png");
     private GreenfootImage button_2 = new GreenfootImage("pause.png");
  
-    private boolean pause;
+    private boolean play;
     // width of the score board
     private int WIDTH = 30;  
     // height of the score board
@@ -29,20 +29,20 @@ public class Musicplayer extends Actor
         button_1.scale(WIDTH,HEIGHT);
         button_2.scale(WIDTH, HEIGHT);
         // display on screen
-        setImage(button_1);
+        setImage(button_2);
 
-        pause = false;
+        play = true;
     }
  
     public void act() {        
         if (Greenfoot.mouseClicked(this)) {    
-            if(pause){
-                setImage(button_1); 
-                pause = false; 
+            if(play){
+                setImage(button_1);
+                play = false;
             }
             else{
-                setImage(button_2); 
-                pause = true; 
+                setImage(button_2);
+                play = true;
             }
             
         }    

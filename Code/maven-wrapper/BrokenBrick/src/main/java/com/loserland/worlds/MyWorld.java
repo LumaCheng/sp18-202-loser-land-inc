@@ -3,13 +3,15 @@ import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
+import com.loserland.context.GameStageGenerator;
 import com.loserland.context.GameStageLoader;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
-import greenfoot.Greenfoot;
-import greenfoot.GreenfootSound;
+import greenfoot.*;
 import greenfoot.MouseInfo;
-import greenfoot.World;
+
+import java.awt.*;
+import java.util.List;
 
 
 /**
@@ -64,7 +66,7 @@ public class MyWorld extends World
 
     //Configs
     private static ConfigFactory configFactory;
-    private static Config config;
+    public static Config config;
 
     static {
         configFactory = ConfigFactory.getInstance();
@@ -80,7 +82,7 @@ public class MyWorld extends World
     public MyWorld()
     {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHTH), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
+        super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
         setPaintOrder(CoverPage.class,GameOver.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
@@ -132,11 +134,7 @@ public class MyWorld extends World
         addObject(volumedown,680,490);
 
         gameStageLoader = new GameStageLoader(this);
-        try {
-            gameStageLoader.load();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        gameStageLoader.load();
 
         //Add life "bar" into world
         addObject( live1, 23, 510);
@@ -261,7 +259,7 @@ public class MyWorld extends World
                     backgroundMusic.pause();
                 }
                 else{
-                    backgroundMusic.play();
+                    backgroundMusic.playLoop();
                     backgroundMusic.setVolume(volume);
                 }
             }
@@ -311,110 +309,114 @@ public class MyWorld extends World
         fader = new Fader();
         addObject (fader, 400, 300);
 
-        // level 2 map
-        if (level==2)
-        {
-            // refreshes level counter
-            levelNum.update(2);
-            // fades the screen back in
-            fader.fadeBackIn();
+        levelNum.update(level);
+        fader.fadeBackIn();
+        gameStageLoader.load(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
 
-            /**
-             *  "C"
-             */
-
-            addObject( new Brick(1), 198, 90);
-            addObject( new Brick(4), 98, 43);
-            addObject( new Brick(6), 148, 226);
-            addObject( new Brick(4), 162, 49);
-            addObject( new Brick(1), 62, 90);
-            addObject( new Brick(4), 198, 196);
-            addObject( new Brick(4), 83, 214);
-            addObject( new Brick(4), 54, 175);
-            addObject( new Brick(4), 47, 128);
-
-            /**
-             * "O"
-             */
-            addObject( new Brick(3), 384, 53);
-            addObject( new Brick(3), 324, 53);
-            addObject( new Brick(1), 284, 90);
-            addObject( new Brick(1), 429, 90);
-            addObject( new Brick(3), 277, 134);
-            addObject( new Brick(5), 358, 213);
-            addObject( new Brick(3), 412, 184);
-            addObject( new Brick(3), 297, 185);
-            addObject( new Brick(3), 434, 137);
-
-            /**
-             * "M"
-             */
-            addObject( new Brick(2), 665, 53);
-            addObject( new Brick(2), 665, 215);
-            addObject( new Brick(1), 560, 90);
-            addObject( new Brick(1), 613, 90);
-            addObject( new Brick(6), 588, 135);
-            addObject( new Brick(2), 665, 105);
-            addObject( new Brick(2), 508, 163);
-            addObject( new Brick(2), 665, 159);
-            addObject( new Brick(2), 508, 215);
-            addObject( new Brick(2), 508, 53);
-            addObject( new Brick(2), 508, 111);
-
-        }
-        // level 3
-        else if (level==3)
-        {
-            // refreshes score counter
-            levelNum.update(3);
-            // fades screen back in
-            fader.fadeBackIn();
-
-            /**
-             *  "S"
-             */
-
-            addObject( new Brick(1), 124, 297);
-            addObject( new Brick(4), 172, 261);
-            addObject( new Brick(2), 179, 212);
-            addObject( new Brick(6), 141, 173);
-            addObject( new Brick(6), 75, 160);
-            addObject( new Brick(2), 44, 122);
-            addObject( new Brick(4), 57, 82);
-            addObject( new Brick(1), 94, 48);
-            addObject( new Brick(3), 145, 77);
-            addObject( new Brick(5), 177, 111);
-            addObject( new Brick(3), 63, 265);
-            addObject( new Brick(5), 48, 223);
-
-            /**
-             * "C"
-             */
-
-            addObject( new Brick(5), 391, 87);
-            addObject( new Brick(4), 344, 57);
-            addObject( new Brick(1), 286, 94);
-            addObject( new Brick(2), 274, 157);
-            addObject( new Brick(2), 273, 217);
-            addObject( new Brick(1), 294, 266);
-            addObject( new Brick(4), 355, 294);
-            addObject( new Brick(5), 408, 260);
-
-            /**
-             * "I"
-             */
-            addObject( new Brick(6), 612, 261);
-            addObject( new Brick(6), 555, 296);
-            addObject( new Brick(6), 610, 297);
-            addObject( new Brick(3), 576, 67);
-            addObject( new Brick(3), 645, 66);
-            addObject( new Brick(3),580, 179);
-            addObject( new Brick(6), 554, 262);
-            addObject( new Brick(3), 546, 118);
-            addObject( new Brick(3), 619, 119);
-            addObject( new Brick(3), 505, 67);
-
-        }
+//        // level 2 map
+//        if (level==2)
+//        {
+//            // refreshes level counter
+//            levelNum.update(2);
+//            // fades the screen back in
+//            fader.fadeBackIn();
+//
+//            /**
+//             *  "C"
+//             */
+//
+//            addObject( new Brick(1), 198, 90);
+//            addObject( new Brick(4), 98, 43);
+//            addObject( new Brick(6), 148, 226);
+//            addObject( new Brick(4), 162, 49);
+//            addObject( new Brick(1), 62, 90);
+//            addObject( new Brick(4), 198, 196);
+//            addObject( new Brick(4), 83, 214);
+//            addObject( new Brick(4), 54, 175);
+//            addObject( new Brick(4), 47, 128);
+//
+//            /**
+//             * "O"
+//             */
+//            addObject( new Brick(3), 384, 53);
+//            addObject( new Brick(3), 324, 53);
+//            addObject( new Brick(1), 284, 90);
+//            addObject( new Brick(1), 429, 90);
+//            addObject( new Brick(3), 277, 134);
+//            addObject( new Brick(5), 358, 213);
+//            addObject( new Brick(3), 412, 184);
+//            addObject( new Brick(3), 297, 185);
+//            addObject( new Brick(3), 434, 137);
+//
+//            /**
+//             * "M"
+//             */
+//            addObject( new Brick(2), 665, 53);
+//            addObject( new Brick(2), 665, 215);
+//            addObject( new Brick(1), 560, 90);
+//            addObject( new Brick(1), 613, 90);
+//            addObject( new Brick(6), 588, 135);
+//            addObject( new Brick(2), 665, 105);
+//            addObject( new Brick(2), 508, 163);
+//            addObject( new Brick(2), 665, 159);
+//            addObject( new Brick(2), 508, 215);
+//            addObject( new Brick(2), 508, 53);
+//            addObject( new Brick(2), 508, 111);
+//
+//        }
+//        // level 3
+//        else if (level==3)
+//        {
+//            // refreshes score counter
+//            levelNum.update(3);
+//            // fades screen back in
+//            fader.fadeBackIn();
+//
+//            /**
+//             *  "S"
+//             */
+//
+//            addObject( new Brick(1), 124, 297);
+//            addObject( new Brick(4), 172, 261);
+//            addObject( new Brick(2), 179, 212);
+//            addObject( new Brick(6), 141, 173);
+//            addObject( new Brick(6), 75, 160);
+//            addObject( new Brick(2), 44, 122);
+//            addObject( new Brick(4), 57, 82);
+//            addObject( new Brick(1), 94, 48);
+//            addObject( new Brick(3), 145, 77);
+//            addObject( new Brick(5), 177, 111);
+//            addObject( new Brick(3), 63, 265);
+//            addObject( new Brick(5), 48, 223);
+//
+//            /**
+//             * "C"
+//             */
+//
+//            addObject( new Brick(5), 391, 87);
+//            addObject( new Brick(4), 344, 57);
+//            addObject( new Brick(1), 286, 94);
+//            addObject( new Brick(2), 274, 157);
+//            addObject( new Brick(2), 273, 217);
+//            addObject( new Brick(1), 294, 266);
+//            addObject( new Brick(4), 355, 294);
+//            addObject( new Brick(5), 408, 260);
+//
+//            /**
+//             * "I"
+//             */
+//            addObject( new Brick(6), 612, 261);
+//            addObject( new Brick(6), 555, 296);
+//            addObject( new Brick(6), 610, 297);
+//            addObject( new Brick(3), 576, 67);
+//            addObject( new Brick(3), 645, 66);
+//            addObject( new Brick(3),580, 179);
+//            addObject( new Brick(6), 554, 262);
+//            addObject( new Brick(3), 546, 118);
+//            addObject( new Brick(3), 619, 119);
+//            addObject( new Brick(3), 505, 67);
+//
+//        }
 
     }
 
@@ -451,4 +453,15 @@ public class MyWorld extends World
 
     }
 
+    public <T extends Actor> boolean hasIntersectingActors(T newActor, Class cls){
+        List<T> actors = getObjects(cls);
+        for (T actor: actors) {
+            if (actor.equals(newActor))
+                continue;
+            Rectangle newRect = new Rectangle(newActor.getX(), newActor.getY(), newActor.getImage().getWidth(), newActor.getImage().getHeight());
+            Rectangle rect = new Rectangle(actor.getX(), actor.getY(), actor.getImage().getWidth(), actor.getImage().getHeight());
+            if (rect.intersects(newRect)) return true;
+        }
+        return false;
+    }
 }

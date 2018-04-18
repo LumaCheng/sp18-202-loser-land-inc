@@ -7,7 +7,7 @@ public class GameContext {
 
 
     public static final String WORLD_WIDTH = "world.width";
-    public static final String WORLD_HEIGHTH = "world.height";
+    public static final String WORLD_HEIGHT = "world.height";
     public static final String WORLD_CELL_SIZE = "world.cell.size";
 
     public static final String MENU_IMG = "page.menu.image";
