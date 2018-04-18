@@ -74,6 +74,7 @@ public class Paddle extends Actor
     public void newBall() 
     {
         ball = new Ball();
+        ball.setImage(new GifImage("fireball.gif").getCurrentImage());
         // add ontop of paddle    
         getWorld().addObject(ball, getX(), getY()-18);
     }

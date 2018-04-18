@@ -11,7 +11,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Paddle extends Actor
 {
     // Declare class
-    private Ball ball ;  
+    private BasicBall ball ;
     private int enlarge ;
     private int shrink;        
 
@@ -75,9 +75,8 @@ public class Paddle extends Actor
     // method called to create new ball after original ball dies and removed from world.
     public void newBall() 
     {
-        ball = new Ball();
-        // add ontop of paddle    
-        getWorld().addObject(ball, getX(), getY()-18);
+        ball = new BasicBall();
+        getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
     }
 
     // moves paddle accordingly with mouse input

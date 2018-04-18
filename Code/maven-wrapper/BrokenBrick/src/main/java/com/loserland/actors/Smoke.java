@@ -34,7 +34,7 @@ public class Smoke  extends Actor
     private void shrink()
     {
         // method to "fade" smoke object with each act
-        if(getImage().getWidth() < 10 || (getWorld().getObjects(Ball.class).isEmpty() )) {
+        if(getImage().getWidth() < 10 || (getWorld().getObjects(BasicBall.class).isEmpty() )) {
             // remove smoke when out of world
             getWorld().removeObject(this);
         }

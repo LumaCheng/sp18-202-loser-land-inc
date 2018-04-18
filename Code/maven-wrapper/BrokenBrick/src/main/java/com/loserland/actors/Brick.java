@@ -1,7 +1,7 @@
 package com.loserland.actors;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import com.loserland.worlds.*;
-public class Brick  extends Actor
+public class Brick extends Actor
 {
     // declare and sets brick images to variables
     private  GreenfootImage brick1 = new GreenfootImage("Brick1.png");
