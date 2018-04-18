@@ -42,7 +42,7 @@ public class BasicBall extends SmoothMover implements IBall {
         setImage("ball.png");
         setBallInitCooridinate(350, 505);
         setSmokeFrequency(2);
-        setPowerUpRate(0.5);
+        setPowerUpRate(0.3);
     }
     // each act, check for user input, make smoke and check death
     public void act()
@@ -95,7 +95,7 @@ public class BasicBall extends SmoothMover implements IBall {
     // check collision detection with wall
     public void checkWallCollision()
     {
-        if (getX() <= 0 || getX() > getWorld().getWidth()) {
+        if (getX() <= 0 || getX() >= getWorld().getWidth() - 1) {
             changeX = -changeX;
             // sound effect
             if(ballHitWallSound != null)
