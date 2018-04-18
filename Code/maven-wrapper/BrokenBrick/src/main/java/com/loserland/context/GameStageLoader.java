@@ -36,7 +36,7 @@ public class GameStageLoader {
             currentGameStage = jsonDeserializer.toObject(GameContext.GAME_STAGE_CONFIG_FILENAME, GameStage.class);
         } catch (IOException e) {
 //            e.printStackTrace();
-            currentGameStage = GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD);
+            currentGameStage = GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.EASY);
         }
         load(currentGameStage);
     }
