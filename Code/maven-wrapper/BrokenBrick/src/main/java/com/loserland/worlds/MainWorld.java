@@ -174,7 +174,7 @@ public class MainWorld extends World
             addObject( live1, 23, 510);
             addObject( live2, 69, 510);
             addObject( live3, 115, 510);
-            lives = 3;
+            lives = 4;
             gameStageLoader.load();
 
             // end game when gameover sound is finished playing
