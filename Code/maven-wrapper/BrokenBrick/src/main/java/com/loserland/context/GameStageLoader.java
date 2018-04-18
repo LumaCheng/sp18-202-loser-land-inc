@@ -1,10 +1,8 @@
 package com.loserland.context;
 
 import com.loserland.actors.Brick;
-import com.loserland.configs.Config;
-import com.loserland.configs.ConfigFactory;
 import com.loserland.configs.JsonDeserializer;
-import com.loserland.worlds.MyWorld;
+import com.loserland.worlds.MainWorld;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,10 +10,10 @@ import java.util.List;
 
 
 public class GameStageLoader {
-    MyWorld world;
+    MainWorld world;
     GameStage currentGameStage;
 
-    public GameStageLoader(MyWorld world) {
+    public GameStageLoader(MainWorld world) {
         this.world = world;
     }
 

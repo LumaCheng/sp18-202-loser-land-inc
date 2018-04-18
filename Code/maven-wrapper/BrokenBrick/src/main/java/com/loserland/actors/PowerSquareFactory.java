@@ -8,7 +8,8 @@ public class PowerSquareFactory {
     public static PowerSquare makePowerSquare(PowerType type) {
         switch (type) {
             case FAST_BALL:
-                return new SpeedUpPower();
+                //return new SpeedUpPower();
+                break;
             case SLOW_BALL:
                 return new SpeedDownPower();
             case FIRE_BALL:

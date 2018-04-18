@@ -1,7 +1,7 @@
 package com.loserland.context;
 
 
-import com.loserland.worlds.MyWorld;
+import com.loserland.worlds.MainWorld;
 
 public class GameStageGenerator {
 
@@ -68,13 +68,13 @@ public class GameStageGenerator {
 
     private int randomX(){
         int low = BRICK_MARGIN_LEFT;
-        int high = MyWorld.config.get(Integer.class, GameContext.WORLD_WIDTH) - BRICK_MARGIN_RIGHT;
+        int high = MainWorld.config.get(Integer.class, GameContext.WORLD_WIDTH) - BRICK_MARGIN_RIGHT;
         return (int) (Math.random() * (high - low)+ low);
     }
 
     private int randomY(){
         int low = BRICK_MARGIN_TOP;
-        int high = MyWorld.config.get(Integer.class, GameContext.WORLD_HEIGHT) - BRICK_MARGIN_BOTTOM;
+        int high = MainWorld.config.get(Integer.class, GameContext.WORLD_HEIGHT) - BRICK_MARGIN_BOTTOM;
         return (int) (Math.random() * (high - low) + low);
     }
 }

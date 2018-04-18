@@ -168,8 +168,8 @@ public class BasicBall extends SmoothMover implements IBall {
     private void ballDead()
     {
         // reset to original position. Updates status to world
-        ((MyWorld)getWorld()).getStartAgain();
-        ((MyWorld) getWorld()).takeLife();
+        ((MainWorld)getWorld()).getStartAgain();
+        ((MainWorld) getWorld()).takeLife();
     }
 
     // checks to see if ball made contact with paddle
@@ -210,8 +210,8 @@ public class BasicBall extends SmoothMover implements IBall {
 
     public void replaceBall()
     {
-        // sends information to world class (com.loserland.MyWorld) to call upon replaceBall method to create a new ball in place of old one.
-        ((MyWorld) getWorld()).replaceBall();
+        // sends information to world class (com.loserland.MainWorld) to call upon replaceBall method to create a new ball in place of old one.
+        ((MainWorld) getWorld()).replaceBall();
     }
 
     /**
