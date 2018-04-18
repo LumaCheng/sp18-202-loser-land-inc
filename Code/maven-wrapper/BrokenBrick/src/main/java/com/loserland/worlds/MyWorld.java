@@ -22,6 +22,8 @@ public class MyWorld extends World {
     private CoverPage menu;
     private GameOver gameOver;
     private MainWorld mainWorld;
+    private MenuOptions startGame;
+    private boolean ifMainMenu = true;
 
     GreenfootSound backgroundMusic;
 
@@ -47,7 +49,7 @@ public class MyWorld extends World {
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(CoverPage.class,GameOver.class);
+        setPaintOrder(MenuOptions.class, CoverPage.class, GameOver.class);
 
         //initialize UI components and put place
         //initUI();
@@ -66,6 +68,10 @@ public class MyWorld extends World {
 
     private void initMenu() {
         mainWorld = new MainWorld();
+        mainWorld.setMyWorld(this);
+        startGame = new MenuOptions();
+        startGame.setImage(config.get(GameContext.START_BUTTON));
+        addObject (startGame, 350,360);
         menu = new CoverPage();
         menu.setImage(config.get(GameContext.MENU_IMG));
         addObject (menu, 350,260);
@@ -75,6 +81,12 @@ public class MyWorld extends World {
         gameOver = new GameOver();
         addObject(gameOver, 350, 260);
 
+    }
+
+    private void refreshMainWorld(){
+        mainWorld = new MainWorld();
+        mainWorld.setMyWorld(this);
+        initMusic();
     }
 
 
@@ -104,11 +116,24 @@ public class MyWorld extends World {
         int mouseY;
         // check don't exceed left and right border of background
         // don't move paddle before player shoots
-        if (Greenfoot.mouseClicked(null)) {
-            // once clicked, remove menu
-            Greenfoot.setWorld(mainWorld);
-            //removeObject(menu);
-            // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
+        if (Greenfoot.mouseClicked(startGame)) {
+            if (ifMainMenu) {
+                // once clicked, remove menu
+                Greenfoot.setWorld(mainWorld);
+                removeObject(menu);
+                removeObject(startGame);
+                ifMainMenu = false;
+
+                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
+            }
+        }
+        if (Greenfoot.mouseClicked(gameOver)) {
+            if(!ifMainMenu) {
+                addObject(menu, 350, 260);
+                addObject(startGame,350,360);
+                ifMainMenu = true;
+                //refreshMainWorld();
+            }
         }
     }
 }

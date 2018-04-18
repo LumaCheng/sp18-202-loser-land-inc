@@ -29,8 +29,8 @@ public class MainWorld extends World
     private final int HOFFSET = 12;
     private Paddle paddle;
     private Fader fader;
-    private CoverPage menu;
-    private GameOver gameOver;
+    private MyWorld myWorld;
+
     private ScoreBoard scoreBoard=new ScoreBoard();
 
     private Counter levelNum = new Counter();
@@ -57,7 +57,7 @@ public class MainWorld extends World
     // boolean to determine is gameOver music was played
     private boolean played = false;
     // instead of boolean uses integers to meet if statement for main menu. Fixes launch bug where ball launches immediatly after menu.
-    private int clickMenu = 1;
+    private int clickMenu = 2;
     //volume
     private int volume = 65;
 
@@ -85,7 +85,7 @@ public class MainWorld extends World
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(CoverPage.class,GameOver.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
+        setPaintOrder(Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
 
         //initialize UI components and put place
         initUI();
@@ -122,12 +122,6 @@ public class MainWorld extends World
         fader = new Fader();
         addObject (fader, 400, 300);
         // import menu
-        menu = new CoverPage();
-        menu.setImage(config.get(GameContext.MENU_IMG));
-////        menu.setImage("menu.png");
-//
-//        ball.setImage("ball.png");
-        addObject (menu, 350,260);
 
         addObject(musicplayer,680,460);
         addObject(volumeup,680,430);
@@ -152,6 +146,10 @@ public class MainWorld extends World
         controller.polling();
     }
 
+    public void setMyWorld(MyWorld myWorld){
+        this.myWorld = myWorld;
+    }
+
     // checks if player looses life
     public  void checkLives()
     {
@@ -168,22 +166,19 @@ public class MainWorld extends World
         {
             removeObject(live1);
             // End game. Remove Actors from world.
-            backgroundMusic.stop();
+
             // play game over sound
             gameOverSound();
             // Display GameOver screen
-            gameOver = new GameOver();
-            addObject (gameOver, 350,260);
+            Greenfoot.setWorld(myWorld);
+            addObject( live1, 23, 510);
+            addObject( live2, 69, 510);
+            addObject( live3, 115, 510);
+            lives = 3;
+            gameStageLoader.load();
 
-            removeObjects(getObjects(Smoke.class)); 
-            removeObjects(getObjects(BasicBall.class));
-
-            removeObjects(getObjects(Pointy.class));
             // end game when gameover sound is finished playing
-            if (played)
-            {
-                Greenfoot.stop();
-            }
+
         }
     }
 
@@ -222,7 +217,7 @@ public class MainWorld extends World
         if (Greenfoot.mouseClicked(null))
         {
             // once clicked, remove menu
-            removeObject(menu);
+
             // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
             clickMenu++;
         }
