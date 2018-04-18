@@ -3,8 +3,8 @@
 
 
 #Components
-class.com.loserland.worlds.MyWorld.image=burlap.jpg
-class.com.loserland.worlds.MyWorld.superclass=greenfoot.World
+class.com.loserland.worlds.MainWorld.image=burlap.jpg
+class.com.loserland.worlds.MainWorld.superclass=greenfoot.World
 
 
 

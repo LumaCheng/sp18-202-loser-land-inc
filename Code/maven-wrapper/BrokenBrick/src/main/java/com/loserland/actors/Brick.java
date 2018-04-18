@@ -63,35 +63,35 @@ public class Brick extends Actor
         if (hit == 1)
         {
             hit--;
-            ((MyWorld)getWorld()).addPoints(5);
+            ((MainWorld)getWorld()).addPoints(5);
             getWorld().removeObject(this);
         }
         // rewards 8 points and change to brick 1
         if (hit==2)
         {
             hit--;
-            ((MyWorld)getWorld()).addPoints(8);
+            ((MainWorld)getWorld()).addPoints(8);
             setImage(brick1);
         }
         // rewards 10 points and change to brick 2
         if (hit==3)
         {
             hit--;
-            ((MyWorld)getWorld()).addPoints(10);
+            ((MainWorld)getWorld()).addPoints(10);
             setImage(brick2);
         }
         // rewards 14 points and change to brick 3
         if (hit==4)
         {
             hit--;
-            ((MyWorld)getWorld()).addPoints(14);
+            ((MainWorld)getWorld()).addPoints(14);
             setImage(brick3);
         }
         // rewards 18 points and change to brick 4
         if (hit==5)
         {
             hit--;
-            ((MyWorld)getWorld()).addPoints(18);
+            ((MainWorld)getWorld()).addPoints(18);
             setImage(brick4);
         }
         // rewards 5 points with each hit but rewards 40 after it dies after 3 hits
@@ -99,10 +99,10 @@ public class Brick extends Actor
         {
             // subtract 1 from life (total 3)
             impact--;          
-            ((MyWorld)getWorld()).addPoints(5);   
+            ((MainWorld)getWorld()).addPoints(5);
             // when destroyed reward 40 poitns
             if (impact == 0){
-                ((MyWorld)getWorld()).addPoints(40);    
+                ((MainWorld)getWorld()).addPoints(40);
                 getWorld().removeObject(this);
             }
         }
