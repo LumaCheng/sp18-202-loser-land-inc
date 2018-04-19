@@ -45,4 +45,10 @@ public class Smoke  extends Actor
             setImage (img);
         }        
     }
+
+    public void setImage(String fileName) {
+        super.setImage(fileName);
+        image = getImage();
+    }
+
 }
