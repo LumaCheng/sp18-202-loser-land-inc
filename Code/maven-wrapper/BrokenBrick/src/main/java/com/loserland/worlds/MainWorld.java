@@ -39,6 +39,7 @@ public class MainWorld extends World
     private Musicplayer musicplayer = new Musicplayer();
     private Volumeup volumeup = new Volumeup();
     private Volumedown volumedown = new Volumedown();
+    private HighScoreBoard highScoreBoard = new HighScoreBoard();
 
     // a total of 4 lives per game
     private int lives = 4;
@@ -166,7 +167,7 @@ public class MainWorld extends World
         {
             removeObject(live1);
             // End game. Remove Actors from world.
-
+            highScoreBoard.SaveScore(score);
             // play game over sound
             gameOverSound();
             // Display GameOver screen
