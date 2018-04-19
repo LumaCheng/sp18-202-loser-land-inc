@@ -62,7 +62,7 @@ public class MyWorld extends World {
         // play background music continuously
 
         //backgroundMusic.playLoop();
-        backgroundMusic.playLoop();
+        //backgroundMusic.playLoop();
 
     }
 
@@ -80,7 +80,6 @@ public class MyWorld extends World {
         // Display GameOver screen
         gameOver = new GameOver();
         addObject(gameOver, 350, 260);
-
     }
 
     private void refreshMainWorld(){
