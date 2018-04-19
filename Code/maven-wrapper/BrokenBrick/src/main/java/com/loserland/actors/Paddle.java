@@ -76,6 +76,8 @@ public class Paddle extends Actor
     public void newBall() 
     {
         ball = new BasicBall();
+//        FireBallDecorator fireball = new FireBallDecorator();
+//        fireball.assemble(ball);
         getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
     }
 
