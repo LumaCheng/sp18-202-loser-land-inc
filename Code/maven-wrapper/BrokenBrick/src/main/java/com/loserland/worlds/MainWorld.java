@@ -11,7 +11,10 @@ import greenfoot.*;
 import greenfoot.MouseInfo;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
+
+
 
 
 /**
@@ -40,6 +43,9 @@ public class MainWorld extends World
     private Volumeup volumeup = new Volumeup();
     private Volumedown volumedown = new Volumedown();
     private HighScoreBoard highScoreBoard = new HighScoreBoard();
+
+    public static List<String> faceList = new ArrayList<>();
+    private int faces = 0;
 
     // a total of 4 lives per game
     private int lives = 4;
@@ -135,6 +141,13 @@ public class MainWorld extends World
         addObject( live1, 23, 510);
         addObject( live2, 69, 510);
         addObject( live3, 115, 510);
+
+        faceList.add("face1.png");
+        faceList.add("face2.png");
+//        faceList.add("face3.png");
+//        faceList.add("face4.png");
+//        faceList.add("face5.png");
+        faces = faceList.size();
     }
 
     // each act check for death, mouse input and whether to create new level

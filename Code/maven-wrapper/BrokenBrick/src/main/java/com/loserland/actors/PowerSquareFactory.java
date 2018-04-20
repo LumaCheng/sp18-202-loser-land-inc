@@ -10,14 +10,14 @@ public class PowerSquareFactory {
             case NORMAL:
                 return new NormalPower();
             case FAST_BALL:
-                //return new SpeedUpPower();
-                break;
+                return new SpeedUpPower();
+//                break;
             case SLOW_BALL:
                 return new SpeedDownPower();
             case FIRE_BALL:
                 return new FireBallPower();
             case MULTI_BALL:
-                break;
+                return new MultiballPower();
             case PYROBLAS_BALL:
                 break;
             case LARGE_PADDLE:

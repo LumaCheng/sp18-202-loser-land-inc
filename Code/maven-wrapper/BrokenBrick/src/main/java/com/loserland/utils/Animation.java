@@ -16,7 +16,3 @@ public class Animation {
     }
 
 }
-//int changeRotation = 0;
-//setRotation(getRotation()+changeRotation);
-//basicBall.changeRotation = Greenfoot.getRandomNumber(30);
-//basicBall.setRotation(Greenfoot.getRandomNumber(360));

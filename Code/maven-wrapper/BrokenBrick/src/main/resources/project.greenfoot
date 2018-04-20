@@ -41,6 +41,9 @@ class.com.loserland.actors.FireBallPower.image=fire.png
 class.com.loserland.actors.NormalPower.superclass=greenfoot.Actor
 class.com.loserland.actors.NormalPower.image=white_ball.png
 
+class.com.loserland.actors.MultiballPower.superclass=greenfoot.Actor
+class.com.loserland.actors.MultiballPower.image=face.png
+
 class.com.loserland.actors.Smoke.superclass=greenfoot.Actor
 class.com.loserland.actors.Smoke.image=smoke.png
 

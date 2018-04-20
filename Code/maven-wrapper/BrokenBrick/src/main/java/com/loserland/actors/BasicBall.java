@@ -91,6 +91,7 @@ public class BasicBall extends SmoothMover implements IBall {
     {
         if (getX() <= 0 || getX() >= getWorld().getWidth() - 1) {
             changeX = -changeX;
+            ball.wallCollision();
             // sound effect
             if(ballHitWallSound != null)
                 Greenfoot.playSound(ballHitWallSound);
@@ -102,6 +103,9 @@ public class BasicBall extends SmoothMover implements IBall {
         }
     }
 
+    public void wallCollision() {
+
+    }
     // collision dectection with brick
     public void checkBrickCollision(){
         Brick brick = (Brick)getOneIntersectingObject(Brick.class);
@@ -174,12 +178,12 @@ public class BasicBall extends SmoothMover implements IBall {
         Paddle paddle = (Paddle) getOneIntersectingObject(Paddle.class);
         if (paddle != null) {
             // bounce if made contact
-            bounce(paddle);
+            ball.bounce(paddle);
         }
     }
 
     // ball collision with paddle
-    private void bounce(Actor a) {
+    public void bounce(Actor a) {
         // reflect opposite side
         changeY = -changeY;
         // refelcts depending on incoming angle
@@ -198,10 +202,10 @@ public class BasicBall extends SmoothMover implements IBall {
             Greenfoot.playSound(ballBounceSound);
     }
 
-    public void resetBall() {
-        Paddle paddle = getWorld().getObjects(Paddle.class).get(0);
-        setLocation(paddle.getX(),paddle.getY()-(this.getImage().getHeight()+5));
-    }
+//    public void resetBall() {
+//        Paddle paddle = getWorld().getObjects(Paddle.class).get(0);
+//        setLocation(paddle.getX(),paddle.getY()-(this.getImage().getHeight()+5));
+//    }
 
     public void replaceBall()
     {
@@ -320,5 +324,13 @@ public class BasicBall extends SmoothMover implements IBall {
     public void setImage(String fileName) {
         gifImage = null;
         super.setImage(fileName);
+    }
+
+    public void setOnPaddle(boolean isOnPaddle) {
+        onPaddle = isOnPaddle;
+    }
+
+    public void remove() {
+        getWorld().removeObject(this);
     }
 }

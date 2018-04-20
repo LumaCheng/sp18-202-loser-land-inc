@@ -36,6 +36,16 @@ public class FireBallDecorator implements IBall, IBallDecorator {
         brick.effect();
     }
 
+    @Override
+    public void wallCollision() {
+        basicBall.wallCollision();
+    }
+
+    @Override
+    public void bounce(Actor paddle) {
+        basicBall.bounce(paddle);
+    }
+
 
     public void checkBallMiss() {
         basicBall.checkBallMiss();
