@@ -36,7 +36,7 @@ public class BasicBall extends SmoothMover implements IBall {
         setBallBounceSound("baseball.wav");
         setBallHitBrickSound("laser.wav");
         setBallHitWallSound("baseball.wav");
-        setImage("ball.png");
+        setImage("ball3.png");
         setBallInitCooridinate(350, 505);
         setSmokeFrequency(2);
         setPowerUpRate(0.3);
