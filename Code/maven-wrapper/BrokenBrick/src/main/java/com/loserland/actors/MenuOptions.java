@@ -1,4 +1,5 @@
 package com.loserland.actors;
+
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
@@ -9,10 +10,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class MenuOptions extends Actor
 {
+
     /**
      * Sets cover page image. Does nothing
      */
     public void act()
-    {        // Add your action code here.
+    {
+
+        // Add your action code here.
     }
 }

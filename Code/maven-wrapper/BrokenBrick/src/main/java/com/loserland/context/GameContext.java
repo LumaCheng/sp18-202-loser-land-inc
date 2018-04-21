@@ -3,7 +3,10 @@ package com.loserland.context;
 public class GameContext {
     public static final String GAME_DEFAULT_CONFIG_FILENAME = "configs/default.properties";
     public static final String GAME_STAGE_CONFIG_FILENAME = "configs/stage.json";
-    public static final String START_BUTTON = "page.menu.start";
+
+    public static final String START_BUTTON = "page.start.button";
+    public static final String START_HOVER = "page.start.hover";
+    public static final String START_PRESSED = "page.start.pressed";
 
 
 

@@ -115,6 +115,7 @@ public class MyWorld extends World {
         int mouseY;
         // check don't exceed left and right border of background
         // don't move paddle before player shoots
+        //System.out.println(mouse.getActor());
         if (Greenfoot.mouseClicked(startGame)) {
             if (ifMainMenu) {
                 // once clicked, remove menu
@@ -122,10 +123,20 @@ public class MyWorld extends World {
                 removeObject(menu);
                 removeObject(startGame);
                 ifMainMenu = false;
-
+                startGame.setImage(config.get(GameContext.START_BUTTON));
                 // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
             }
         }
+        if(Greenfoot.mousePressed(startGame)){
+            startGame.setImage(config.get(GameContext.START_PRESSED));
+        }
+        if(Greenfoot.mouseMoved(startGame)){
+            startGame.setImage(config.get(GameContext.START_HOVER));
+        }
+        if(Greenfoot.mouseMoved(menu)){
+            startGame.setImage(config.get(GameContext.START_BUTTON));
+        }
+
         if (Greenfoot.mouseClicked(gameOver)) {
             if(!ifMainMenu) {
                 addObject(menu, 350, 260);
