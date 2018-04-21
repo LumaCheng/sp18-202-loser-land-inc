@@ -41,6 +41,7 @@ public class MainWorld extends World
     private Volumeup volumeup = new Volumeup();
     private Volumedown volumedown = new Volumedown();
     private HighScoreBoard highScoreBoard = new HighScoreBoard();
+    private ManageScore managescore = new ManageScore();
 
     public static List<String> faceList = new ArrayList<>();
     private int faces = 0;
@@ -95,12 +96,19 @@ public class MainWorld extends World
         //initialize UI components and put place
         initUI();
         initMusic();
-
+        initScoreOberver();
         // clears screen instantly to show level 1
         fader.fadeBackIn();
 
         controller.addObserver(aim);
 
+
+    }
+
+    private void initScoreOberver(){
+
+        managescore.attach(highScoreBoard);
+        managescore.attach(scoreBoard);
 
     }
 
@@ -179,7 +187,7 @@ public class MainWorld extends World
         {
             removeObject(live1);
             // End game. Remove Actors from world.
-            highScoreBoard.SaveScore(score);
+            highScoreBoard.SaveScore();
             // play game over sound
             gameOverSound();
             // Display GameOver screen
@@ -213,8 +221,9 @@ public class MainWorld extends World
     public void addPoints(int points)
     {
         score+=points;
+        managescore.notifyObservers(score);
         // refreshes counter display for score
-        scoreBoard.update(score);
+        //scoreBoard.update(score);
     }
 
     // checks for player input from mouse

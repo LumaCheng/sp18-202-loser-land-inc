@@ -6,13 +6,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
 // allow to change font
 
 import java.awt.Graphics;
-public class ScoreBoard extends Actor
+public class ScoreBoard extends Actor implements ScoreObserver
 {  
     // declare instance variables
     // width of the score board
     private int WIDTH = 85;  
     // height of the score board
-    private int HEIGHT = 20;      
+    private int HEIGHT = 20;
+    int score;
 
     // The constructor composes the image for the com.loserland.actors.ScoreBoard.
     public ScoreBoard()
@@ -29,8 +30,10 @@ public class ScoreBoard extends Actor
     }
 
     // updates the score display
-    public void update(int score) 
+    @Override
+    public void update(int s)
     {
+        score = s;
         // x and y relative to the image. baseline of leftmost character.
         int x = 5;      
         int y = 15;        

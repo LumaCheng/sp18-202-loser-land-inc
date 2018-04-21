@@ -7,10 +7,11 @@ import java.io.*;
 import java.util.*;
 import java.net.*;
 
-public class HighScoreBoard extends Actor {
+public class HighScoreBoard extends Actor implements ScoreObserver {
 
     private String HIGHSCORE_FILE;
     private List<HighScore> scoreList;
+    int score;
     FileWriter fw = null;
     InputStream inputStream;
     OutputStream outputStream;
@@ -27,12 +28,14 @@ public class HighScoreBoard extends Actor {
     }
 
 
-    public void act() {
-
+    @Override
+    public void update(int s) {
+        score = s ;
     }
 
-    public void SaveScore(int s){
-        addChild(new HighScore(s));
+
+    public void SaveScore(){
+        addChild(new HighScore(score));
         SortScore();
         WriteScoreToFile();
     }
