@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-
 /**
  * Write a description of class com.loserland.MainWorld here.
  *
@@ -102,6 +100,7 @@ public class MainWorld extends World
         fader.fadeBackIn();
 
         controller.addObserver(aim);
+
 
     }
 
@@ -239,13 +238,7 @@ public class MainWorld extends World
         // if ball has launched, move paddle according to user input
         if (start)
         {
-            if (Greenfoot.mouseMoved(null) && mouse.getX() > (paddle.getImage().getWidth())/3 && mouse.getX() <  (getWidth()+5) - paddle.getImage().getWidth()/2)
-            {
-                // calculate difference for actual magnitude moved
-                changeX = mouse.getX()-paddle.getX();
-                // move paddle accordingly
-                movePaddle(changeX);
-            }
+            controller.addObserver(paddle);
         }
 
         // boolean does NOT work. Since the click from the menu will meet this statement. As a result, ball launches immediatly after menu screen.
@@ -256,10 +249,8 @@ public class MainWorld extends World
             {
                 // release ball
                 start = true;
-                mouseX = mouse.getX();
-                mouseY= mouse.getY();
                 // launches ball according to angle of launch
-                launchBall(mouseX,mouseY);
+                launchBall();
                 // removes pointer
                 removeObject(aim);
             }
@@ -289,11 +280,11 @@ public class MainWorld extends World
         }
 
     }
-    // move paddle accordingly
-    public void movePaddle(int distance)
-    {
-        paddle.moveMe(distance);
-    }
+//    // move paddle accordingly
+//    public void movePaddle(int distance)
+//    {
+//        paddle.moveMe(distance);
+//    }
 
     // checks to see if start new level
     public void checkLevel()
@@ -430,9 +421,9 @@ public class MainWorld extends World
     }
 
     // launching ball to commence game
-    public void launchBall(int mouseX, int mouseY)
+    public void launchBall()
     {
-        paddle.releaseBall(mouseX,mouseY);
+        paddle.releaseBall();
     }
 
     public void replaceBall()
