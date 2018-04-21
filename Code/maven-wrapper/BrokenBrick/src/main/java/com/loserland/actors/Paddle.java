@@ -1,6 +1,10 @@
 package com.loserland.actors;
 
+import com.loserland.controller.ControllerEvent;
+import com.loserland.controller.ControllerObserver;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
+
+import java.util.List;
 
 /**
  * Write a description of class com.loserland.actors.Paddle here.
@@ -8,18 +12,21 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Paddle extends Actor
-{
+public class Paddle extends Actor implements ControllerObserver {
     // Declare class
-    private BasicBall ball ;
+//    private BasicBall ball ;
+    private boolean haveBall;
     private int enlarge ;
     private int shrink;        
-
+    private int mouseX, mouseY;
     /**
      * Act - do whatever the com.loserland.actors.Paddle wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
 
+    public Paddle() {
+        super();
+    }
     // add new ball into world. Else NullPointerExeception
     public void addedToWorld(World world) 
     {
@@ -75,7 +82,8 @@ public class Paddle extends Actor
     // method called to create new ball after original ball dies and removed from world.
     public void newBall() 
     {
-        ball = new BasicBall();
+        BasicBall ball = new BasicBall();
+        haveBall = true;
 //        FireBallDecorator fireball = new FireBallDecorator();
 //        fireball.assemble(ball);
         getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
@@ -85,23 +93,29 @@ public class Paddle extends Actor
     public void moveMe(int distance)
     {
         setLocation(getX()+distance, getY());
-        if(haveBall()) 
-        {
-            // calls method in ball for ball to move along with paddle
-            ball.move(distance);	
+
+        List<BasicBall> ballList = getWorld().getObjects(BasicBall.class);
+        for(BasicBall ball:ballList) {
+            if (haveBall()) {
+                // calls method in ball for ball to move along with paddle
+                ball.move(distance);
+            }
         }
 
     }
     // mutator to access boolean information of ball status
     public boolean haveBall()
     {
-        return ball != null;
+        return haveBall;
     }    
     // send value to Ball class to release ball
-    public void releaseBall(int mouseX, int mouseY) {
-        ball.launch(mouseX,mouseY);
+    public void releaseBall() {
+        List<BasicBall> ballList = getWorld().getObjects(BasicBall.class);
+        for(BasicBall ball: ballList) {
+            ball.launch(mouseX, mouseY);
+        }
         // no more ball on paddle
-        ball = null;
+        haveBall = false;
     }
 
     // method called from power up to start the expansion proccess.
@@ -118,4 +132,26 @@ public class Paddle extends Actor
         shrink = 0;
     }
 
+    @Override
+    public boolean isInWorld() {
+        return true;
+    }
+
+    @Override
+    public void controllerEventReceived(ControllerEvent event) {
+        if (event.type == ControllerEvent.CommandType.MOVE) {
+            mouseX = event.x;
+            mouseY = event.y;
+            if(haveBall == false) {
+                if (Greenfoot.mouseMoved(null) &&
+                        mouseX > (getImage().getWidth()) / 3 &&
+                        mouseX < (getWorld().getWidth() + 5) - getImage().getWidth() / 2) {
+                    // calculate difference for actual magnitude moved
+                    int changeX = mouseX - getX();
+                    // move paddle accordingly
+                    moveMe(changeX);
+                }
+            }
+        }
+    }
 }

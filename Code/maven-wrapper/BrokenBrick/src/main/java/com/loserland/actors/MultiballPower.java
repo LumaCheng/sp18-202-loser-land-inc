@@ -25,7 +25,7 @@ public class MultiballPower extends PowerSquare {
             if(i != 0) {
                 ball.changeX = origBall.changeX;
                 ball.changeY = origBall.changeY;
-                ball.setOnPaddle(false);
+                ball.setOnPaddle(origBall.onPaddle);
             }
 
             MultiballDecorator multiballDecorator = new MultiballDecorator();
@@ -33,7 +33,8 @@ public class MultiballPower extends PowerSquare {
 
             if(i != 0) {
                 getWorld().addObject(ball, newX, newY);
-                ball.launch(newX, newY);
+                if(!ball.onPaddle)
+                    ball.launch(newX, newY);
             }
         }
     }
