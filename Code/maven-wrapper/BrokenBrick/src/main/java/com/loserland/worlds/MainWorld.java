@@ -37,11 +37,13 @@ public class MainWorld extends World
     private Counter levelNum = new Counter();
     private Pointy aim = new Pointy();  
 
-    private Musicplayer musicplayer = new Musicplayer();
+    private Musicplayer musicplayer;
     private Volumeup volumeup = new Volumeup();
     private Volumedown volumedown = new Volumedown();
     private HighScoreBoard highScoreBoard = new HighScoreBoard();
     private ManageScore managescore = new ManageScore();
+    private PlayState playState;
+    private PauseState pauseState;
 
     public static List<String> faceList = new ArrayList<>();
     private int faces = 0;
@@ -94,8 +96,9 @@ public class MainWorld extends World
         setPaintOrder(Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
 
         //initialize UI components and put place
-        initUI();
         initMusic();
+        initUI();
+
         initScoreOberver();
         // clears screen instantly to show level 1
         fader.fadeBackIn();
@@ -116,8 +119,11 @@ public class MainWorld extends World
         backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
         // play background music continuously
 
-        //backgroundMusic.playLoop();
-        backgroundMusic.playLoop();
+       // backgroundMusic.playLoop();
+        musicplayer = new Musicplayer(backgroundMusic);
+        playState = new PlayState();
+        pauseState = new PauseState();
+        //playState.doAction(musicplayer);
 
     }
 
@@ -263,13 +269,13 @@ public class MainWorld extends World
                 // removes pointer
                 removeObject(aim);
             }
+
             if(Greenfoot.mouseClicked(musicplayer)){
                 if(backgroundMusic.isPlaying()){
-                    backgroundMusic.pause();
+                    pauseState.doAction(musicplayer);
                 }
                 else{
-                    backgroundMusic.playLoop();
-                    backgroundMusic.setVolume(volume);
+                    playState.doAction(musicplayer);
                 }
             }
             if(Greenfoot.mouseClicked(volumeup) && backgroundMusic.isPlaying() ){
