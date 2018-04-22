@@ -44,7 +44,9 @@ public class BasicBall extends SmoothMover implements IBall {
     // each act, check for user input, make smoke and check death
     public void act()
     {
-        ball.action();
+        if(getWorld() != null) {
+            ball.action();
+        }
     }
 
     public void action() {
@@ -77,13 +79,15 @@ public class BasicBall extends SmoothMover implements IBall {
 
     // Set location
     public void setLocation(double changeX, double changeY, double speed) {
-        int newX = getX() + calculateMovement(changeX, speed);
-        int newY = getY() + calculateMovement(changeY, speed);
-        newX = (newX >= getWorld().getWidth())? getWorld().getWidth() - 1 : newX;
-        newX = (newX < 0)? 0 : newX;
-        newY = (newY >= getWorld().getHeight())? getWorld().getHeight() - 1 : newY;
-        newY = (newY < 0)? 0 : newY;
-        setLocation (newX, newY);
+        if(getWorld() != null) {
+            int newX = getX() + calculateMovement(changeX, speed);
+            int newY = getY() + calculateMovement(changeY, speed);
+            newX = (newX >= getWorld().getWidth()) ? getWorld().getWidth() - 1 : newX;
+            newX = (newX < 0) ? 0 : newX;
+            newY = (newY >= getWorld().getHeight()) ? getWorld().getHeight() - 1 : newY;
+            newY = (newY < 0) ? 0 : newY;
+            setLocation(newX, newY);
+        }
     }
 
     // check collision detection with wall
@@ -93,7 +97,7 @@ public class BasicBall extends SmoothMover implements IBall {
             changeX = -changeX;
             ball.wallCollision();
             // sound effect
-            if(ballHitWallSound != null)
+            if (ballHitWallSound != null)
                 Greenfoot.playSound(ballHitWallSound);
         }
 
@@ -145,9 +149,9 @@ public class BasicBall extends SmoothMover implements IBall {
             PowerSquare powerSquare;
             if(type == ball.getCurrentPower() ||
                (ball.getCurrentPower() != PowerSquareFactory.PowerType.NORMAL && hitNumber % 2 == 0))
-                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
+                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.FIRE_BALL);
             else
-                powerSquare = PowerSquareFactory.makePowerSquare(type);
+                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.MULTI_BALL);
             if(powerSquare != null) {
                 getWorld().addObject(powerSquare, brick.getX(), brick.getY());
                 powerSquare.fall();
@@ -190,7 +194,7 @@ public class BasicBall extends SmoothMover implements IBall {
         int reflected = getX() - a.getX();
         // caculate angle of reflection based on incoming angle
         // divide by 8 to minimize the rebound magnitude. Not as dramatic/hard.
-        changeX = changeX + (reflected/8);
+        changeX = changeX + (reflected / 8);
         if (changeX > 7) {
             changeX = 7;
         }
@@ -198,7 +202,7 @@ public class BasicBall extends SmoothMover implements IBall {
             changeX = -7;
         }
         // sound effect
-        if(ballBounceSound != null)
+        if (ballBounceSound != null)
             Greenfoot.playSound(ballBounceSound);
     }
 
