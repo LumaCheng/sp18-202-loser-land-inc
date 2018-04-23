@@ -139,7 +139,7 @@ public class Paddle extends Actor implements ControllerObserver {
 
     @Override
     public void controllerEventReceived(ControllerEvent event) {
-        if (event.type == ControllerEvent.CommandType.MOVE) {
+//        if (event.type == ControllerEvent.CommandType.MOVE) {
             mouseX = event.x;
             mouseY = event.y;
             if(haveBall == false) {
@@ -152,6 +152,6 @@ public class Paddle extends Actor implements ControllerObserver {
                     moveMe(changeX);
                 }
             }
-        }
+//        }
     }
 }

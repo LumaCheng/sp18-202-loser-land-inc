@@ -8,8 +8,12 @@ public class FireBallDecorator implements IBall, IBallDecorator {
     private BasicBall basicBall;
 
     public void action() {
-        basicBall.action();
-        if(!basicBall.onPaddle) {
+        if(basicBall.gifImage != null)
+            basicBall.setImage(basicBall.gifImage.getCurrentImage());
+        if (!basicBall.onPaddle) {
+            basicBall.moveBall();
+            basicBall.checkBallMiss();
+            basicBall.makeSmoke();
             rotate();
         }
     }

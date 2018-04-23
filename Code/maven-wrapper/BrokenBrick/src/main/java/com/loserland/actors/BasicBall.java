@@ -5,6 +5,8 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import static java.lang.Math.*;
 import com.loserland.worlds.*;
 
+import java.util.List;
+
 public class BasicBall extends SmoothMover implements IBall {
     private IBall ball = this;
 
@@ -16,7 +18,7 @@ public class BasicBall extends SmoothMover implements IBall {
     int smokeTimingCount = 0;
     double ballX = 0;
     double ballY = 0;
-    private GifImage gifImage;
+    GifImage gifImage;
 
     // Theme settings
     private String ballHitWallSound = "";
@@ -39,7 +41,7 @@ public class BasicBall extends SmoothMover implements IBall {
         setImage("ball3.png");
         setBallInitCooridinate(350, 505);
         setSmokeFrequency(2);
-        setPowerUpRate(0.3);
+        setPowerUpRate(1);
     }
     // each act, check for user input, make smoke and check death
     public void act()
@@ -149,9 +151,9 @@ public class BasicBall extends SmoothMover implements IBall {
             PowerSquare powerSquare;
             if(type == ball.getCurrentPower() ||
                (ball.getCurrentPower() != PowerSquareFactory.PowerType.NORMAL && hitNumber % 2 == 0))
-                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.FIRE_BALL);
+                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
             else
-                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.MULTI_BALL);
+                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.PYROBLAST_BALL);
             if(powerSquare != null) {
                 getWorld().addObject(powerSquare, brick.getX(), brick.getY());
                 powerSquare.fall();
@@ -271,6 +273,10 @@ public class BasicBall extends SmoothMover implements IBall {
                 getWorld().addObject(new Smoke(), getX(), getY());
             }
         }
+    }
+
+    public <A> List<A> getObjectsInRange(int radius, Class<A> cls) {
+        return super.getObjectsInRange(radius, cls);
     }
 
     public void setBallHitWallSound(String fileName) {
