@@ -1,9 +1,12 @@
 package com.loserland.context;
 
-public class GameState{
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.Serializable;
+
+public class GameState implements Serializable {
 
     private GameStage stage;
-
 
     public GameStage getStage() {
         return stage;

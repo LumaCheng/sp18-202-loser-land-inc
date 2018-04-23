@@ -26,11 +26,7 @@ public class GameProgressManager implements IGameProgressManager {
 
     @Override
     public void add(GameCheckPoint checkPoint) {
-        try {
-            checkPoints.add((GameCheckPoint) checkPoint.clone());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
+        checkPoints.add(checkPoint);
     }
 
     @Override

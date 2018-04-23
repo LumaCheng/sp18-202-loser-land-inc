@@ -7,6 +7,7 @@ import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.*;
 import greenfoot.MouseInfo;
+import org.apache.commons.lang3.SerializationUtils;
 
 import java.awt.*;
 import java.util.List;
@@ -106,6 +107,10 @@ public class MyWorld extends World implements IGameProgress
 
     private void render(GameState state) {
 
+        List allActors = getObjects(Brick.class);
+        if (allActors.size() > 0){
+            removeObjects(allActors);
+        }
         //render stage
         for (GameBrick gameBrick: state.getStage().getBricks()){
             Brick brick = new Brick(gameBrick.getType());
@@ -402,7 +407,9 @@ public class MyWorld extends World implements IGameProgress
 
     @Override
     public void restore(GameCheckPoint checkPoint) {
-        currentState = checkPoint.getState();
+//        currentState = checkPoint.getState();
+        currentState = SerializationUtils.clone(checkPoint.getState());
         render(currentState);
+
     }
 }

@@ -2,10 +2,11 @@ package com.loserland.context;
 
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameStage {
+public class GameStage implements Serializable{
     private List<GameBrick> bricks;
 
     public GameStage() {
