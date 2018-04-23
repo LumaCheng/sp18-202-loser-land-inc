@@ -1,6 +1,6 @@
 package com.loserland.context;
 
-public class GameState {
+public class GameState{
 
     private GameStage stage;
 

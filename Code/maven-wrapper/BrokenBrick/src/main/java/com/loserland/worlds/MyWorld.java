@@ -18,7 +18,7 @@ import java.util.List;
  * @author Jiaqi Qin
  * @version 2018-04-13
  */
-public class MyWorld extends World implements IGameProgressManager
+public class MyWorld extends World implements IGameProgress
 {
     // Declare variables, booleans and classes.
     private final int BRICKWIDTH = 45;
@@ -385,15 +385,24 @@ public class MyWorld extends World implements IGameProgressManager
         return false;
     }
 
-    @Override
-    public GameProgress save() {
-//        GameProgressStorage.getInstance().save(new GameProgress(getCurrentGameState()));
-        return null;
+    public void onClickSaveCheckPoint(){
+        System.out.println("MyWorld.onClickSaveCheckPoint");
+        GameProgressManager.getInstance().add(new GameCheckPoint(currentState));
+    }
 
+    public void onClickLoadCheckPoint(){
+        System.out.println("MyWorld.onClickLoadCheckPoint");
+        restore(GameProgressManager.getInstance().load());
     }
 
     @Override
-    public void restore(GameProgress progress) {
-//        setCurrentGameState(progress.getState());
+    public GameCheckPoint save() {
+        return new GameCheckPoint(currentState);
+    }
+
+    @Override
+    public void restore(GameCheckPoint checkPoint) {
+        currentState = checkPoint.getState();
+        render(currentState);
     }
 }
