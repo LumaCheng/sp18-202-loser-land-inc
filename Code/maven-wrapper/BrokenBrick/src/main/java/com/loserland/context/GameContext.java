@@ -19,6 +19,14 @@ public class GameContext {
     public static String currentBallImg = "ball.image";
 
     public static final String GAME_BACKGROUND_MUSIC = "game.background.music";
-    public static final String GAME_MENU_HIGHSCORE = "configs/highscore.dat";
+    public static final String GAME_MENU_HIGHSCORE = "highscore.dat";
+    public static final String PLAYER_PLAY_IMG = "player.play.image";
+    public static final String PLAYER_PAUSE_IMG = "player.pause.image";
+    public static final String PLAYER_SIZE = "player.size";
+    public static final String VOLUME_SIZE = "volume.size";
+    public static final String VOLUME_DEFAULT = "volume.default";
+    public static final String VOLUME_UP_IMG = "volume.up.image";
+    public static final String VOLUME_DOWN_IMG = "volume.down.image";
+    public static final String HIGHSCORE_FONT_SIZE = "highscore.font.size";
 
 }

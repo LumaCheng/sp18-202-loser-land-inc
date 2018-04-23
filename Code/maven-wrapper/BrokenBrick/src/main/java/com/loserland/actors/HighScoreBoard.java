@@ -6,10 +6,12 @@ import java.util.List;
 import java.io.*;
 import java.util.*;
 import java.net.*;
+import com.loserland.configs.*;
+import com.loserland.context.GameContext;
 
 public class HighScoreBoard extends Actor implements ScoreObserver {
 
-    private String HIGHSCORE_FILE;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     private List<HighScore> scoreList;
     int score;
     FileWriter fw = null;
@@ -18,6 +20,9 @@ public class HighScoreBoard extends Actor implements ScoreObserver {
     String[] rank = new String[]{"1ST","2ND","3RD","4TH","5TH","6TH","7TH","8TH","9TH","10TH"};
     Color[] color = new Color[]{Color.WHITE,Color.WHITE,Color.RED,Color.RED, Color.ORANGE,
             Color.ORANGE, Color.GREEN, Color.GREEN, Color.BLUE, Color.BLUE};
+    int WIDTH = config.get(Integer.class,GameContext.WORLD_WIDTH);
+    int HEIGHT = config.get(Integer.class,GameContext.WORLD_HEIGHT);
+    int fontsize = config.get(Integer.class,GameContext.HIGHSCORE_FONT_SIZE);
 
 
     public HighScoreBoard()
@@ -42,55 +47,52 @@ public class HighScoreBoard extends Actor implements ScoreObserver {
 
     public void ShowScore(){
         SortScore();
-        GreenfootImage image = new GreenfootImage(700, 520);
+        GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
         image.setColor(Color.BLACK);
-        image.fillRect(1, 1, 700, 520);
-        Font myFont = new Font("Tahoma", true, false, 20);
+        image.fillRect(1, 1, WIDTH, HEIGHT);
+        Font myFont = new Font("Tahoma", true, false, fontsize);
         image.setFont(myFont);
 
         image.setColor(Color.CYAN);
-        image.drawString("HIGH SCORES", 270 , 50);
+        image.drawString("HIGH SCORES", (int) Math.round(WIDTH/2.6) , (int) Math.round(HEIGHT/10) );
 
         image.setColor(Color.YELLOW);
-        image.drawString("RANK", 80 , 130);
-        image.drawString("SCORE", 280 , 130);
-        image.drawString("TIME", 510 , 130);
+        image.drawString("RANK", (int) Math.round(WIDTH*0.12) , (int) Math.round(HEIGHT*0.25));
+        image.drawString("SCORE", (int) Math.round(WIDTH*0.4) , (int) Math.round(HEIGHT*0.25));
+        image.drawString("TIME", (int) Math.round(WIDTH*0.7) , (int) Math.round(HEIGHT*0.25));
 
 
         int count = 0;
-        int offset  = 30;
-        int y = 180;
+        int offset  = (int) Math.round(HEIGHT*0.06);
+        int y = (int) Math.round(HEIGHT*0.35);
         for (HighScore obj  : scoreList)
         {
             if(count == 10){
                 break;
             }
             image.setColor(color[count]);
-            image.drawString(""+ rank[count], 90 , y );
-            image.drawString(""+ obj.getScore(),  290 , y );
-            image.drawString(""+ obj.gettime(),  440, y );
+            image.drawString(""+ rank[count], (int) Math.round(WIDTH*0.12)+fontsize/2, y );
+            image.drawString(""+ obj.getScore(),  (int) Math.round(WIDTH*0.4)+fontsize/2 , y );
+            image.drawString(""+ obj.gettime(),  (int) Math.round(WIDTH*0.7)-(int)(fontsize*3.5), y );
             count++;
             y += offset;
         }
         setImage(image);
     }
 
-    public void SettingFile(String file){
-        HIGHSCORE_FILE = file;
-    }
 
     public void SortScore(){
-        Collections.sort(scoreList, new SortbyScore());
+        Collections.sort(scoreList, new Comparator<HighScore>(){
+        // Used for sorting in decending order of
+            @Override
+            public int compare(HighScore a, HighScore b)
+            {
+                return b.getScore() - a.getScore();
+            }
+         });
     }
 
-    class SortbyScore implements Comparator<HighScore>
-    {
-        // Used for sorting in decending order of
-        public int compare(HighScore a, HighScore b)
-        {
-            return b.getScore() - a.getScore();
-        }
-    }
+
 
 
     public void addChild(HighScore s) {
@@ -103,8 +105,7 @@ public class HighScoreBoard extends Actor implements ScoreObserver {
 
     private void ReadScoreFromFile(){
         try {
-            //inputStream = new FileInputStream(HIGHSCORE_FILE);
-            inputStream = getClass().getClassLoader().getResourceAsStream("configs/highscore.dat");
+            inputStream = getClass().getClassLoader().getResourceAsStream(config.get(String.class,GameContext.GAME_MENU_HIGHSCORE));
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String str;
             while ((str = reader.readLine())!=null) {
@@ -122,7 +123,7 @@ public class HighScoreBoard extends Actor implements ScoreObserver {
     private void WriteScoreToFile(){
         int count = 0;
         try {
-            URL resourceUrl = getClass().getClassLoader().getResource("configs/highscore.dat");
+            URL resourceUrl = getClass().getClassLoader().getResource(config.get(String.class,GameContext.GAME_MENU_HIGHSCORE));
             File file = new File(resourceUrl.toURI());
             outputStream = new FileOutputStream(file);
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));

@@ -39,8 +39,8 @@ public class MainWorld extends World
     private Pointy aim = new Pointy();  
 
     private Musicplayer musicplayer;
-    private Volumeup volumeup = new Volumeup();
-    private Volumedown volumedown = new Volumedown();
+    private Volumeup volumeup;
+    private Volumedown volumedown;
     private HighScoreBoard highScoreBoard = new HighScoreBoard();
     private ManageScore managescore = new ManageScore();
     private PlayState playState;
@@ -68,7 +68,7 @@ public class MainWorld extends World
     // instead of boolean uses integers to meet if statement for main menu. Fixes launch bug where ball launches immediatly after menu.
     private int clickMenu = 2;
     //volume
-    private int volume = 65;
+    private int volume = config.get(Integer.class, GameContext.VOLUME_DEFAULT);
 
     // TODO: Using factory mode to initialize controller
     private Controller controller = new MouseController();
@@ -128,7 +128,8 @@ public class MainWorld extends World
         musicplayer = new Musicplayer(backgroundMusic);
         playState = new PlayState();
         pauseState = new PauseState();
-        //playState.doAction(musicplayer);
+        volumeup = new Volumeup();
+        volumedown = new Volumedown();
 
     }
 

@@ -1,6 +1,7 @@
 package com.loserland.actors;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import com.loserland.configs.*;
+import com.loserland.context.GameContext;
 /**
  * Write a description of class volumedown here.
  * 
@@ -9,14 +10,14 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Volumedown extends Actor
 {
-    private GreenfootImage button = new GreenfootImage("volumedown.png");
-    private int WIDTH = 10;  
-    // height of the score board
-    private int HEIGHT = 10; 
-    private int volume = 65;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    private GreenfootImage button = new GreenfootImage(config.get(GameContext.VOLUME_DOWN_IMG));
+    private int WIDTH = config.get(Integer.class, GameContext.VOLUME_SIZE);
+    private int HEIGHT = config.get(Integer.class, GameContext.VOLUME_SIZE);
+    private int volume = config.get(Integer.class, GameContext.VOLUME_DEFAULT);
     private long lastAdded;
    
-    public void Volumedown() 
+    public Volumedown()
     {
         button.scale(WIDTH,HEIGHT);
         // display on screen
