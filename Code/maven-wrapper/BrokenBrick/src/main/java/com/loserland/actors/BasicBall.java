@@ -6,8 +6,10 @@ import static java.lang.Math.*;
 import com.loserland.worlds.*;
 import com.loserland.context.GameContext;
 import com.loserland.configs.*;
+import java.util.List;
 
-public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
+public class BasicBall extends SmoothMover implements IBall {
+
     private IBall ball = this;
 
     // declare variable, boolean and class
@@ -18,7 +20,8 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
     int smokeTimingCount = 0;
     double ballX = 0;
     double ballY = 0;
-    private GifImage gifImage;
+
+    GifImage gifImage;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
     // Theme settings
@@ -42,12 +45,14 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
         setImage(config.get(GameContext.currentBallImg));
         setBallInitCooridinate(350, 505);
         setSmokeFrequency(2);
-        setPowerUpRate(0.3);
+        setPowerUpRate(1);
     }
     // each act, check for user input, make smoke and check death
     public void act()
     {
-        ball.action();
+        if(getWorld() != null) {
+            ball.action();
+        }
     }
 
     public void action() {
@@ -81,13 +86,15 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
 
     // Set location
     public void setLocation(double changeX, double changeY, double speed) {
-        int newX = getX() + calculateMovement(changeX, speed);
-        int newY = getY() + calculateMovement(changeY, speed);
-        newX = (newX >= getWorld().getWidth())? getWorld().getWidth() - 1 : newX;
-        newX = (newX < 0)? 0 : newX;
-        newY = (newY >= getWorld().getHeight())? getWorld().getHeight() - 1 : newY;
-        newY = (newY < 0)? 0 : newY;
-        setLocation (newX, newY);
+        if(getWorld() != null) {
+            int newX = getX() + calculateMovement(changeX, speed);
+            int newY = getY() + calculateMovement(changeY, speed);
+            newX = (newX >= getWorld().getWidth()) ? getWorld().getWidth() - 1 : newX;
+            newX = (newX < 0) ? 0 : newX;
+            newY = (newY >= getWorld().getHeight()) ? getWorld().getHeight() - 1 : newY;
+            newY = (newY < 0) ? 0 : newY;
+            setLocation(newX, newY);
+        }
     }
 
     // check collision detection with wall
@@ -97,7 +104,7 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
             changeX = -changeX;
             ball.wallCollision();
             // sound effect
-            if(ballHitWallSound != null)
+            if (ballHitWallSound != null)
                 Greenfoot.playSound(ballHitWallSound);
         }
 
@@ -151,7 +158,7 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
                (ball.getCurrentPower() != PowerSquareFactory.PowerType.NORMAL && hitNumber % 2 == 0))
                 powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
             else
-                powerSquare = PowerSquareFactory.makePowerSquare(type);
+                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.PYROBLAST_BALL);
             if(powerSquare != null) {
                 getWorld().addObject(powerSquare, brick.getX(), brick.getY());
                 powerSquare.fall();
@@ -194,7 +201,7 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
         int reflected = getX() - a.getX();
         // caculate angle of reflection based on incoming angle
         // divide by 8 to minimize the rebound magnitude. Not as dramatic/hard.
-        changeX = changeX + (reflected/8);
+        changeX = changeX + (reflected / 8);
         if (changeX > 7) {
             changeX = 7;
         }
@@ -202,7 +209,7 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
             changeX = -7;
         }
         // sound effect
-        if(ballBounceSound != null)
+        if (ballBounceSound != null)
             Greenfoot.playSound(ballBounceSound);
     }
 
@@ -273,6 +280,10 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
         }
     }
 
+    public <A> List<A> getObjectsInRange(int radius, Class<A> cls) {
+        return super.getObjectsInRange(radius, cls);
+    }
+
     public void setBallHitWallSound(String fileName) {
         ballHitWallSound = fileName;
     }
@@ -336,13 +347,5 @@ public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
 
     public void remove() {
         getWorld().removeObject(this);
-    }
-
-    public void update(int score){
-
-    }
-
-    public String ballUIChange(int score){
-       return "";
     }
 }

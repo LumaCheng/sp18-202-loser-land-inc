@@ -107,7 +107,7 @@ public class MainWorld extends World
         fader.fadeBackIn();
 
         controller.addObserver(aim);
-
+        controller.addObserver(paddle);
 
     }
 
@@ -259,7 +259,7 @@ public class MainWorld extends World
         // if ball has launched, move paddle according to user input
         if (start)
         {
-            controller.addObserver(paddle);
+//            controller.addObserver(paddle);
         }
 
         // boolean does NOT work. Since the click from the menu will meet this statement. As a result, ball launches immediatly after menu screen.

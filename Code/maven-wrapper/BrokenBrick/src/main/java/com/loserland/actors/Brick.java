@@ -107,6 +107,11 @@ public class Brick extends Actor
             }
         }
     }
+
+    public void killEffect() {
+        hit = 6;
+        effect();
+    }
     // collision dectection for bricks
     public boolean checkHit()
     {
