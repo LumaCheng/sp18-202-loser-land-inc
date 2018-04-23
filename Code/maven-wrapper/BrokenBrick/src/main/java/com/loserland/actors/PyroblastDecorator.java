@@ -51,7 +51,7 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
     public void brickCollision(Brick brick) {
         int h = explodeImage.getHeight();
         int w = explodeImage.getWidth();
-        int radius = h > w ? h : w;
+        int radius = h > w ? h / 2 : w / 2;
         List<Brick> brickList = basicBall.getObjectsInRange(radius, Brick.class);
 
         for(Brick b:brickList) {

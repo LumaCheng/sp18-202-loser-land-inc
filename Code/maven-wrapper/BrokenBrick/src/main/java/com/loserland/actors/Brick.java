@@ -109,8 +109,8 @@ public class Brick extends Actor
     }
 
     public void killEffect() {
-        hit = 6;
-        effect();
+        while(getWorld() != null)
+            effect();
     }
     // collision dectection for bricks
     public boolean checkHit()
