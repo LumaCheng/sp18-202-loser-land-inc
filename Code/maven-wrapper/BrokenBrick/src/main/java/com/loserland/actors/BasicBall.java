@@ -45,7 +45,7 @@ public class BasicBall extends SmoothMover implements IBall {
         setImage(config.get(GameContext.currentBallImg));
         setBallInitCooridinate(350, 505);
         setSmokeFrequency(2);
-        setPowerUpRate(1);
+        setPowerUpRate(0.3);
     }
     // each act, check for user input, make smoke and check death
     public void act()
@@ -158,7 +158,7 @@ public class BasicBall extends SmoothMover implements IBall {
                (ball.getCurrentPower() != PowerSquareFactory.PowerType.NORMAL && hitNumber % 2 == 0))
                 powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
             else
-                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.PYROBLAST_BALL);
+                powerSquare = PowerSquareFactory.makePowerSquare(type);
             if(powerSquare != null) {
                 getWorld().addObject(powerSquare, brick.getX(), brick.getY());
                 powerSquare.fall();
