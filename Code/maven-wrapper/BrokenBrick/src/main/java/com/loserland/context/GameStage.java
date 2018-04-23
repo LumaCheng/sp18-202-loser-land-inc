@@ -1,7 +1,6 @@
 package com.loserland.context;
 
-import com.loserland.actors.Brick;
-import greenfoot.Actor;
+
 
 import java.util.ArrayList;
 import java.util.List;

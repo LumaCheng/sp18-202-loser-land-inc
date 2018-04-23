@@ -5,6 +5,9 @@ public class GameBrick {
     private int x;
     private int y;
 
+    public GameBrick() {
+    }
+
     public GameBrick(int type, int x, int y){
         this.type = type;
         this.x = x;
