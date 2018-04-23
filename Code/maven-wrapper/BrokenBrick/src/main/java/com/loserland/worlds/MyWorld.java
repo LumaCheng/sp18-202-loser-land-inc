@@ -3,22 +3,29 @@ import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
-import com.loserland.context.GameStageLoader;
+import com.loserland.context.*;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.*;
 import greenfoot.MouseInfo;
 
 
-
 /**
- * Write a description of class com.loserland.MainWorld here.
+ * Write a description of class MyWorld here.
  *
  * @author Jiaqi Qin
  * @version 2018-04-13
  */
-public class MyWorld extends World {
 
+public class MyWorld extends World
+{
+    // Declare variables, booleans and classes.
+    private final int BRICKWIDTH = 45;
+    private final int BRICKHEIGHT = 20;
+    private final int VOFFSET = 12;
+    private final int HOFFSET = 12;
+    private Paddle paddle;
+    private Fader fader;
     private CoverPage menu;
     private GameOver gameOver;
     private MainWorld mainWorld;
@@ -37,9 +44,8 @@ public class MyWorld extends World {
     static {
         configFactory = ConfigFactory.getInstance();
         config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
-    }
 
-    GameStageLoader gameStageLoader;
+    }
 
     /**
      * Constructor for objects of class com.loserland.MainWorld.
@@ -52,10 +58,15 @@ public class MyWorld extends World {
         setPaintOrder(MenuOptions.class, CoverPage.class, GameOver.class);
 
         //initialize UI components and put place
-        //initUI();
         initMenu();
 
+        initMusic();
+
+        // clears screen instantly to show level 1
+//        fader.fadeBackIn();
     }
+
+
 
     private void initMusic() {
         backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
@@ -82,19 +93,9 @@ public class MyWorld extends World {
         addObject(gameOver, 350, 260);
     }
 
-    private void refreshMainWorld(){
-        mainWorld = new MainWorld();
-        mainWorld.setMyWorld(this);
-        initMusic();
-    }
-
-
     // each act check for death, mouse input and whether to create new level
     public void act() {
-        //checkLevel();
         checkMouse();
-        //checkLives();
-
         controller.polling();
     }
 
@@ -138,12 +139,19 @@ public class MyWorld extends World {
         }
 
         if (Greenfoot.mouseClicked(gameOver)) {
-            if(!ifMainMenu) {
+            if (!ifMainMenu) {
                 addObject(menu, 350, 260);
-                addObject(startGame,350,360);
+                addObject(startGame, 350, 360);
                 ifMainMenu = true;
                 //refreshMainWorld();
             }
         }
     }
+
+    public void replaceBall()
+    {
+        // call method from paddle to create new ball Actor into world
+        paddle.newBall();
+    }
+
 }

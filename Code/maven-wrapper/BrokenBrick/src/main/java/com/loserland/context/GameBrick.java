@@ -1,9 +1,14 @@
 package com.loserland.context;
 
-public class GameBrick {
+import java.io.Serializable;
+
+public class GameBrick implements Serializable {
     private int type;
     private int x;
     private int y;
+
+    public GameBrick() {
+    }
 
     public GameBrick(int type, int x, int y){
         this.type = type;
