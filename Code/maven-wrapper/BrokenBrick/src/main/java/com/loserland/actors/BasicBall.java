@@ -4,8 +4,10 @@ import com.loserland.utils.GifImage;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import static java.lang.Math.*;
 import com.loserland.worlds.*;
+import com.loserland.context.GameContext;
+import com.loserland.configs.*;
 
-public class BasicBall extends SmoothMover implements IBall {
+public class BasicBall extends SmoothMover implements IBall, ScoreObserver {
     private IBall ball = this;
 
     // declare variable, boolean and class
@@ -17,6 +19,7 @@ public class BasicBall extends SmoothMover implements IBall {
     double ballX = 0;
     double ballY = 0;
     private GifImage gifImage;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
     // Theme settings
     private String ballHitWallSound = "";
@@ -36,7 +39,7 @@ public class BasicBall extends SmoothMover implements IBall {
         setBallBounceSound("baseball.wav");
         setBallHitBrickSound("laser.wav");
         setBallHitWallSound("baseball.wav");
-        setImage("ball3.png");
+        setImage(config.get(GameContext.currentBallImg));
         setBallInitCooridinate(350, 505);
         setSmokeFrequency(2);
         setPowerUpRate(0.3);
@@ -54,6 +57,7 @@ public class BasicBall extends SmoothMover implements IBall {
             ball.moveBall();
             ball.checkBallMiss();
             ball.makeSmoke();
+            setImage(config.get(GameContext.currentBallImg));
         }
     }
     private int calculateMovement(double movement, double speed) {
@@ -168,7 +172,7 @@ public class BasicBall extends SmoothMover implements IBall {
     private void ballDead()
     {
         // reset to original position. Updates status to world
-        ((MainWorld)getWorld()).getStartAgain();
+        ((MainWorld) getWorld()).getStartAgain();
         ((MainWorld) getWorld()).takeLife();
     }
 
@@ -298,7 +302,7 @@ public class BasicBall extends SmoothMover implements IBall {
             setBallBounceSound("baseball.wav");
             setBallHitBrickSound("laser.wav");
             setBallHitWallSound("baseball.wav");
-            setImage("ball.png");
+            setImage(config.get(GameContext.currentBallImg));
             setSmokeFrequency(2);
         }
         this.ball = ball;
@@ -332,5 +336,13 @@ public class BasicBall extends SmoothMover implements IBall {
 
     public void remove() {
         getWorld().removeObject(this);
+    }
+
+    public void update(int score){
+
+    }
+
+    public String ballUIChange(int score){
+       return "";
     }
 }

@@ -76,7 +76,7 @@ public class MyWorld extends World {
         menu.setImage(config.get(GameContext.MENU_IMG));
         addObject (menu, 350,260);
         initMusic();
-        gameOverSound();
+        //gameOverSound();
         // Display GameOver screen
         gameOver = new GameOver();
         addObject(gameOver, 350, 260);

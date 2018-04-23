@@ -26,7 +26,11 @@ public class ManageScore implements ScoreSubject {
     @Override
     public void notifyObservers(int scores) {
         for (ScoreObserver observer : observers){
-            observer.update(scores);
+
+                observer.update(scores);
+
+
+
         }
     }
 

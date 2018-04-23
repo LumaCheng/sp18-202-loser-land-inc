@@ -31,6 +31,7 @@ public class MainWorld extends World
     private Paddle paddle;
     private Fader fader;
     private MyWorld myWorld;
+    private ContextController contextController = new ContextController();
 
     private ScoreBoard scoreBoard=new ScoreBoard();
 
@@ -97,9 +98,11 @@ public class MainWorld extends World
 
         //initialize UI components and put place
         initMusic();
+
         initUI();
 
-        initScoreOberver();
+        initScoreObserver();
+
         // clears screen instantly to show level 1
         fader.fadeBackIn();
 
@@ -108,10 +111,12 @@ public class MainWorld extends World
 
     }
 
-    private void initScoreOberver(){
+    private void initScoreObserver(){
 
         managescore.attach(highScoreBoard);
         managescore.attach(scoreBoard);
+        managescore.attach(contextController);
+
 
     }
 
@@ -161,6 +166,7 @@ public class MainWorld extends World
 //        faceList.add("face4.png");
 //        faceList.add("face5.png");
         faces = faceList.size();
+        contextController.setMainWorld(this);
     }
 
     // each act check for death, mouse input and whether to create new level
@@ -430,9 +436,7 @@ public class MainWorld extends World
 //            addObject( new Brick(3), 546, 118);
 //            addObject( new Brick(3), 619, 119);
 //            addObject( new Brick(3), 505, 67);
-//
 //        }
-
     }
 
     // launching ball to commence game

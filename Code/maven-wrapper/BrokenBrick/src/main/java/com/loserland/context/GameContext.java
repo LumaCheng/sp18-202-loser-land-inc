@@ -16,6 +16,8 @@ public class GameContext {
 
     public static final String MENU_IMG = "page.menu.image";
 
+    public static String currentBallImg = "ball.image";
+
     public static final String GAME_BACKGROUND_MUSIC = "game.background.music";
     public static final String GAME_MENU_HIGHSCORE = "configs/highscore.dat";
 

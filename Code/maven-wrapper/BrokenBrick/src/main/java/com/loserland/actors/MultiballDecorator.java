@@ -10,7 +10,11 @@ public class MultiballDecorator implements IBall, IBallDecorator {
 
     @Override
     public void action() {
-        basicBall.action();
+        if (!basicBall.onPaddle) {
+            basicBall.moveBall();
+            basicBall.checkBallMiss();
+            basicBall.makeSmoke();
+        }
         basicBall.setRotation(basicBall.getRotation()+changeRotation);
     }
 
