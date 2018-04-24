@@ -30,8 +30,8 @@ public class GameContext {
     public static String FIREBALL = "fireBall.image";
     public static String FIRE_SMOKE = "fireSmoke.image";
     public static String EXPLOSION_IMG = "explosion.image";
-    public static String PYTOBLAST_BALL = "pyroblastBall.image";
-    public static String PYTOBLAST_SMOKE = "pyroblastSmoke.image";
+    public static String PYROBLAST_BALL = "pyroblastBall.image";
+    public static String PYROBLAST_SMOKE = "pyroblastSmoke.image";
 
     public static String BRICK_LV1 = "brick.level1.image";
     public static String BRICK_LV2 = "brick.level2.image";

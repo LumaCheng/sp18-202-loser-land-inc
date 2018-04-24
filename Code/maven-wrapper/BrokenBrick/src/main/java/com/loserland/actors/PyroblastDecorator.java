@@ -45,7 +45,7 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
         if(basicBall.getWorld() != null) {
             if (basicBall.smokeTimingCount % basicBall.smokeFrequency == 0){
                 Smoke smoke = new Smoke();
-                smoke.setImage(config.get(GameContext.PYTOBLAST_SMOKE));
+                smoke.setImage(config.get(GameContext.PYROBLAST_SMOKE));
                 basicBall.getWorld().addObject(smoke, basicBall.getX(), basicBall.getY());
             }
         }
@@ -88,7 +88,7 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
     public void assemble(IBall basicBall) {
         this.basicBall = (BasicBall)basicBall;
         this.basicBall.setDecorator(this);
-        this.basicBall.setImage(config.get(GameContext.PYTOBLAST_BALL));
+        this.basicBall.setImage(config.get(GameContext.PYROBLAST_BALL));
     }
 
     @Override
