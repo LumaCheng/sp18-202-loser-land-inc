@@ -45,8 +45,8 @@ public class MainWorld extends World implements IGameProgress
     private PlayState playState;
     private PauseState pauseState;
 
-    public static List<String> faceList = new ArrayList<>();
-    private int faces = 0;
+//    public static List<String> faceList = new ArrayList<>();
+//    private int faces = 0;
 
     // a total of 4 lives per game
     private int lives = 4;
@@ -162,13 +162,13 @@ public class MainWorld extends World implements IGameProgress
         addObject( live2, 69, 510);
         addObject( live3, 115, 510);
 
-//        faceList = config.get(List.class,GameContext.MULTIBALL_IMAGE);
-        faceList.add("face1.png");
-        faceList.add("face2.png");
-        faceList.add("face3.png");
-//        faceList.add("face4.png");
-//        faceList.add("face5.png");
-        faces = faceList.size();
+//        faceList = config.getList(GameContext.MULTIBALL_IMAGE);
+////        faceList.add("face1.png");
+////        faceList.add("face2.png");
+////        faceList.add("face3.png");
+////        faceList.add("face4.png");
+////        faceList.add("face5.png");
+//        faces = faceList.size();
         contextController.setMainWorld(this);
     }
 

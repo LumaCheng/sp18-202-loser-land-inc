@@ -1,12 +1,20 @@
 package com.loserland.actors;
 
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import com.loserland.worlds.MainWorld;
 import greenfoot.Greenfoot;
 
+import java.util.List;
+
 public class MultiballPower extends PowerSquare {
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    List<String> multiballImg = config.getList(GameContext.MULTIBALL_IMAGE);
+
     @Override
     void launchPower() {
-        int size = MainWorld.faceList.size();
+        int size = multiballImg.size();
         BasicBall origBall = getWorld().getObjects(BasicBall.class).get(0);
         for(int i = 0; i < size; i++) {
             BasicBall ball;
@@ -15,7 +23,7 @@ public class MultiballPower extends PowerSquare {
             } else {
                 ball = new BasicBall();
             }
-            ball.setImage(MainWorld.faceList.get(i));
+            ball.setImage(multiballImg.get(i));
             int randomX = Greenfoot.getRandomNumber(10) - 5;
             int randomY = Greenfoot.getRandomNumber(10) - 5;
             int newX = origBall.getX()+randomX;
