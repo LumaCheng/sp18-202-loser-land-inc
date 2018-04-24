@@ -67,7 +67,7 @@ public class MainWorld extends World
     private boolean played = false;
     // instead of boolean uses integers to meet if statement for main menu. Fixes launch bug where ball launches immediatly after menu.
     private int clickMenu = 2;
-    //volume
+    //VOLUME
     private int volume = 65;
 
     // TODO: Using factory mode to initialize controller
@@ -160,9 +160,10 @@ public class MainWorld extends World
         addObject( live2, 69, 510);
         addObject( live3, 115, 510);
 
+//        faceList = config.get(List.class,GameContext.MULTIBALL_IMAGE);
         faceList.add("face1.png");
         faceList.add("face2.png");
-//        faceList.add("face3.png");
+        faceList.add("face3.png");
 //        faceList.add("face4.png");
 //        faceList.add("face5.png");
         faces = faceList.size();

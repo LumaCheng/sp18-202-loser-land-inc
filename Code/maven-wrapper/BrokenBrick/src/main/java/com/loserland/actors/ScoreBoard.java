@@ -1,5 +1,8 @@
 package com.loserland.actors;
 
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
 // allow to change color
 
@@ -7,12 +10,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
 
 import java.awt.Graphics;
 public class ScoreBoard extends Actor implements ScoreObserver
-{  
+{
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     // declare instance variables
     // width of the score board
-    private int WIDTH = 85;  
+    private int WIDTH = Integer.parseInt(config.get(GameContext.SCOREBOARD_WIDTH));
     // height of the score board
-    private int HEIGHT = 20;
+    private int HEIGHT = Integer.parseInt(config.get(GameContext.SCOREBOARD_HEIGHT));
     int score;
 
     // The constructor composes the image for the com.loserland.actors.ScoreBoard.

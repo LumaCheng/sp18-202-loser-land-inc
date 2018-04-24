@@ -5,6 +5,9 @@ import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
+import java.util.Iterator;
+import java.util.Properties;
+
 public abstract class AbstractConfig implements Config {
 
     protected FileBasedConfigurationBuilder builder;

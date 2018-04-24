@@ -1,8 +1,11 @@
 package com.loserland.actors;
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
- * Write a description of class volume here.
+ * Write a description of class VOLUME here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
@@ -10,15 +13,15 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 public class Volumeup extends Actor
 {
     /**
-     * Act - do whatever the volume wants to do. This method is called whenever
+     * Act - do whatever the VOLUME wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
-    
-     private GreenfootImage button = new GreenfootImage("volumeup.png");
-     private int WIDTH = 10;  
-    // height of the score board
-    private int HEIGHT = 10; 
-    private int volume = 65;
+
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    private GreenfootImage button = new GreenfootImage(config.get(GameContext.VOL_UP_IMG));
+    private int WIDTH = 10;
+    private int HEIGHT = 10;
+    private int volume = Integer.parseInt(config.get(GameContext.VOLUME));
     long lastAdded;
     public void Volumeup() 
     {
@@ -43,8 +46,8 @@ public class Volumeup extends Actor
 
     }
     
-       // updates the volume display
-    public void update(int v) 
+       // updates the VOLUME display
+    public void update(int v)
     {      
         volume = v;
     }

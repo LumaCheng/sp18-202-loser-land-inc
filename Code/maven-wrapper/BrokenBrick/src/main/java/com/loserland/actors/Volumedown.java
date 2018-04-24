@@ -1,4 +1,7 @@
 package com.loserland.actors;
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
@@ -9,11 +12,11 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  */
 public class Volumedown extends Actor
 {
-    private GreenfootImage button = new GreenfootImage("volumedown.png");
-    private int WIDTH = 10;  
-    // height of the score board
-    private int HEIGHT = 10; 
-    private int volume = 65;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    private GreenfootImage button = new GreenfootImage(config.get(GameContext.VOL_DOWN_IMG));
+    private int WIDTH = 10;
+    private int HEIGHT = 10;
+    private int volume = Integer.parseInt(config.get(GameContext.VOLUME));
     private long lastAdded;
    
     public void Volumedown() 
@@ -30,7 +33,6 @@ public class Volumedown extends Actor
             GreenfootImage show_volume = new GreenfootImage(""+volume, 20, Color.BLACK, new Color(0, 0, 0, 0));
             lastAdded = System.currentTimeMillis();
             setImage(show_volume);
-
         }
         
         if (System.currentTimeMillis() >= lastAdded + 500){
@@ -39,7 +41,7 @@ public class Volumedown extends Actor
 
     }
     
-           // updates the volume display
+    // updates the VOLUME display
     public void update(int v) 
     {      
         volume = v;

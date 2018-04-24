@@ -1,4 +1,7 @@
 package com.loserland.actors;
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
@@ -11,11 +14,10 @@ public class Musicplayer extends Actor
 {
 
     GreenfootSound backgroundMusic;
-    private GreenfootImage button = new GreenfootImage("pause.png");
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    private GreenfootImage button = new GreenfootImage(config.get(GameContext.PAUSE_IMG));
 
-    // width of the score board
-    private int WIDTH = 30;  
-    // height of the score board
+    private int WIDTH = 30;
     private int HEIGHT = 30;
     private State state;
 

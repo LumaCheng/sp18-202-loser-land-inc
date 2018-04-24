@@ -39,14 +39,20 @@ public class BasicBall extends SmoothMover implements IBall {
      */
 
     public BasicBall() {
-        setBallBounceSound("baseball.wav");
-        setBallHitBrickSound("laser.wav");
-        setBallHitWallSound("baseball.wav");
-        setImage(config.get(GameContext.currentBallImg));
-        setBallInitCooridinate(350, 505);
-        setSmokeFrequency(2);
-        setPowerUpRate(0.3);
+        setParam();
     }
+
+    private void setParam() {
+        setBallBounceSound(config.get(GameContext.BALL_BOUNCE_SND));
+        setBallHitBrickSound(config.get(GameContext.BALL_HIT_BRICK_SND));
+        setBallHitWallSound(config.get(GameContext.BALL_HIT_WALL_SND));
+        setImage(config.get(GameContext.currentBallImg));
+        setBallInitCooridinate(Integer.parseInt(config.get(GameContext.BALL_INIT_X)),
+                Integer.parseInt(config.get(GameContext.BALL_INIT_Y)));
+        setSmokeFrequency(Integer.parseInt(config.get(GameContext.BALL_SMOKE_FREQ)));
+        setPowerUpRate(Double.parseDouble(config.get(GameContext.BALL_POWER_RATE)));
+    }
+
     // each act, check for user input, make smoke and check death
     public void act()
     {
@@ -310,11 +316,7 @@ public class BasicBall extends SmoothMover implements IBall {
 
     public void setDecorator(IBall ball) {
         if(ball == this) {
-            setBallBounceSound("baseball.wav");
-            setBallHitBrickSound("laser.wav");
-            setBallHitWallSound("baseball.wav");
-            setImage(config.get(GameContext.currentBallImg));
-            setSmokeFrequency(2);
+            setParam();
         }
         this.ball = ball;
     }
