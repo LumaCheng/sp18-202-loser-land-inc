@@ -6,6 +6,7 @@ import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
 public abstract class AbstractConfig implements Config {
@@ -33,6 +34,22 @@ public abstract class AbstractConfig implements Config {
             e.printStackTrace();
         }
         return value;
+    }
+
+    @Override
+    public List<String> getList(String key) {
+        return getList(String.class, key);
+    }
+
+    @Override
+    public <T> List<T> getList(Class<T> cls, String key) {
+        List<T> list = null;
+        try {
+            list = getConfiguration().getList(cls, key);
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     @Override
