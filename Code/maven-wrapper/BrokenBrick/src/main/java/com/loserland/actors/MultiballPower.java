@@ -24,8 +24,8 @@ public class MultiballPower extends PowerSquare {
                 ball = new BasicBall();
             }
             ball.setImage(multiballImg.get(i));
-            int randomX = Greenfoot.getRandomNumber(10) - 5;
-            int randomY = Greenfoot.getRandomNumber(10) - 5;
+            int randomX = Greenfoot.getRandomNumber(100) - 50;
+            int randomY = Greenfoot.getRandomNumber(100) - 50;
             int newX = origBall.getX()+randomX;
             int newY = origBall.getY()+randomY;
 
@@ -41,8 +41,8 @@ public class MultiballPower extends PowerSquare {
             if(i != 0) {
                 getWorld().addObject(ball, newX, newY);
                 if(!ball.onPaddle)
-                    ball.launch(Greenfoot.getRandomNumber(1000)-500,
-                                Greenfoot.getRandomNumber(1000)-500);
+                    ball.launch(Greenfoot.getRandomNumber(2000)-1000,
+                                Greenfoot.getRandomNumber(2000)-1000);
             }
         }
     }

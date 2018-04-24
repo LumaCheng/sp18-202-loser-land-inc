@@ -1,8 +1,10 @@
 package com.loserland.actors;
 
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import com.loserland.worlds.MainWorld;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 
 public class MultiballDecorator implements IBall, IBallDecorator {
     private BasicBall basicBall;
@@ -19,8 +21,40 @@ public class MultiballDecorator implements IBall, IBallDecorator {
     }
 
     @Override
-    public void moveBall() {
-        basicBall.moveBall();
+    public void moveBall()
+    {
+        if(!basicBall.onPaddle) {
+            basicBall.setLocation(basicBall.changeX, basicBall.changeY, basicBall.speed);
+
+            // Collision detection with paddle, brick and world edge
+            basicBall.checkPaddleCollision();
+            basicBall.checkWallCollision();
+            basicBall.checkBrickCollision();
+            checkBallCollision();
+        }
+    }
+
+    private void checkBallCollision() {
+        BasicBall ball = (BasicBall)basicBall.getOneIntersectingObject(BasicBall.class);
+        if ( ball != null ) {
+            if (basicBall.getY() > ball.getY() || basicBall.getY() < ball.getY()) {
+                basicBall.changeY = -basicBall.changeY;
+                ball.changeY = -ball.changeY;
+                // Fixes multi-kill bug
+                basicBall.setLocation(basicBall.getX() + basicBall.changeX + Greenfoot.getRandomNumber(10)-5,
+                        basicBall.getY() + basicBall.changeY + Greenfoot.getRandomNumber(10)-5);
+            }
+            else {
+                // moves ball in opposite direction after collision
+                basicBall.changeX = -basicBall.changeX;
+                ball.changeX = -ball.changeX;
+            }
+            // sound effect
+            if(basicBall.ballHitWallSound != null)
+                Greenfoot.playSound(basicBall.ballHitWallSound);
+            ball.speed+=0.001;
+            basicBall.speed+=0.001;
+        }
     }
 
     @Override

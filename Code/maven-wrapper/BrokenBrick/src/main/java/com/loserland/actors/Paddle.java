@@ -84,8 +84,6 @@ public class Paddle extends Actor implements ControllerObserver {
     {
         BasicBall ball = new BasicBall();
         haveBall = true;
-//        FireBallDecorator fireball = new FireBallDecorator();
-//        fireball.assemble(ball);
         getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
     }
 

@@ -25,10 +25,10 @@ public class BasicBall extends SmoothMover implements IBall {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
     // Theme settings
-    private String ballHitWallSound = "";
-    private String ballHitBrickSound = "";
-    private String ballBounceSound = "";
-    private double powerUpRate = 0.0;
+    String ballHitWallSound = "";
+    String ballHitBrickSound = "";
+    String ballBounceSound = "";
+    double powerUpRate = 0.0;
 
     // set true since ball is on paddle at begining of level
     boolean onPaddle = true;
@@ -108,6 +108,7 @@ public class BasicBall extends SmoothMover implements IBall {
     {
         if (getX() <= 0 || getX() >= getWorld().getWidth() - 1) {
             changeX = -changeX;
+            changeY += -changeY*0.1;
             ball.wallCollision();
             // sound effect
             if (ballHitWallSound != null)
@@ -117,6 +118,7 @@ public class BasicBall extends SmoothMover implements IBall {
         // Makes ball move in opposite direction after collision
         if (getY() <= 0) {
             changeY = -changeY;
+            changeX += -changeX*0.1;
         }
     }
 
@@ -144,6 +146,7 @@ public class BasicBall extends SmoothMover implements IBall {
         else {
             // moves ball in opposite direction after collision
             changeX = -changeX;
+            changeY += -changeY*0.1;
         }
         // changes brick appearance accordingly
         brick.effect();
@@ -288,6 +291,9 @@ public class BasicBall extends SmoothMover implements IBall {
 
     public <A> List<A> getObjectsInRange(int radius, Class<A> cls) {
         return super.getObjectsInRange(radius, cls);
+    }
+    public Actor getOneIntersectingObject(Class<?> cls) {
+        return super.getOneIntersectingObject(cls);
     }
 
     public void setBallHitWallSound(String fileName) {
