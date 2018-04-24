@@ -162,9 +162,10 @@ public class MainWorld extends World implements IGameProgress
         addObject( live2, 69, 510);
         addObject( live3, 115, 510);
 
+//        faceList = config.get(List.class,GameContext.MULTIBALL_IMAGE);
         faceList.add("face1.png");
         faceList.add("face2.png");
-//        faceList.add("face3.png");
+        faceList.add("face3.png");
 //        faceList.add("face4.png");
 //        faceList.add("face5.png");
         faces = faceList.size();

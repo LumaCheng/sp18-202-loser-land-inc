@@ -1,5 +1,8 @@
 package com.loserland.actors;
 
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import com.loserland.utils.GifImage;
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
@@ -9,9 +12,10 @@ import java.util.List;
 public class PyroblastDecorator implements IBall, IBallDecorator{
     private BasicBall basicBall;
     private GreenfootImage explodeImage;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
     public PyroblastDecorator() {
-        explodeImage = new GifImage("explosion.gif").getImages().get(0);
+        explodeImage = new GifImage(config.get(GameContext.EXPLOSION_IMG)).getImages().get(0);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
         if(basicBall.getWorld() != null) {
             if (basicBall.smokeTimingCount % basicBall.smokeFrequency == 0){
                 Smoke smoke = new Smoke();
-                smoke.setImage("pyroblast_smoke.png");
+                smoke.setImage(config.get(GameContext.PYTOBLAST_BALL));
                 basicBall.getWorld().addObject(smoke, basicBall.getX(), basicBall.getY());
             }
         }
@@ -51,7 +55,7 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
     public void brickCollision(Brick brick) {
         int h = explodeImage.getHeight();
         int w = explodeImage.getWidth();
-        int radius = h > w ? h : w;
+        int radius = h > w ? h / 2 : w / 2;
         List<Brick> brickList = basicBall.getObjectsInRange(radius, Brick.class);
 
         for(Brick b:brickList) {
@@ -84,7 +88,7 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
     public void assemble(IBall basicBall) {
         this.basicBall = (BasicBall)basicBall;
         this.basicBall.setDecorator(this);
-        this.basicBall.setImage("pyroblast.png");
+        this.basicBall.setImage(config.get(GameContext.PYTOBLAST_BALL));
     }
 
     @Override

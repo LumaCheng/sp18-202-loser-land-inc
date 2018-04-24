@@ -1,7 +1,6 @@
 package com.loserland.actors;
 
 import com.loserland.worlds.MainWorld;
-import com.loserland.worlds.MyWorld;
 import greenfoot.Greenfoot;
 
 public class MultiballPower extends PowerSquare {
@@ -17,8 +16,8 @@ public class MultiballPower extends PowerSquare {
                 ball = new BasicBall();
             }
             ball.setImage(MainWorld.faceList.get(i));
-            int randomX = Greenfoot.getRandomNumber(4) - 2;
-            int randomY = Greenfoot.getRandomNumber(5) - 2;
+            int randomX = Greenfoot.getRandomNumber(10) - 5;
+            int randomY = Greenfoot.getRandomNumber(10) - 5;
             int newX = origBall.getX()+randomX;
             int newY = origBall.getY()+randomY;
 
@@ -34,7 +33,8 @@ public class MultiballPower extends PowerSquare {
             if(i != 0) {
                 getWorld().addObject(ball, newX, newY);
                 if(!ball.onPaddle)
-                    ball.launch(newX, newY);
+                    ball.launch(Greenfoot.getRandomNumber(1000)-500,
+                                Greenfoot.getRandomNumber(1000)-500);
             }
         }
     }

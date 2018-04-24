@@ -15,9 +15,11 @@ public class Musicplayer extends Actor
 
     GreenfootSound backgroundMusic;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+
     private GreenfootImage button = new GreenfootImage(config.get(GameContext.PLAYER_PAUSE_IMG));
     private int WIDTH = config.get(Integer.class, GameContext.PLAYER_SIZE);
     private int HEIGHT = config.get(Integer.class, GameContext.PLAYER_SIZE);
+
     private State state;
 
 
