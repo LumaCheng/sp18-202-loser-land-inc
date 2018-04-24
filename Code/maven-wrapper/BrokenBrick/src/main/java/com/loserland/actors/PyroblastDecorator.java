@@ -45,7 +45,7 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
         if(basicBall.getWorld() != null) {
             if (basicBall.smokeTimingCount % basicBall.smokeFrequency == 0){
                 Smoke smoke = new Smoke();
-                smoke.setImage(config.get(GameContext.PYTOBLAST_BALL));
+                smoke.setImage(config.get(GameContext.PYTOBLAST_SMOKE));
                 basicBall.getWorld().addObject(smoke, basicBall.getX(), basicBall.getY());
             }
         }
