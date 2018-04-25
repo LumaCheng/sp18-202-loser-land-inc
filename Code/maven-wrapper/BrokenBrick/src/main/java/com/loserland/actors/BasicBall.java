@@ -137,7 +137,9 @@ public class BasicBall extends SmoothMover implements IBall {
     }
 
     public void brickCollision(Brick brick){
-        if (getY() > brick.getY() || getY() < brick.getY()) {
+        int brickUpperBound = brick.getY() - brick.getImage().getHeight() / 2;
+        int brickLowerBound = brick.getY() + brick.getImage().getHeight() / 2;
+        if (getY() > brickLowerBound || getY() < brickUpperBound) {
             changeY = -changeY;
             // Fixes multi-kill bug
             setLocation(getX(),getY() + 1);
@@ -146,7 +148,6 @@ public class BasicBall extends SmoothMover implements IBall {
         else {
             // moves ball in opposite direction after collision
             changeX = -changeX;
-            changeY += -changeY*0.1;
         }
         // changes brick appearance accordingly
         brick.effect();

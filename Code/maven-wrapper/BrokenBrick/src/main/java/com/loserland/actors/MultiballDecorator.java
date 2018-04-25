@@ -49,9 +49,6 @@ public class MultiballDecorator implements IBall, IBallDecorator {
                 basicBall.changeX = -basicBall.changeX;
                 ball.changeX = -ball.changeX;
             }
-            // sound effect
-            if(basicBall.ballHitWallSound != null)
-                Greenfoot.playSound(basicBall.ballHitWallSound);
             ball.speed+=0.001;
             basicBall.speed+=0.001;
         }
