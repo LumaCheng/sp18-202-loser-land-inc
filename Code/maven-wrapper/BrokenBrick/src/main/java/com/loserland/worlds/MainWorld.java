@@ -30,6 +30,7 @@ public class MainWorld extends World implements IGameProgress
     private Paddle paddle;
     private Fader fader;
     private MyWorld myWorld;
+    private PauseWorld pauseWorld;
     private ContextController contextController = new ContextController();
 
     private ScoreBoard scoreBoard=new ScoreBoard();
@@ -44,6 +45,7 @@ public class MainWorld extends World implements IGameProgress
     private ManageScore managescore = new ManageScore();
     private PlayState playState;
     private PauseState pauseState;
+    private Exit exit;
 
 //    public static List<String> faceList = new ArrayList<>();
 //    private int faces = 0;
@@ -93,7 +95,7 @@ public class MainWorld extends World implements IGameProgress
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
+        setPaintOrder(Exit.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
 
         //initialize UI components and put place
         initMusic();
@@ -152,6 +154,8 @@ public class MainWorld extends World implements IGameProgress
         fader = new Fader();
         addObject (fader, 400, 300);
         // import menu
+        exit = new Exit();
+        addObject(exit, 100, 100);
 
         addObject(musicplayer,680,460);
         addObject(volumeup,680,430);
@@ -185,6 +189,10 @@ public class MainWorld extends World implements IGameProgress
     public void setMyWorld(MyWorld myWorld){
         this.myWorld = myWorld;
     }
+    public void setPauseWorld(PauseWorld pauseWorld) { this.pauseWorld = pauseWorld;}
+    public void stopMusic(){
+        pauseState.doAction(musicplayer);
+    }
 
     // checks if player looses life
     public  void checkLives()
@@ -206,6 +214,7 @@ public class MainWorld extends World implements IGameProgress
             // play game over sound
             gameOverSound();
             // Display GameOver screen
+            myWorld.setGameOver();
             Greenfoot.setWorld(myWorld);
             addObject( live1, 23, 510);
             addObject( live2, 69, 510);
@@ -265,6 +274,9 @@ public class MainWorld extends World implements IGameProgress
         if (start)
         {
 //            controller.addObserver(paddle);
+        }
+        if(Greenfoot.mouseClicked(exit)){
+            Greenfoot.setWorld(pauseWorld);
         }
 
         // boolean does NOT work. Since the click from the menu will meet this statement. As a result, ball launches immediatly after menu screen.

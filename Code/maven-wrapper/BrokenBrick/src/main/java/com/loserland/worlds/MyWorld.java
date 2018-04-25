@@ -29,6 +29,7 @@ public class MyWorld extends World
     private CoverPage menu;
     private GameOver gameOver;
     private MainWorld mainWorld;
+    private PauseWorld pauseWorld;
     private MenuOptions startGame;
     private boolean ifMainMenu = true;
 
@@ -60,7 +61,7 @@ public class MyWorld extends World
         //initialize UI components and put place
         initMenu();
 
-        initMusic();
+        //initMusic();
 
         // clears screen instantly to show level 1
 //        fader.fadeBackIn();
@@ -77,9 +78,26 @@ public class MyWorld extends World
 
     }
 
-    private void initMenu() {
+    public void setGameOver() {
+        removeObject(menu);
+        removeObject(startGame);
+        ifMainMenu = false;
+    }
+
+    public void resetMainWorld() {
         mainWorld = new MainWorld();
         mainWorld.setMyWorld(this);
+        mainWorld.setPauseWorld(pauseWorld);
+        pauseWorld.setMainWorld(mainWorld);
+    }
+
+    private void initMenu() {
+        mainWorld = new MainWorld();
+        pauseWorld = new PauseWorld();
+        mainWorld.setMyWorld(this);
+        pauseWorld.setMyWorld(this);
+        mainWorld.setPauseWorld(pauseWorld);
+        pauseWorld.setMainWorld(mainWorld);
         startGame = new MenuOptions();
         startGame.setImage(config.get(GameContext.START_BUTTON));
         addObject (startGame, 350,360);
@@ -121,9 +139,6 @@ public class MyWorld extends World
             if (ifMainMenu) {
                 // once clicked, remove menu
                 Greenfoot.setWorld(mainWorld);
-                removeObject(menu);
-                removeObject(startGame);
-                ifMainMenu = false;
                 startGame.setImage(config.get(GameContext.START_BUTTON));
                 // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
             }
@@ -139,6 +154,8 @@ public class MyWorld extends World
         }
 
         if (Greenfoot.mouseClicked(gameOver)) {
+            mainWorld.stopMusic();
+            resetMainWorld();
             if (!ifMainMenu) {
                 addObject(menu, 350, 260);
                 addObject(startGame, 350, 360);
