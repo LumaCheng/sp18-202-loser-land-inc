@@ -26,4 +26,6 @@ public class PlayState extends Actor implements State  {
     public void doAction(Musicplayer musicplayer){
         musicplayer.setState(this);
     }
+
+    public String toString(){return "PlayState";}
 }

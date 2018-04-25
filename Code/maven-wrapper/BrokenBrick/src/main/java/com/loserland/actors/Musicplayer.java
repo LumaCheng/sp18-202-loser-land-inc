@@ -36,19 +36,19 @@ public class Musicplayer extends Actor
 
     }
 
-    public void change(){
-        if(this.state.toString().equals("StopState")) {
+    public void change() {
+        if (this.state.toString().equals("StopState")) {
             backgroundMusic.stop();
-        }
-        else{
+        } else if (this.state.toString().equals("PauseState")) {
             GreenfootImage button = state.getImage();
             button.scale(WIDTH, HEIGHT);
             setImage(button);
-            if (backgroundMusic.isPlaying()) {
-                backgroundMusic.pause();
-            } else {
-                backgroundMusic.playLoop();
-            }
+            backgroundMusic.pause();
+        } else if (this.state.toString().equals("PlayState")) {
+            GreenfootImage button = state.getImage();
+            button.scale(WIDTH, HEIGHT);
+            setImage(button);
+            backgroundMusic.playLoop();
         }
     }
 
