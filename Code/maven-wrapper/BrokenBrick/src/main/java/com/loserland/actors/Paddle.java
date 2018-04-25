@@ -137,19 +137,18 @@ public class Paddle extends Actor implements ControllerObserver {
 
     @Override
     public void controllerEventReceived(ControllerEvent event) {
-//        if (event.type == ControllerEvent.CommandType.MOVE) {
+        if (event.type == ControllerEvent.CommandType.MOVE) {
             mouseX = event.x;
             mouseY = event.y;
             if(haveBall == false) {
-                if (Greenfoot.mouseMoved(null) &&
-                        mouseX > (getImage().getWidth()) / 3 &&
-                        mouseX < (getWorld().getWidth() + 5) - getImage().getWidth() / 2) {
+                if(mouseX > (getImage().getWidth()) / 3 &&
+                   mouseX < (getWorld().getWidth() + 5) - getImage().getWidth() / 2) {
                     // calculate difference for actual magnitude moved
                     int changeX = mouseX - getX();
                     // move paddle accordingly
                     moveMe(changeX);
                 }
             }
-//        }
+        }
     }
 }
