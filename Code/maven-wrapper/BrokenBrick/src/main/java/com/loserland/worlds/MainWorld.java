@@ -265,60 +265,46 @@ public class MainWorld extends World implements IGameProgress
         int mouseY;
         // check don't exceed left and right border of background
         // don't move paddle before player shoots
-        if (Greenfoot.mouseClicked(null))
-        {
-            // once clicked, remove menu
+        if(Greenfoot.mouseClicked(musicplayer)){
+            if(backgroundMusic.isPlaying()){
+                pauseState.doAction(musicplayer);
+            }
+            else{
+                playState.doAction(musicplayer);
+            }
+        }
+        else if(Greenfoot.mouseClicked(volumeup) && backgroundMusic.isPlaying() ){
+            volume = volume <= 95 ? volume+5 : volume;
+            backgroundMusic.setVolume(volume);
+            volumeup.update(volume);
+            volumedown.update(volume);
 
-            // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
-            clickMenu++;
+        }
+        else if(Greenfoot.mouseClicked(volumedown) && backgroundMusic.isPlaying()){
+
+            volume = volume >= 5? volume-5 : volume;
+            backgroundMusic.setVolume(volume);
+            volumeup.update(volume);
+            volumedown.update(volume);
+        }
+
+        else if(Greenfoot.mouseClicked(exit)){
+            clickMenu = 2;
+            Greenfoot.setWorld(pauseWorld);
+        }
+        else if(Greenfoot.mouseClicked(null)){
+            start = true;
+            // launches ball according to angle of launch
+            launchBall();
+            // removes pointer
+            removeObject(aim);
         }
 
         // if ball has launched, move paddle according to user input
-        if (start)
-        {
-//            controller.addObserver(paddle);
-        }
-        if(Greenfoot.mouseClicked(exit)){
-            Greenfoot.setWorld(pauseWorld);
-        }
+
 
         // boolean does NOT work. Since the click from the menu will meet this statement. As a result, ball launches immediatly after menu screen.
-        if (clickMenu>2)
-        {
-            if(paddle.haveBall() && Greenfoot.mouseClicked(null)&& !Greenfoot.mouseClicked(musicplayer)
-                    && !Greenfoot.mouseClicked(volumeup) && !Greenfoot.mouseClicked(volumedown))
-            {
-                // release ball
-                start = true;
-                // launches ball according to angle of launch
-                launchBall();
-                // removes pointer
-                removeObject(aim);
-            }
 
-            if(Greenfoot.mouseClicked(musicplayer)){
-                if(backgroundMusic.isPlaying()){
-                    pauseState.doAction(musicplayer);
-                }
-                else{
-                    playState.doAction(musicplayer);
-                }
-            }
-            if(Greenfoot.mouseClicked(volumeup) && backgroundMusic.isPlaying() ){
-                volume = volume <= 95 ? volume+5 : volume;
-                backgroundMusic.setVolume(volume);
-                volumeup.update(volume);
-                volumedown.update(volume);
-
-            }
-            if(Greenfoot.mouseClicked(volumedown) && backgroundMusic.isPlaying()){
-
-               volume = volume >= 5? volume-5 : volume;
-               backgroundMusic.setVolume(volume);
-               volumeup.update(volume);
-               volumedown.update(volume);
-            }
-        }
 
     }
 //    // move paddle accordingly
