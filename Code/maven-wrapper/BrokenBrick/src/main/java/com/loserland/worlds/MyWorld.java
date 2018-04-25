@@ -20,17 +20,13 @@ import greenfoot.MouseInfo;
 public class MyWorld extends World
 {
     // Declare variables, booleans and classes.
-    private final int BRICKWIDTH = 45;
-    private final int BRICKHEIGHT = 20;
-    private final int VOFFSET = 12;
-    private final int HOFFSET = 12;
-    private Paddle paddle;
-    private Fader fader;
     private CoverPage menu;
     private GameOver gameOver;
     private MainWorld mainWorld;
     private PauseWorld pauseWorld;
     private MenuOptions startGame;
+    private MenuOptions loadGame;
+    private MenuOptions highScore;
     private boolean ifMainMenu = true;
 
     GreenfootSound backgroundMusic;
@@ -100,7 +96,13 @@ public class MyWorld extends World
         pauseWorld.setMainWorld(mainWorld);
         startGame = new MenuOptions();
         startGame.setImage(config.get(GameContext.START_BUTTON));
+        loadGame = new MenuOptions();
+        loadGame.setImage(config.get(GameContext.START_BUTTON));
+        highScore = new MenuOptions();
+        highScore.setImage(config.get(GameContext.START_BUTTON));
         addObject (startGame, 350,360);
+        addObject (loadGame, 350,410);
+        addObject (highScore, 350,460);
         menu = new CoverPage();
         menu.setImage(config.get(GameContext.MENU_IMG));
         addObject (menu, 350,260);
@@ -155,7 +157,6 @@ public class MyWorld extends World
 
         if (Greenfoot.mouseClicked(gameOver)) {
             mainWorld.stopMusic();
-            resetMainWorld();
             if (!ifMainMenu) {
                 addObject(menu, 350, 260);
                 addObject(startGame, 350, 360);
@@ -165,10 +166,5 @@ public class MyWorld extends World
         }
     }
 
-    public void replaceBall()
-    {
-        // call method from paddle to create new ball Actor into world
-        paddle.newBall();
-    }
 
 }

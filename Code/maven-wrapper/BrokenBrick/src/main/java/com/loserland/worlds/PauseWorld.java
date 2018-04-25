@@ -29,6 +29,7 @@ public class PauseWorld extends World
     private MenuOptions back;
     private MenuOptions save;
     private MenuOptions exit;
+    private PausePage pausePage;
 
     GreenfootSound backgroundMusic;
 
@@ -53,7 +54,7 @@ public class PauseWorld extends World
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(MenuOptions.class);
+        setPaintOrder(MenuOptions.class, PausePage.class);
         //initialize UI components and put place
         initMenu();
 
@@ -82,13 +83,16 @@ public class PauseWorld extends World
     private void initMenu() {
         back = new MenuOptions();
         back.setImage(config.get(GameContext.START_BUTTON));
-        addObject (back, 350,360);
+        addObject (back, 350,180);
         save = new MenuOptions();
         save.setImage(config.get(GameContext.START_BUTTON));
-        addObject (save, 450,360);
+        addObject (save, 350,250);
         exit = new MenuOptions();
         exit.setImage(config.get(GameContext.START_BUTTON));
-        addObject (exit, 550,360);
+        addObject (exit, 350,320);
+        pausePage = new PausePage();
+        pausePage.setImage("pauseworld.png");
+        addObject (pausePage, 350, 260);
 
         initMusic();
         //gameOverSound();

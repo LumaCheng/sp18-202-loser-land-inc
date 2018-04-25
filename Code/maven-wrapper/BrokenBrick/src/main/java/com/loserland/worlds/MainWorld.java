@@ -216,6 +216,7 @@ public class MainWorld extends World implements IGameProgress
             // Display GameOver screen
             myWorld.setGameOver();
             Greenfoot.setWorld(myWorld);
+            myWorld.resetMainWorld();
             addObject( live1, 23, 510);
             addObject( live2, 69, 510);
             addObject( live3, 115, 510);
