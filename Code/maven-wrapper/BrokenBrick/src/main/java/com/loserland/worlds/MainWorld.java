@@ -45,6 +45,7 @@ public class MainWorld extends World implements IGameProgress
     private ManageScore managescore = new ManageScore();
     private PlayState playState;
     private PauseState pauseState;
+    private StopState stopState;
     private Exit exit;
 
 //    public static List<String> faceList = new ArrayList<>();
@@ -134,6 +135,7 @@ public class MainWorld extends World implements IGameProgress
         musicplayer = new Musicplayer(backgroundMusic);
         playState = new PlayState();
         pauseState = new PauseState();
+        stopState = new StopState();
         volumeup = new Volumeup();
         volumedown = new Volumedown();
 
@@ -191,7 +193,7 @@ public class MainWorld extends World implements IGameProgress
     }
     public void setPauseWorld(PauseWorld pauseWorld) { this.pauseWorld = pauseWorld;}
     public void stopMusic(){
-        pauseState.doAction(musicplayer);
+        stopState.doAction(musicplayer);
     }
 
     // checks if player looses life
