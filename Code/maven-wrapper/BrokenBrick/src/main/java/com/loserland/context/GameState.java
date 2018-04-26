@@ -10,10 +10,13 @@ public class GameState implements Serializable {
     private int level;
     private int score;
 
+    private int lives;
+
     public GameState() {
         stage = new GameStage();
         score = 0;
         level = 1;
+        lives = 4;
     }
 
     public GameStage getStage() {
@@ -42,5 +45,13 @@ public class GameState implements Serializable {
 
     public int getLevel() {
         return level;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 }
