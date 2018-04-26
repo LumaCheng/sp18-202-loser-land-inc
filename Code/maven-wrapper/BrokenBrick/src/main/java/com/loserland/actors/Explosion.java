@@ -16,7 +16,6 @@ public class Explosion extends Actor {
 
     @Override
     public void act() {
-//        setImage(gifImage.getCurrentImage());
         if(gifImage.isRepeated()) {
             getWorld().removeObject(this);
         } else {

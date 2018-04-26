@@ -8,6 +8,11 @@ import com.loserland.configs.*;
 public class FireBallDecorator implements IBall, IBallDecorator {
     private BasicBall basicBall;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    private String hitBrickSound;
+
+    public FireBallDecorator(){
+        hitBrickSound = config.get(GameContext.FIRE_BURN_SND);
+    }
 
     public void action() {
         if(basicBall.gifImage != null)
@@ -40,6 +45,11 @@ public class FireBallDecorator implements IBall, IBallDecorator {
     public void brickCollision(Brick brick){
         PowerGenerator.generatePowerSquare(basicBall, brick);
         brick.effect();
+        // sound e ffect
+        if(basicBall.ballHitBrickSound != null)
+            Greenfoot.playSound(basicBall.ballHitBrickSound);
+        if(hitBrickSound != null)
+            Greenfoot.playSound(hitBrickSound);
     }
 
     @Override

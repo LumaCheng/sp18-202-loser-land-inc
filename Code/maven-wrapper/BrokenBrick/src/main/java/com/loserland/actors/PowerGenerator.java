@@ -22,7 +22,7 @@ public class PowerGenerator {
             if(type == ball.getCurrentPower())
                 powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
             else
-                powerSquare = PowerSquareFactory.makePowerSquare(type);
+                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.FIRE_BALL);
             if(powerSquare != null) {
                 ball.getWorld().addObject(powerSquare, brick.getX(), brick.getY());
                 powerSquare.fall();
