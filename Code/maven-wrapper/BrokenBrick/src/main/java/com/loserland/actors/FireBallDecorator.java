@@ -38,7 +38,7 @@ public class FireBallDecorator implements IBall, IBallDecorator {
     }
 
     public void brickCollision(Brick brick){
-        basicBall.generatePowerSquare(brick);
+        PowerGenerator.generatePowerSquare(basicBall, brick);
         brick.effect();
     }
 

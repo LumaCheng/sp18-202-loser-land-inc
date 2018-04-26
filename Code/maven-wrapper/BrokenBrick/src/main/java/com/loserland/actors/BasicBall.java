@@ -128,7 +128,7 @@ public class BasicBall extends SmoothMover implements IBall {
     // collision dectection with brick
     public void checkBrickCollision(){
         Brick brick = (Brick)getOneIntersectingObject(Brick.class);
-        if ( brick != null ) {
+        if ( brick != null) {
             ball.brickCollision(brick);
             // sound effect
             if(ballHitBrickSound != null)
@@ -143,7 +143,7 @@ public class BasicBall extends SmoothMover implements IBall {
             changeY = -changeY;
             // Fixes multi-kill bug
             setLocation(getX(),getY() + 1);
-            generatePowerSquare(brick);
+            PowerGenerator.generatePowerSquare(this, brick);
         }
         else {
             // moves ball in opposite direction after collision
@@ -159,22 +159,21 @@ public class BasicBall extends SmoothMover implements IBall {
         return PowerSquareFactory.PowerType.NORMAL;
     }
 
-    public void generatePowerSquare(Brick brick) {
-        int hitNumber = Greenfoot.getRandomNumber((int)(PowerSquareFactory.getNumberOfPowers()/powerUpRate));
-        if(hitNumber < PowerSquareFactory.getNumberOfPowers() - 1) {
-            PowerSquareFactory.PowerType type = PowerSquareFactory.PowerType.values()[hitNumber];
-            PowerSquare powerSquare;
-            if(type == ball.getCurrentPower() ||
-               (ball.getCurrentPower() != PowerSquareFactory.PowerType.NORMAL && hitNumber % 2 == 0))
-                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
-            else
-                powerSquare = PowerSquareFactory.makePowerSquare(type);
-            if(powerSquare != null) {
-                getWorld().addObject(powerSquare, brick.getX(), brick.getY());
-                powerSquare.fall();
-            }
-        }
-    }
+//    public void generatePowerSquare(Brick brick) {
+//        int hitNumber = Greenfoot.getRandomNumber((int)(PowerSquareFactory.getNumberOfPowers()/powerUpRate));
+//        if(hitNumber < PowerSquareFactory.getNumberOfPowers() - 1) {
+//            PowerSquareFactory.PowerType type = PowerSquareFactory.PowerType.values()[hitNumber];
+//            PowerSquare powerSquare;
+//            if(type == ball.getCurrentPower())
+//                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
+//            else
+//                powerSquare = PowerSquareFactory.makePowerSquare(type);
+//            if(powerSquare != null) {
+//                getWorld().addObject(powerSquare, brick.getX(), brick.getY());
+//                powerSquare.fall();
+//            }
+//        }
+//    }
 
     // delete ball when passes MinX
     public void checkBallMiss()
@@ -197,7 +196,7 @@ public class BasicBall extends SmoothMover implements IBall {
     public void checkPaddleCollision()
     {
         Paddle paddle = (Paddle) getOneIntersectingObject(Paddle.class);
-        if (paddle != null) {
+        if (paddle != null && paddle.getStartBounce()) {
             // bounce if made contact
             ball.bounce(paddle);
         }
@@ -205,28 +204,29 @@ public class BasicBall extends SmoothMover implements IBall {
 
     // ball collision with paddle
     public void bounce(Actor a) {
-        // reflect opposite side
-        changeY = -changeY;
-        // refelcts depending on incoming angle
-        int reflected = getX() - a.getX();
-        // caculate angle of reflection based on incoming angle
-        // divide by 8 to minimize the rebound magnitude. Not as dramatic/hard.
-        changeX = changeX + (reflected / 8);
-        if (changeX > 7) {
-            changeX = 7;
-        }
-        if (changeX < -7) {
-            changeX = -7;
+        int paddleUpperBound = a.getY() - a.getImage().getHeight() / 2;
+        int paddleLowerBound = a.getY() + a.getImage().getHeight() / 2;
+        if (getY() > paddleLowerBound || getY() < paddleUpperBound) {
+            // reflect opposite side
+            changeY = -changeY;
+            // refelcts depending on incoming angle
+            int reflected = getX() - a.getX();
+            // caculate angle of reflection based on incoming angle
+            // divide by 8 to minimize the rebound magnitude. Not as dramatic/hard.
+            changeX = changeX + (reflected / 8);
+            if (changeX > 7) {
+                changeX = 7;
+            }
+            if (changeX < -7) {
+                changeX = -7;
+            }
+        } else {
+            changeX = -changeX;
         }
         // sound effect
         if (ballBounceSound != null)
             Greenfoot.playSound(ballBounceSound);
     }
-
-//    public void resetBall() {
-//        Paddle paddle = getWorld().getObjects(Paddle.class).get(0);
-//        setLocation(paddle.getX(),paddle.getY()-(this.getImage().getHeight()+5));
-//    }
 
     public void replaceBall()
     {
@@ -268,6 +268,10 @@ public class BasicBall extends SmoothMover implements IBall {
     public void launch(int mouseX, int mouseY)
     {
         // change to negative so ball can move upwards
+        if(!Paddle.getStartBounce()) {
+            Paddle.setStartBounce(true);
+            setLocation(getX(), getY() - 5);
+        }
         trajectoryPath(mouseX,mouseY);
         // ball launched
         onPaddle = false;

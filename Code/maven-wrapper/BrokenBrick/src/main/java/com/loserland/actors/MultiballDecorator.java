@@ -37,7 +37,9 @@ public class MultiballDecorator implements IBall, IBallDecorator {
     private void checkBallCollision() {
         BasicBall ball = (BasicBall)basicBall.getOneIntersectingObject(BasicBall.class);
         if ( ball != null ) {
-            if (basicBall.getY() > ball.getY() || basicBall.getY() < ball.getY()) {
+            int ballUpperBound = ball.getY() - ball.getImage().getHeight() / 2;
+            int ballLowerBound = ball.getY() + ball.getImage().getHeight() / 2;
+            if (basicBall.getY() > ballLowerBound || basicBall.getY() < ballUpperBound) {
                 basicBall.changeY = -basicBall.changeY;
                 ball.changeY = -ball.changeY;
                 // Fixes multi-kill bug
