@@ -97,9 +97,9 @@ public class MyWorld extends World
         startGame = new MenuOptions();
         startGame.setImage(config.get(GameContext.START_BUTTON));
         loadGame = new MenuOptions();
-        loadGame.setImage(config.get(GameContext.START_BUTTON));
+        loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
         highScore = new MenuOptions();
-        highScore.setImage(config.get(GameContext.START_BUTTON));
+        highScore.setImage(config.get(GameContext.SCORE_BUTTON));
         addObject (startGame, 350,360);
         addObject (loadGame, 350,410);
         addObject (highScore, 350,460);
@@ -151,8 +151,22 @@ public class MyWorld extends World
         if(Greenfoot.mouseMoved(startGame)){
             startGame.setImage(config.get(GameContext.START_HOVER));
         }
+        if(Greenfoot.mousePressed(loadGame)){
+            loadGame.setImage(config.get(GameContext.LOAD_PRESSED));
+        }
+        if(Greenfoot.mouseMoved(loadGame)){
+            loadGame.setImage(config.get(GameContext.LOAD_HOVER));
+        }
+        if(Greenfoot.mousePressed(highScore)){
+            highScore.setImage(config.get(GameContext.SCORE_PRESSED));
+        }
+        if(Greenfoot.mouseMoved(highScore)){
+            highScore.setImage(config.get(GameContext.SCORE_HOVER));
+        }
         if(Greenfoot.mouseMoved(menu)){
             startGame.setImage(config.get(GameContext.START_BUTTON));
+            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
+            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
         }
 
         if (Greenfoot.mouseClicked(gameOver)) {

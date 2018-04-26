@@ -3,7 +3,6 @@ import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
-import com.loserland.context.*;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.*;
@@ -26,7 +25,7 @@ public class PauseWorld extends World
     private final int HOFFSET = 12;
     private MainWorld mainWorld;
     private MyWorld myWorld;
-    private MenuOptions back;
+    private MenuOptions resume;
     private MenuOptions save;
     private MenuOptions exit;
     private PausePage pausePage;
@@ -81,14 +80,14 @@ public class PauseWorld extends World
     public void setMainWorld(MainWorld mainWorld) { this.mainWorld = mainWorld;}
 
     private void initMenu() {
-        back = new MenuOptions();
-        back.setImage(config.get(GameContext.START_BUTTON));
-        addObject (back, 350,180);
+        resume = new MenuOptions();
+        resume.setImage(config.get(GameContext.RESUME_BUTTON));
+        addObject (resume, 350,180);
         save = new MenuOptions();
-        save.setImage(config.get(GameContext.START_BUTTON));
+        save.setImage(config.get(GameContext.SAVE_BUTTON));
         addObject (save, 350,250);
         exit = new MenuOptions();
-        exit.setImage(config.get(GameContext.START_BUTTON));
+        exit.setImage(config.get(GameContext.EXIT_BUTTON));
         addObject (exit, 350,320);
         pausePage = new PausePage();
         pausePage.setImage("pauseworld.png");
@@ -116,13 +115,36 @@ public class PauseWorld extends World
         // check don't exceed left and right border of background
         // don't move paddle before player shoots
         //System.out.println(mouse.getActor());
-        if (Greenfoot.mouseClicked(back)) {
+        if (Greenfoot.mouseClicked(resume)) {
             Greenfoot.setWorld(mainWorld);
         }
         if (Greenfoot.mouseClicked(exit)) {
             Greenfoot.setWorld(myWorld);
             mainWorld.stopMusic();
             myWorld.resetMainWorld();
+        }
+        if(Greenfoot.mousePressed(resume)){
+            resume.setImage(config.get(GameContext.RESUME_PRESSED));
+        }
+        if(Greenfoot.mouseMoved(resume)){
+            resume.setImage(config.get(GameContext.RESUME_HOVER));
+        }
+        if(Greenfoot.mousePressed(save)){
+            save.setImage(config.get(GameContext.SAVE_PRESSED));
+        }
+        if(Greenfoot.mouseMoved(save)){
+            save.setImage(config.get(GameContext.SAVE_HOVER));
+        }
+        if(Greenfoot.mousePressed(exit)){
+            exit.setImage(config.get(GameContext.EXIT_PRESSED));
+        }
+        if(Greenfoot.mouseMoved(exit)){
+            exit.setImage(config.get(GameContext.EXIT_HOVER));
+        }
+        if(Greenfoot.mouseMoved(pausePage)){
+            resume.setImage(config.get(GameContext.RESUME_BUTTON));
+            save.setImage(config.get(GameContext.SAVE_BUTTON));
+            exit.setImage(config.get(GameContext.EXIT_BUTTON));
         }
 
     }

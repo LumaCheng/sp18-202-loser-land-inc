@@ -13,6 +13,27 @@ public class GameContext {
     public static final String START_HOVER = "page.start.hover";
     public static final String START_PRESSED = "page.start.pressed";
 
+    public static final String LOAD_BUTTON = "page.load.button";
+    public static final String LOAD_HOVER = "page.load.hover";
+    public static final String LOAD_PRESSED = "page.load.pressed";
+
+    public static final String SCORE_BUTTON = "page.score.button";
+    public static final String SCORE_HOVER = "page.score.hover";
+    public static final String SCORE_PRESSED = "page.score.pressed";
+
+    public static final String RESUME_BUTTON = "page.resume.button";
+    public static final String RESUME_HOVER = "page.resume.hover";
+    public static final String RESUME_PRESSED = "page.resume.pressed";
+
+    public static final String SAVE_BUTTON = "page.save.button";
+    public static final String SAVE_HOVER = "page.save.hover";
+    public static final String SAVE_PRESSED = "page.save.pressed";
+
+    public static final String EXIT_BUTTON = "page.exit.button";
+    public static final String EXIT_HOVER = "page.exit.hover";
+    public static final String EXIT_PRESSED = "page.exit.pressed";
+
+
     public static final String WORLD_WIDTH = "world.width";
     public static final String WORLD_HEIGHT = "world.height";
     public static final String WORLD_CELL_SIZE = "world.cell.size";
