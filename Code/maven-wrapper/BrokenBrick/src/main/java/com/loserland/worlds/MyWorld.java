@@ -30,6 +30,7 @@ public class MyWorld extends World
     private MenuOptions highScore;
     private boolean ifMainMenu = true;
     private HighScoreBoard highScoreBoard;
+    private Back back;
 
     GreenfootSound backgroundMusic;
 
@@ -54,7 +55,7 @@ public class MyWorld extends World
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(MenuOptions.class, CoverPage.class, GameOver.class, HighScoreBoard.class);
+        setPaintOrder(MenuOptions.class, CoverPage.class, GameOver.class, Back.class, HighScoreBoard.class);
 
         //initialize UI components and put place
         initMenu();
@@ -117,6 +118,9 @@ public class MyWorld extends World
         // Display GameOver screen
         gameOver = new GameOver();
         addObject(gameOver, 350, 260);
+        back = new Back();
+        back.setImage(config.get(GameContext.BACK_BUTTON));
+        addObject(back, 25, 25);
     }
 
     // each act check for death, mouse input and whether to create new level
@@ -160,6 +164,21 @@ public class MyWorld extends World
                 removeObject(startGame);
                 removeObject(highScore);
                 removeObject(loadGame);
+                ifMainMenu = false;
+                highScore.setImage(config.get(GameContext.SCORE_BUTTON));
+                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
+            }
+        }
+
+        if (Greenfoot.mouseClicked(back)) {
+            if (!ifMainMenu) {
+                // once clicked, remove menu
+                addObject (startGame, 350,360);
+                addObject (loadGame, 350,410);
+                addObject (highScore, 350,460);
+                addObject (gameOver, 350, 260);
+                addObject (menu, 350, 260);
+                ifMainMenu = true;
                 // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
             }
         }

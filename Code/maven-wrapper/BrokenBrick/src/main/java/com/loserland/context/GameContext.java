@@ -80,6 +80,8 @@ public class GameContext {
     public static final String PADDLE_IMG =  "paddle.image";
     public static final String PAUSE_STAGE_IMG = "pause.stage.image";
 
+    public static final String BACK_BUTTON = "back.menu.button";
+
     public static final String MULTIBALL_IMAGE = "multiball.image";
 
 }
