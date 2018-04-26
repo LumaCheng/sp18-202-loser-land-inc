@@ -1,9 +1,5 @@
 package com.loserland.worlds;
-import com.loserland.actors.CoverPage;
-import com.loserland.actors.Fader;
-import com.loserland.actors.GameOver;
-import com.loserland.actors.MenuOptions;
-import com.loserland.actors.Paddle;
+import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
