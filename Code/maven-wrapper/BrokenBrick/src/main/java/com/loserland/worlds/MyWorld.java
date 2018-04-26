@@ -3,6 +3,7 @@ import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
+import com.loserland.context.GameProgressManager;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.Greenfoot;
@@ -108,7 +109,7 @@ public class MyWorld extends World
         loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
         highScore = new MenuOptions();
         highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-        highScoreBoard = new HighScoreBoard();
+        highScoreBoard = HighScoreBoard.getInstance();
         addObject(highScoreBoard, 350, 260);
         addObject (startGame, 350,360);
         addObject (loadGame, 350,410);
@@ -169,6 +170,7 @@ public class MyWorld extends World
                 removeObject(loadGame);
                 ifMainMenu = false;
                 highScore.setImage(config.get(GameContext.SCORE_BUTTON));
+                highScoreBoard.ShowScore();
                 // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
             }
         }
@@ -202,6 +204,8 @@ public class MyWorld extends World
 
         if(Greenfoot.mouseClicked(loadGame)){
             // Load Game Scene
+            mainWorld.restore(GameProgressManager.getInstance().load());
+            Greenfoot.setWorld(mainWorld);
         }
 
 
@@ -225,7 +229,7 @@ public class MyWorld extends World
         }
 
         if (Greenfoot.mouseClicked(gameOver)) {
-            mainWorld.stopMusic();
+            //mainWorld.stopMusic();
             if (!ifMainMenu) {
                 addObject(menu, 350, 260);
                 addObject(startGame, 350, 360);

@@ -2,7 +2,9 @@ package com.loserland.worlds;
 import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameCheckPoint;
 import com.loserland.context.GameContext;
+import com.loserland.context.GameProgressManager;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.*;
@@ -125,6 +127,7 @@ public class PauseWorld extends World
             myWorld.resetMainWorld();
         }
         if(Greenfoot.mousePressed(resume)){
+
             resume.setImage(config.get(GameContext.RESUME_PRESSED));
         }
         if(Greenfoot.mouseMoved(resume)){
@@ -148,7 +151,9 @@ public class PauseWorld extends World
             exit.setImage(config.get(GameContext.EXIT_BUTTON));
         }
         if(Greenfoot.mouseClicked(save)){
-            //save the current scene
+            //add the current scene
+            System.out.println("save clicked");
+            GameProgressManager.getInstance().add(new GameCheckPoint(mainWorld.getCurrentState()));
         }
 
     }

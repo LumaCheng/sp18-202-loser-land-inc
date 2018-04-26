@@ -30,31 +30,27 @@ public class MultiballDecorator implements IBall, IBallDecorator {
             basicBall.checkPaddleCollision();
             basicBall.checkWallCollision();
             basicBall.checkBrickCollision();
-            checkBallCollision();
+//            checkBallCollision();
         }
     }
 
-    private void checkBallCollision() {
-        BasicBall ball = (BasicBall)basicBall.getOneIntersectingObject(BasicBall.class);
-        if ( ball != null ) {
-            int ballUpperBound = ball.getY() - ball.getImage().getHeight() / 2;
-            int ballLowerBound = ball.getY() + ball.getImage().getHeight() / 2;
-            if (basicBall.getY() > ballLowerBound || basicBall.getY() < ballUpperBound) {
-                basicBall.changeY = -basicBall.changeY;
-                ball.changeY = -ball.changeY;
-                // Fixes multi-kill bug
-                basicBall.setLocation(basicBall.getX() + basicBall.changeX + Greenfoot.getRandomNumber(10)-5,
-                        basicBall.getY() + basicBall.changeY + Greenfoot.getRandomNumber(10)-5);
-            }
-            else {
-                // moves ball in opposite direction after collision
-                basicBall.changeX = -basicBall.changeX;
-                ball.changeX = -ball.changeX;
-            }
-            ball.speed+=0.001;
-            basicBall.speed+=0.001;
-        }
-    }
+//    private void checkBallCollision() {
+//        BasicBall ball = (BasicBall)basicBall.getOneIntersectingObject(BasicBall.class);
+//        if ( ball != null ) {
+//            if (basicBall.getY() > ball.getY() || basicBall.getY() < ball.getY()) {
+//                basicBall.changeY = -basicBall.changeY;
+//                // Fixes multi-kill bug
+//                basicBall.setLocation(basicBall.getX() + basicBall.changeX + Greenfoot.getRandomNumber(10)-5,
+//                        basicBall.getY() + basicBall.changeY + Greenfoot.getRandomNumber(10)-5);
+//            }
+//            else{
+//                // moves ball in opposite direction after collision
+//                basicBall.changeX = -basicBall.changeX;
+//            }
+//            ball.speed+=0.001;
+//            basicBall.speed+=0.001;
+//        }
+//    }
 
     @Override
     public void checkBallMiss() {
@@ -100,7 +96,7 @@ public class MultiballDecorator implements IBall, IBallDecorator {
     }
 
     @Override
-    public PowerSquareFactory.PowerType getCurrentPower() {
+    public PowerSquareFactory.PowerType powerType() {
         return PowerSquareFactory.PowerType.MULTI_BALL;
     }
 

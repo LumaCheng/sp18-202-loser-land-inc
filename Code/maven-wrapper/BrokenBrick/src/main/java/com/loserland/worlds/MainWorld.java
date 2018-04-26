@@ -21,14 +21,7 @@ import com.loserland.actors.Volumedown;
 import com.loserland.actors.Volumeup;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
-import com.loserland.context.GameBrick;
-import com.loserland.context.GameCheckPoint;
-import com.loserland.context.GameContext;
-import com.loserland.context.GameProgressManager;
-import com.loserland.context.GameStageGenerator;
-import com.loserland.context.GameStageLoader;
-import com.loserland.context.GameState;
-import com.loserland.context.IGameProgress;
+import com.loserland.context.*;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.Actor;
@@ -39,7 +32,6 @@ import org.apache.commons.lang3.SerializationUtils;
 import java.awt.*;
 import greenfoot.World;
 import java.util.List;
-import org.apache.commons.lang3.SerializationUtils;
 
 
 /**
@@ -69,10 +61,10 @@ public class MainWorld extends World implements IGameProgress
     private Musicplayer musicplayer;
     private Volumeup volumeup;
     private Volumedown volumedown;
-    private HighScoreBoard highScoreBoard = new HighScoreBoard();
+    private HighScoreBoard highScoreBoard = HighScoreBoard.getInstance();
     private ManageScore managescore = new ManageScore();
+    private ManageScore managevolume = new ManageScore();
     private PlayState playState;
-    private PauseState pauseState;
     private StopState stopState;
     private Exit pause;
 
@@ -89,7 +81,7 @@ public class MainWorld extends World implements IGameProgress
     private Lives live1 = new Lives();
     private Lives live2 = new Lives();
     private Lives live3 = new Lives();
-    // initalize background music, save was "backgroundMusic"
+    // initalize background music, add was "backgroundMusic"
     GreenfootSound backgroundMusic;
     // boolean to determine if ball was launched
     private boolean start = false;
@@ -112,6 +104,10 @@ public class MainWorld extends World implements IGameProgress
     static {
         configFactory = ConfigFactory.getInstance();
         config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    }
+
+    public GameState getCurrentState() {
+        return currentState;
     }
 
     private GameState currentState;
@@ -158,16 +154,19 @@ public class MainWorld extends World implements IGameProgress
     }
 
     private void initMusic() {
-        backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
+        //backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
         // play background music continuously
 
        // backgroundMusic.playLoop();
-        musicplayer = new Musicplayer(backgroundMusic);
+        musicplayer = Musicplayer.getInstance();
         playState = new PlayState();
-        pauseState = new PauseState();
         stopState = new StopState();
         volumeup = new Volumeup();
         volumedown = new Volumedown();
+        playState.doAction(musicplayer);
+        managevolume.attach(musicplayer);
+        managevolume.attach(volumeup);
+        managevolume.attach(volumedown);
 
     }
 
@@ -292,27 +291,22 @@ public class MainWorld extends World implements IGameProgress
         int mouseY;
         // check don't exceed left and right border of background
         // don't move paddle before player shoots
-        if(Greenfoot.mouseClicked(musicplayer)){
-            if(backgroundMusic.isPlaying()){
-                pauseState.doAction(musicplayer);
-            }
-            else{
-                playState.doAction(musicplayer);
-            }
-        }
-        else if(Greenfoot.mouseClicked(volumeup) && backgroundMusic.isPlaying() ){
+//        if(Greenfoot.mouseClicked(musicplayer)){
+//            if(backgroundMusic.isPlaying()){
+//                pauseState.doAction(musicplayer);
+//            }
+//            else{
+//                playState.doAction(musicplayer);
+//            }
+//        }
+
+        if(Greenfoot.mouseClicked(volumeup) && musicplayer.isPlaying()){
             volume = volume <= 95 ? volume+5 : volume;
-            backgroundMusic.setVolume(volume);
-            volumeup.update(volume);
-            volumedown.update(volume);
-
+            managevolume.notifyObservers(volume);
         }
-        else if(Greenfoot.mouseClicked(volumedown) && backgroundMusic.isPlaying()){
-
+        else if(Greenfoot.mouseClicked(volumedown) && musicplayer.isPlaying()){
             volume = volume >= 5? volume-5 : volume;
-            backgroundMusic.setVolume(volume);
-            volumeup.update(volume);
-            volumedown.update(volume);
+            managevolume.notifyObservers(volume);
         }
 
         else if(Greenfoot.mouseClicked(pause)){
@@ -415,8 +409,9 @@ public class MainWorld extends World implements IGameProgress
         }
         //render stage
         for (GameBrick gameBrick: state.getStage().getBricks()){
-            Brick brick = new Brick(gameBrick.getType());
-            addObject(brick, gameBrick.getX(), gameBrick.getY());
+            Brick brick = gameBrick.restore();
+            addObject(brick, gameBrick.getX(), gameBrick.getY() );
+            
             if (hasIntersectingActors(brick, Brick.class)){
                 removeObject(brick);
             }
@@ -461,6 +456,7 @@ public class MainWorld extends World implements IGameProgress
 
     @Override
     public void restore(GameCheckPoint checkPoint) {
+        if (checkPoint == null) return;
         currentState = SerializationUtils.clone(checkPoint.getState());
         render(currentState);
 
