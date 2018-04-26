@@ -114,6 +114,8 @@ public class MainWorld extends World implements IGameProgress
             stage.addBrick(brick.save());
         }
         currentState.setStage(stage);
+        currentState.setScore(score);
+        currentState.setLevel(level);
         return currentState;
     }
 
@@ -279,10 +281,12 @@ public class MainWorld extends World implements IGameProgress
     // reward points according to destroyed brick
     public void addPoints(int points)
     {
-        score+=points;
+        setScore(score + points);
+    }
+
+    public void setScore(int score){
+        this.score = score;
         managescore.notifyObservers(score);
-        // refreshes counter display for score
-        //scoreBoard.update(score);
     }
 
     // checks for player input from mouse
@@ -354,7 +358,6 @@ public class MainWorld extends World implements IGameProgress
             // reset to original location
             resetPosition();
             // increase level by 1 and call upon next level.
-            level++;
             nextLevel();
         }
     }
@@ -366,10 +369,13 @@ public class MainWorld extends World implements IGameProgress
         fader = new Fader();
         addObject (fader, 400, 300);
 
-        levelNum.update(level);
+        setLevel(level+1);
+
         fader.fadeBackIn();
 
         currentState.setStage(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
+        currentState.setScore(score);
+        currentState.setLevel(level);
         render(currentState);
 
 //        gameStageLoader.load(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
@@ -410,6 +416,11 @@ public class MainWorld extends World implements IGameProgress
 
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+        levelNum.update(level);
+    }
+
     private void render(GameState state) {
         List<Actor> actors = getObjects(Actor.class);
         for (Actor actor: actors){
@@ -417,6 +428,9 @@ public class MainWorld extends World implements IGameProgress
                 removeObject(actor);
             }
         }
+
+        setScore(state.getScore());
+        setLevel(state.getLevel());
 
         //render stage
         for (GameBrick gameBrick: state.getStage().getBricks()){
