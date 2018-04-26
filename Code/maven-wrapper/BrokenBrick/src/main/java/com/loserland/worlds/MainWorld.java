@@ -107,6 +107,13 @@ public class MainWorld extends World implements IGameProgress
     }
 
     public GameState getCurrentState() {
+        currentState = new GameState();
+        GameStage stage = new GameStage();
+        List<Brick> bricks = getObjects(Brick.class);
+        for (Brick brick: bricks){
+            stage.addBrick(brick.save());
+        }
+        currentState.setStage(stage);
         return currentState;
     }
 
@@ -441,15 +448,15 @@ public class MainWorld extends World implements IGameProgress
         return false;
     }
 
-    public void onClickSaveCheckPoint(){
-        System.out.println("MyWorld.onClickSaveCheckPoint");
-        GameProgressManager.getInstance().add(new GameCheckPoint(currentState));
-    }
-
-    public void onClickLoadCheckPoint(){
-        System.out.println("MyWorld.onClickLoadCheckPoint");
-        restore(GameProgressManager.getInstance().load());
-    }
+//    public void onClickSaveCheckPoint(){
+//        System.out.println("MyWorld.onClickSaveCheckPoint");
+//        GameProgressManager.getInstance().add(new GameCheckPoint(currentState));
+//    }
+//
+//    public void onClickLoadCheckPoint(){
+//        System.out.println("MyWorld.onClickLoadCheckPoint");
+//        restore(GameProgressManager.getInstance().load());
+//    }
 
     @Override
     public GameCheckPoint save() {

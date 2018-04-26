@@ -32,4 +32,8 @@ public class GameStage implements Serializable{
         }
         return string;
     }
+
+    public void clear() {
+        bricks = new ArrayList<>();
+    }
 }
