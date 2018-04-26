@@ -1,13 +1,18 @@
 package com.loserland.worlds;
-import com.loserland.actors.*;
+import com.loserland.actors.CoverPage;
+import com.loserland.actors.Fader;
+import com.loserland.actors.GameOver;
+import com.loserland.actors.MenuOptions;
+import com.loserland.actors.Paddle;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
-import com.loserland.context.*;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
-import greenfoot.*;
+import greenfoot.Greenfoot;
+import greenfoot.GreenfootSound;
 import greenfoot.MouseInfo;
+import greenfoot.World;
 
 
 /**
@@ -32,7 +37,7 @@ public class MyWorld extends World
     GreenfootSound backgroundMusic;
 
     // TODO: Using factory mode to initialize controller
-    private Controller controller = new MouseController();
+    private Controller controller = new MouseController(this);
 
     //Configs
     private static ConfigFactory configFactory;

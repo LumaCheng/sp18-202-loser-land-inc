@@ -1,17 +1,44 @@
 package com.loserland.worlds;
-import com.loserland.actors.*;
+
+import com.loserland.actors.BasicBall;
+import com.loserland.actors.Brick;
+import com.loserland.actors.ContextController;
+import com.loserland.actors.Counter;
+import com.loserland.actors.Exit;
+import com.loserland.actors.Fader;
+import com.loserland.actors.HighScoreBoard;
+import com.loserland.actors.Lives;
+import com.loserland.actors.ManageScore;
+import com.loserland.actors.Musicplayer;
+import com.loserland.actors.Paddle;
+import com.loserland.actors.PauseState;
+import com.loserland.actors.PlayState;
+import com.loserland.actors.Pointy;
+import com.loserland.actors.ScoreBoard;
+import com.loserland.actors.Smoke;
+import com.loserland.actors.StopState;
+import com.loserland.actors.Volumedown;
+import com.loserland.actors.Volumeup;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
-import com.loserland.context.*;
+import com.loserland.context.GameBrick;
+import com.loserland.context.GameCheckPoint;
+import com.loserland.context.GameContext;
+import com.loserland.context.GameProgressManager;
+import com.loserland.context.GameStageGenerator;
+import com.loserland.context.GameStageLoader;
+import com.loserland.context.GameState;
+import com.loserland.context.IGameProgress;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
-import greenfoot.*;
+import greenfoot.Actor;
+import greenfoot.Greenfoot;
+import greenfoot.GreenfootSound;
 import greenfoot.MouseInfo;
-import org.apache.commons.lang3.SerializationUtils;
-
-import java.awt.*;
-import java.util.ArrayList;
+import greenfoot.World;
+import java.awt.Rectangle;
 import java.util.List;
+import org.apache.commons.lang3.SerializationUtils;
 
 
 /**
@@ -73,7 +100,9 @@ public class MainWorld extends World implements IGameProgress
     private int volume = config.get(Integer.class, GameContext.VOLUME_DEFAULT);
 
     // TODO: Using factory mode to initialize controller
-    private Controller controller = new MouseController();
+    private Controller controller = new MouseController(this);
+    //private Controller controller = new MouseController(this);
+
 
     //Configs
     private static ConfigFactory configFactory;
@@ -145,6 +174,9 @@ public class MainWorld extends World implements IGameProgress
         // create new paddle and ball
         paddle = new Paddle();
 
+
+        // TODO: Padding need had consistent pos with controller
+        // read init points from config
         // add paddle into world
         addObject(paddle, getWidth()/2, getHeight()-26);
         addObject(aim,paddle.getX(),paddle.getY()-20);
