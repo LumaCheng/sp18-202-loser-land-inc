@@ -3,6 +3,7 @@ package com.loserland.controller;
 import com.loserland.controller.ControllerEvent.CommandType;
 import greenfoot.Greenfoot;
 import greenfoot.MouseInfo;
+import greenfoot.World;
 
 /**
  * Game Mouse Controller
@@ -13,7 +14,8 @@ import greenfoot.MouseInfo;
  */
 public class MouseController extends Controller {
 
-    public MouseController() {
+    public MouseController(World world) {
+        super(world);
     }
 
 

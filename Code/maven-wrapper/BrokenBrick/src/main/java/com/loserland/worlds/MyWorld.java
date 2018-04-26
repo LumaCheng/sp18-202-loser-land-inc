@@ -1,13 +1,18 @@
 package com.loserland.worlds;
-import com.loserland.actors.*;
+import com.loserland.actors.CoverPage;
+import com.loserland.actors.Fader;
+import com.loserland.actors.GameOver;
+import com.loserland.actors.MenuOptions;
+import com.loserland.actors.Paddle;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
-import com.loserland.context.*;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
-import greenfoot.*;
+import greenfoot.Greenfoot;
+import greenfoot.GreenfootSound;
 import greenfoot.MouseInfo;
+import greenfoot.World;
 
 
 /**
@@ -33,7 +38,7 @@ public class MyWorld extends World
     GreenfootSound backgroundMusic;
 
     // TODO: Using factory mode to initialize controller
-    private Controller controller = new MouseController();
+    private Controller controller = new MouseController(this);
 
     //Configs
     private static ConfigFactory configFactory;
@@ -168,18 +173,24 @@ public class MyWorld extends World
         }
         if(Greenfoot.mouseMoved(startGame)){
             startGame.setImage(config.get(GameContext.START_HOVER));
+            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
+            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
         }
         if(Greenfoot.mousePressed(loadGame)){
             loadGame.setImage(config.get(GameContext.LOAD_PRESSED));
         }
         if(Greenfoot.mouseMoved(loadGame)){
             loadGame.setImage(config.get(GameContext.LOAD_HOVER));
+            startGame.setImage(config.get(GameContext.START_BUTTON));
+            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
         }
         if(Greenfoot.mousePressed(highScore)){
             highScore.setImage(config.get(GameContext.SCORE_PRESSED));
         }
         if(Greenfoot.mouseMoved(highScore)){
             highScore.setImage(config.get(GameContext.SCORE_HOVER));
+            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
+            startGame.setImage(config.get(GameContext.START_BUTTON));
         }
         if(Greenfoot.mouseMoved(menu)){
             startGame.setImage(config.get(GameContext.START_BUTTON));

@@ -34,7 +34,7 @@ public class PauseWorld extends World
     GreenfootSound backgroundMusic;
 
     // TODO: Using factory mode to initialize controller
-    private Controller controller = new MouseController();
+    private Controller controller = new MouseController(this);
 
     //Configs
     private static ConfigFactory configFactory;
