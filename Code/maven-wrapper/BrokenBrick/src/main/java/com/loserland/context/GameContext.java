@@ -1,9 +1,6 @@
 package com.loserland.context;
 
 public class GameContext {
-    /* Global variable */
-    public static String currentBallImg = "ball.image";
-    public static String currentPaddleImg = "paddle.image";
 
     /* Global constant */
     public static final String GAME_DEFAULT_CONFIG_FILENAME = "configs/default.properties";
@@ -83,5 +80,25 @@ public class GameContext {
     public static final String BACK_BUTTON = "back.menu.button";
 
     public static final String MULTIBALL_IMAGE = "multiball.image";
+
+    public static final String BALL_IMAGE = "ball.image";
+    public static final String SHIELD_IMAGE = "shieldball.image";
+    public static final String POKEMON_IMAGE = "pokemonball.image";
+    public static final String PIZZA_IMAGE = "pizzaball.image";
+    public static final String SOCCER_IMAGE = "soccerball.image";
+    public static final String BASEBALL_IMAGE = "baseball.image";
+    public static final String BIRD_IMAGE = "bird.image";
+
+    public static final String SCORE_LEVEL_1 = "score.level1";
+    public static final String SCORE_LEVEL_2 = "score.level2";
+    public static final String SCORE_LEVEL_3 = "score.level3";
+    public static final String SCORE_LEVEL_4 = "score.level4";
+    public static final String SCORE_LEVEL_5 = "score.level5";
+    public static final String SCORE_LEVEL_6 = "score.level6";
+
+
+    /* Global variable */
+    public static String currentBallImg = BALL_IMAGE;
+    public static String currentPaddleImg = "paddle.image";
 
 }

@@ -39,8 +39,6 @@ public class PauseWorld extends World
     private PausePage pausePage;
     private List<MenuButton> buttonsList = new ArrayList<>();
 
-
-
     GreenfootSound backgroundMusic;
 
     // TODO: Using factory mode to initialize controller

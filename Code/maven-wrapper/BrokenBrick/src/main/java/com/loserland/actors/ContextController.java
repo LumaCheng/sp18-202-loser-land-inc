@@ -33,21 +33,24 @@ public class ContextController implements ScoreObserver {
     }
 
     public String ballUIChange(int score){
-        String returnString = "ball.image";
-        if(score >= 250){
-            returnString = "shieldball.image";
+        String returnString = GameContext.BALL_IMAGE;
+        if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_6))){
+            returnString = GameContext.BIRD_IMAGE;
         }
-        else if(score >= 200){
-            returnString = "pokemonball.image";
+        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_5))){
+            returnString = GameContext.SHIELD_IMAGE;
         }
-        else if(score >= 150){
-            returnString = "pizzaball.image";
+        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_4))){
+            returnString = GameContext.PIZZA_IMAGE;
         }
-        else if(score >= 100){
-            returnString = "soccerball.image";
+        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_3))){
+            returnString = GameContext.POKEMON_IMAGE;
         }
-        else if(score >= 50){
-            returnString = "baseball.image";
+        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_2))){
+            returnString = GameContext.SOCCER_IMAGE;
+        }
+        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_1))){
+            returnString = GameContext.BASEBALL_IMAGE;
         }
         return returnString;
     }
