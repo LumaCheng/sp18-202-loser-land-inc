@@ -1,6 +1,6 @@
 package com.loserland.context;
 
-import com.loserland.configs.JsonDeserializer;
+import com.loserland.configs.JsonSerializationUtils;
 
 import java.io.IOException;
 
@@ -23,9 +23,9 @@ public class GameStageLoader {
 
     public GameStage load() {
         GameStage stage = null;
-        JsonDeserializer jsonDeserializer = new JsonDeserializer();
+        JsonSerializationUtils jsonSerializationUtils = new JsonSerializationUtils();
         try {
-            stage = jsonDeserializer.toObject(GameContext.GAME_STAGE_CONFIG_FILENAME, GameStage.class);
+            stage = jsonSerializationUtils.jsonToObject(GameContext.GAME_STAGE_CONFIG_FILENAME, GameStage.class);
         } catch (IOException e) {
             e.printStackTrace();
             stage = GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.EASY);

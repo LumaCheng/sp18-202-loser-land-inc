@@ -5,6 +5,9 @@ import org.apache.commons.lang3.SerializationUtils;
 public class GameCheckPoint{
     private GameState state;
 
+    public GameCheckPoint() {
+    }
+
     public GameCheckPoint(GameState state) {
         this.state = SerializationUtils.clone(state);
     }
