@@ -9,8 +9,14 @@ public class FireBallPower extends PowerSquare {
     void launchPower() {
         FireBallDecorator fireball = new FireBallDecorator();
         List<BasicBall> ballList = getWorld().getObjects(BasicBall.class);
-        for(BasicBall ball : ballList) {
-            fireball.assemble(ball);
+        for(int i = 0; i < ballList.size(); i++) {
+            BasicBall ball = ballList.get(i);
+            if(ball.getWorld() != null) {
+                if(i == 0)
+                    fireball.assemble(ball);
+                else
+                    getWorld().removeObject(ball);
+            }
         }
     }
 }

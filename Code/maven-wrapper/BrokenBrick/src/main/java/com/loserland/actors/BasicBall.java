@@ -4,31 +4,33 @@ import com.loserland.utils.GifImage;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import static java.lang.Math.*;
 import com.loserland.worlds.*;
+import com.loserland.context.GameContext;
+import com.loserland.configs.*;
+import java.util.List;
 
 public class BasicBall extends SmoothMover implements IBall {
+
     private IBall ball = this;
 
     // declare variable, boolean and class
     double changeX;
     double changeY;
     double speed = 1;
-    boolean shouldRotate = true;
-    int changeRotation = 0;
-    boolean startRotate = false;
     int smokeFrequency = 0;
     int smokeTimingCount = 0;
     double ballX = 0;
     double ballY = 0;
-    private GifImage gifImage;
+
+    GifImage gifImage;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
     // Theme settings
-    private String ballHitWallSound = "";
-    private String ballHitBrickSound = "";
-    private String ballBounceSound = "";
-    private double powerUpRate = 0.0;
+    String ballHitWallSound = "";
+    String ballHitBrickSound = "";
+    String ballBounceSound = "";
 
     // set true since ball is on paddle at begining of level
-    private boolean onPaddle = true;
+    boolean onPaddle = true;
 
     /**
      * Act - do whatever the Ball wants to do. This method is called whenever
@@ -36,26 +38,37 @@ public class BasicBall extends SmoothMover implements IBall {
      */
 
     public BasicBall() {
-        setBallBounceSound("baseball.wav");
-        setBallHitBrickSound("laser.wav");
-        setBallHitWallSound("baseball.wav");
-        setImage("ball.png");
-        setBallInitCooridinate(350, 505);
-        setSmokeFrequency(2);
-        setPowerUpRate(0.5);
+        setParam();
     }
+
+    private void setParam() {
+        setBallBounceSound(config.get(GameContext.BALL_BOUNCE_SND));
+        setBallHitBrickSound(config.get(GameContext.BALL_HIT_BRICK_SND));
+        setBallHitWallSound(config.get(GameContext.BALL_HIT_WALL_SND));
+        setImage(config.get(GameContext.currentBallImg));
+        setBallInitCooridinate(Integer.parseInt(config.get(GameContext.BALL_INIT_X)),
+                Integer.parseInt(config.get(GameContext.BALL_INIT_Y)));
+        setSmokeFrequency(Integer.parseInt(config.get(GameContext.BALL_SMOKE_FREQ)));
+    }
+
     // each act, check for user input, make smoke and check death
     public void act()
     {
+        if(getWorld() != null) {
+            ball.action();
+        }
+    }
+
+    public void action() {
         if(gifImage != null)
             setImage(gifImage.getCurrentImage());
         if (!onPaddle) {
             ball.moveBall();
             ball.checkBallMiss();
             ball.makeSmoke();
+            setImage(config.get(GameContext.currentBallImg));
         }
     }
-
     private int calculateMovement(double movement, double speed) {
         int newMovement = (int)(movement * speed);
         if(movement > 0 && newMovement == 0) return 1;
@@ -68,54 +81,52 @@ public class BasicBall extends SmoothMover implements IBall {
         if(!onPaddle) {
             setLocation(changeX, changeY, speed);
 
-            // Set rotation
-            if(shouldRotate && startRotate) {
-                setRotation(getRotation()+changeRotation);
-            }
-
             // Collision detection with paddle, brick and world edge
             checkPaddleCollision();
             checkWallCollision();
             checkBrickCollision();
         }
-
     }
 
     // Set location
     public void setLocation(double changeX, double changeY, double speed) {
-        int newX = getX() + calculateMovement(changeX, speed);
-        int newY = getY() + calculateMovement(changeY, speed);
-        newX = (newX >= getWorld().getWidth())? getWorld().getWidth() - 1 : newX;
-        newX = (newX < 0)? 0 : newX;
-        newY = (newY >= getWorld().getHeight())? getWorld().getHeight() - 1 : newY;
-        newY = (newY < 0)? 0 : newY;
-        setLocation (newX, newY);
+        if(getWorld() != null) {
+            int newX = getX() + calculateMovement(changeX, speed);
+            int newY = getY() + calculateMovement(changeY, speed);
+            newX = (newX >= getWorld().getWidth()) ? getWorld().getWidth() - 1 : newX;
+            newX = (newX < 0) ? 0 : newX;
+            newY = (newY >= getWorld().getHeight()) ? getWorld().getHeight() - 1 : newY;
+            newY = (newY < 0) ? 0 : newY;
+            setLocation(newX, newY);
+        }
     }
 
     // check collision detection with wall
     public void checkWallCollision()
     {
-        if (getX() <= 0 || getX() > getWorld().getWidth()) {
+        if (getX() <= 0 || getX() >= getWorld().getWidth() - 1) {
             changeX = -changeX;
+            changeY += -changeY*0.1;
+            ball.wallCollision();
             // sound effect
-            if(ballHitWallSound != null)
+            if (ballHitWallSound != null)
                 Greenfoot.playSound(ballHitWallSound);
-            startRotate = true;
-            if(shouldRotate) {
-                changeRotation = Greenfoot.getRandomNumber(30);
-                setRotation(Greenfoot.getRandomNumber(360));
-            }
         }
+
         // Makes ball move in opposite direction after collision
         if (getY() <= 0) {
             changeY = -changeY;
+            changeX += -changeX*0.1;
         }
     }
 
+    public void wallCollision() {
+
+    }
     // collision dectection with brick
-    private void checkBrickCollision(){
+    public void checkBrickCollision(){
         Brick brick = (Brick)getOneIntersectingObject(Brick.class);
-        if ( brick != null ) {
+        if ( brick != null) {
             ball.brickCollision(brick);
             // sound effect
             if(ballHitBrickSound != null)
@@ -124,16 +135,13 @@ public class BasicBall extends SmoothMover implements IBall {
     }
 
     public void brickCollision(Brick brick){
-        if (getY() > brick.getY() || getY() < brick.getY()) {
+        int brickUpperBound = brick.getY() - brick.getImage().getHeight() / 2;
+        int brickLowerBound = brick.getY() + brick.getImage().getHeight() / 2;
+        if (getY() > brickLowerBound || getY() < brickUpperBound) {
             changeY = -changeY;
             // Fixes multi-kill bug
-            startRotate = true;
-            if(shouldRotate) {
-                changeRotation = Greenfoot.getRandomNumber(30);
-                setRotation(Greenfoot.getRandomNumber(360));
-            }
-            setLocation(getX(),getY()+1);
-            generatePowerSquare(brick);
+            setLocation(getX(),getY() + 1);
+            PowerGenerator.generatePowerSquare(this, brick);
         }
         else {
             // moves ball in opposite direction after collision
@@ -141,18 +149,15 @@ public class BasicBall extends SmoothMover implements IBall {
         }
         // changes brick appearance accordingly
         brick.effect();
+
     }
 
-    public void generatePowerSquare(Brick brick) {
-        int hitNumber = Greenfoot.getRandomNumber((int)(PowerSquareFactory.getNumberOfPowers()/powerUpRate));
-        if(hitNumber < PowerSquareFactory.getNumberOfPowers()) {
-            PowerSquareFactory.PowerType type = PowerSquareFactory.PowerType.values()[hitNumber];
-            PowerSquare powerSquare = PowerSquareFactory.makePowerSquare(type);
-            if(powerSquare != null) {
-                getWorld().addObject(powerSquare, brick.getX(), brick.getY());
-                powerSquare.fall();
-            }
-        }
+    public PowerSquareFactory.PowerType getCurrentPower() {
+        return ball.powerType();
+    }
+
+    public PowerSquareFactory.PowerType powerType() {
+        return PowerSquareFactory.PowerType.NORMAL;
     }
 
     // delete ball when passes MinX
@@ -168,50 +173,57 @@ public class BasicBall extends SmoothMover implements IBall {
     private void ballDead()
     {
         // reset to original position. Updates status to world
-        ((MyWorld)getWorld()).getStartAgain();
-        ((MyWorld) getWorld()).takeLife();
+        ((MainWorld) getWorld()).getStartAgain();
+        ((MainWorld) getWorld()).takeLife();
     }
 
     // checks to see if ball made contact with paddle
-    private void checkPaddleCollision()
+    public void checkPaddleCollision()
     {
         Paddle paddle = (Paddle) getOneIntersectingObject(Paddle.class);
-        if (paddle != null)
-        {
+        if (paddle != null && paddle.getStartBounce()) {
             // bounce if made contact
-            bounce(paddle);
+            ball.bounce(paddle);
         }
     }
 
     // ball collision with paddle
-    private void bounce(Actor a) {
-        // reflect opposite side
-        changeY = -changeY;
-        // refelcts depending on incoming angle
-        int reflected = getX() - a.getX();
-        // caculate angle of reflection based on incoming angle
-        // divide by 8 to minimize the rebound magnitude. Not as dramatic/hard.
-        changeX = changeX + (reflected/8);
-        if (changeX > 7) {
-            changeX = 7;
+    public void bounce(Actor a) {
+        if (getY() > a.getY() || getY() < a.getY()) {
+            // reflect opposite side
+            changeY = -changeY;
+            // refelcts depending on incoming angle
+            int reflected = getX() - a.getX();
+            // caculate angle of reflection based on incoming angle
+            // divide by 8 to minimize the rebound magnitude. Not as dramatic/hard.
+            changeX = changeX + (reflected / 8);
+            if (changeX > 7) {
+                changeX = 7;
+            }
+            if (changeX < -7) {
+                changeX = -7;
+            }
+        } else {
+            changeX = -changeX;
         }
-        if (changeX < -7) {
-            changeX = -7;
-        }
-        // sound effect
-        if(ballBounceSound != null)
-            Greenfoot.playSound(ballBounceSound);
-    }
 
-    public void resetBall() {
-        Paddle paddle = getWorld().getObjects(Paddle.class).get(0);
-        setLocation(paddle.getX(),paddle.getY()-(this.getImage().getHeight()+5));
+        double speed = Math.sqrt(changeX * changeX + changeY * changeY);
+        double lowestSpeed = 6;
+        if(speed < lowestSpeed) {
+            double mult = lowestSpeed / speed;
+            changeX *= mult;
+            changeY *= mult;
+        }speed = Math.sqrt(changeX * changeX + changeY * changeY);
+
+        // sound effect
+        if (ballBounceSound != null)
+            Greenfoot.playSound(ballBounceSound);
     }
 
     public void replaceBall()
     {
-        // sends information to world class (com.loserland.MyWorld) to call upon replaceBall method to create a new ball in place of old one.
-        ((MyWorld) getWorld()).replaceBall();
+        // sends information to world class (com.loserland.MainWorld) to call upon replaceBall method to create a new ball in place of old one.
+        ((MainWorld) getWorld()).replaceBall();
     }
 
     /**
@@ -248,6 +260,10 @@ public class BasicBall extends SmoothMover implements IBall {
     public void launch(int mouseX, int mouseY)
     {
         // change to negative so ball can move upwards
+        if(!Paddle.getStartBounce()) {
+            Paddle.setStartBounce(true);
+            setLocation(getX(), getY() - 5);
+        }
         trajectoryPath(mouseX,mouseY);
         // ball launched
         onPaddle = false;
@@ -270,8 +286,11 @@ public class BasicBall extends SmoothMover implements IBall {
         }
     }
 
-    public void setShouldRotate(boolean shouldRotate) {
-        this.shouldRotate = shouldRotate;
+    public <A> List<A> getObjectsInRange(int radius, Class<A> cls) {
+        return super.getObjectsInRange(radius, cls);
+    }
+    public Actor getOneIntersectingObject(Class<?> cls) {
+        return super.getOneIntersectingObject(cls);
     }
 
     public void setBallHitWallSound(String fileName) {
@@ -285,9 +304,6 @@ public class BasicBall extends SmoothMover implements IBall {
     public void setBallBounceSound(String fileName) {
         ballBounceSound = fileName;
     }
-    public void setPowerUpRate(double rate) {
-        powerUpRate = rate;
-    }
 
     public void setSmokeFrequency(int frequency) {
         smokeFrequency = frequency;
@@ -299,6 +315,9 @@ public class BasicBall extends SmoothMover implements IBall {
     }
 
     public void setDecorator(IBall ball) {
+        if(ball == this) {
+            setParam();
+        }
         this.ball = ball;
     }
 
@@ -322,5 +341,13 @@ public class BasicBall extends SmoothMover implements IBall {
     public void setImage(String fileName) {
         gifImage = null;
         super.setImage(fileName);
+    }
+
+    public void setOnPaddle(boolean isOnPaddle) {
+        onPaddle = isOnPaddle;
+    }
+
+    public void remove() {
+        getWorld().removeObject(this);
     }
 }

@@ -33,6 +33,7 @@ public class GifImage
     private int currentIndex;
     /** The time passed since the last frame in ms. */
     private long time;
+    private boolean repeated;
     /** The GIF file that contains the animation. */
     private String file;
     /** Whether the animation is paused or not. */
@@ -62,6 +63,7 @@ public class GifImage
     {
         this.file = file;
         pause = false;
+        this.delayMilliSec = delayMilliSec;
         if(file.toLowerCase().endsWith(".gif")) {
             loadImages();
         }
@@ -69,7 +71,6 @@ public class GifImage
             images = new GreenfootImage[] {new GreenfootImage(file)};
             delay = new int[] {1000}; // Doesn't matter, as long as it's not zero
             currentIndex = 0;
-            this.delayMilliSec = delayMilliSec;
             time = System.currentTimeMillis();
         }
     }
@@ -120,9 +121,23 @@ public class GifImage
         while (delta > delay[currentIndex] && !pause) {
             delta -= delay[currentIndex];
             time += delay[currentIndex];
+            if(currentIndex + 1 == images.length - 1)  repeated = true;
             currentIndex = (currentIndex+1) % images.length;
         }
         return images[currentIndex];
+    }
+
+    public boolean isRepeated()
+    {
+        return repeated;
+    }
+
+    public int getWidth() {
+        return getCurrentImage().getWidth();
+    }
+
+    public int getHeight() {
+        return getCurrentImage().getHeight();
     }
 
     /**
@@ -151,8 +166,7 @@ public class GifImage
 
 
             // Set your own delay
-            delay[i] = 30;
-
+            delay[i] = delayMilliSec;
 
             images[i] = image;
         }

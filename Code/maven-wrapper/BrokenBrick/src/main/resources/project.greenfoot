@@ -3,8 +3,8 @@
 
 
 #Components
-class.com.loserland.worlds.MyWorld.image=burlap.jpg
-class.com.loserland.worlds.MyWorld.superclass=greenfoot.World
+class.com.loserland.worlds.MainWorld.image=stagepage2.png
+class.com.loserland.worlds.MainWorld.superclass=greenfoot.World
 
 
 
@@ -37,6 +37,15 @@ class.com.loserland.actors.SpeedDownPower.image=slow.png
 
 class.com.loserland.actors.FireBallPower.superclass=greenfoot.Actor
 class.com.loserland.actors.FireBallPower.image=fire.png
+
+class.com.loserland.actors.NormalPower.superclass=greenfoot.Actor
+class.com.loserland.actors.NormalPower.image=white_ball.png
+
+class.com.loserland.actors.MultiballPower.superclass=greenfoot.Actor
+class.com.loserland.actors.MultiballPower.image=face.png
+
+class.com.loserland.actors.PyroblastPower.superclass=greenfoot.Actor
+class.com.loserland.actors.PyroblastPower.image=chemical.png
 
 class.com.loserland.actors.Smoke.superclass=greenfoot.Actor
 class.com.loserland.actors.Smoke.image=smoke.png

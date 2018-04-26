@@ -1,4 +1,7 @@
 package com.loserland.actors;
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
@@ -7,45 +10,78 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Musicplayer extends Actor
+public class Musicplayer extends Actor implements ScoreObserver
 {
-    
-    /**
-     * Act - do whatever the musicplayer wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    //GreenfootSound backgroundMusic = new GreenfootSound("theme.wav");
-    
-    private GreenfootImage button_1 = new GreenfootImage("play.png");
-    private GreenfootImage button_2 = new GreenfootImage("pause.png");
- 
-    private boolean play;
-    // width of the score board
-    private int WIDTH = 30;  
-    // height of the score board
-    private int HEIGHT = 30;  
+
+    private static Musicplayer instance = new Musicplayer();
+
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    GreenfootSound backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
+    private GreenfootImage button = new GreenfootImage(config.get(GameContext.PLAYER_PAUSE_IMG));
+    private int WIDTH = config.get(Integer.class, GameContext.PLAYER_SIZE);
+    private int HEIGHT = config.get(Integer.class, GameContext.PLAYER_SIZE);
+    private PlayState playState = new PlayState();
+    private PauseState pauseState = new PauseState();;
+//    int volume;
+
+    private State state;
+
 
     public Musicplayer() {
-        button_1.scale(WIDTH,HEIGHT);
-        button_2.scale(WIDTH, HEIGHT);
+        //backgroundMusic.playLoop();
+        button.scale(WIDTH,HEIGHT);
         // display on screen
-        setImage(button_2);
+        setImage(button);
+        state = null;
+    }
 
-        play = true;
+    public static Musicplayer getInstance(){
+        return instance;
     }
  
-    public void act() {        
-        if (Greenfoot.mouseClicked(this)) {    
-            if(play){
-                setImage(button_1);
-                play = false;
+    public void act() {
+        if(Greenfoot.mouseClicked(this)){
+            if(backgroundMusic.isPlaying()){
+                pauseState.doAction(this);
             }
             else{
-                setImage(button_2);
-                play = true;
+                playState.doAction(this);
             }
-            
-        }    
+        }
     }
-    
+
+    public void change() {
+        if (this.state.toString().equals("StopState")) {
+            backgroundMusic.stop();
+        } else if (this.state.toString().equals("PauseState")) {
+            GreenfootImage button = state.getImage();
+            button.scale(WIDTH, HEIGHT);
+            setImage(button);
+            backgroundMusic.pause();
+        } else if (this.state.toString().equals("PlayState")) {
+            GreenfootImage button = state.getImage();
+            button.scale(WIDTH, HEIGHT);
+            setImage(button);
+            backgroundMusic.playLoop();
+        }
+    }
+
+    public void update(int v){
+        backgroundMusic.setVolume(v);
+    }
+
+    public boolean isPlaying(){
+        return backgroundMusic.isPlaying();
+    }
+
+
+    public void setState(State state){
+        this.state = state;
+        change();
+    }
+
+    public State getState(){
+        return state;
+    }
 }
+

@@ -7,7 +7,7 @@ public class SpeedUpPower extends PowerSquare {
     void launchPower() {
         List<BasicBall> ballList = getWorld().getObjects(BasicBall.class);
         for(BasicBall ball : ballList) {
-            ball.adjustSpeed(0.5);
+            ball.adjustSpeed(0.3);
         }
     }
 }

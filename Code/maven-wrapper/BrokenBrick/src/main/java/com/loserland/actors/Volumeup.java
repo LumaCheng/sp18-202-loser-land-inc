@@ -1,26 +1,27 @@
 package com.loserland.actors;
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-
+import com.loserland.configs.*;
+import com.loserland.context.GameContext;
 /**
- * Write a description of class volume here.
+ * Write a description of class VOLUME here.
  * 
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Volumeup extends Actor
+public class Volumeup extends Actor implements ScoreObserver
 {
-    /**
-     * Act - do whatever the volume wants to do. This method is called whenever
-     * the 'Act' or 'Run' button gets pressed in the environment.
-     */
-    
-     private GreenfootImage button = new GreenfootImage("volumeup.png");
-     private int WIDTH = 10;  
-    // height of the score board
-    private int HEIGHT = 10; 
-    private int volume = 65;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    private GreenfootImage button = new GreenfootImage(config.get(GameContext.VOLUME_UP_IMG));
+    private int WIDTH = config.get(Integer.class, GameContext.VOLUME_SIZE);
+    private int HEIGHT = config.get(Integer.class, GameContext.VOLUME_SIZE);
+     private int volume = config.get(Integer.class, GameContext.VOLUME_DEFAULT);
+
     long lastAdded;
-    public void Volumeup() 
+
+    public Volumeup()
     {
         button.scale(WIDTH,HEIGHT);
         // display on screen
@@ -31,7 +32,7 @@ public class Volumeup extends Actor
     public void act(){   
         if (Greenfoot.mouseClicked(this) ){
             setImage(button);       
-            GreenfootImage show_volume = new GreenfootImage(""+volume, 20, Color.BLACK, new Color(0, 0, 0, 0));
+            GreenfootImage show_volume = new GreenfootImage(""+volume, 20, Color.WHITE, new Color(0, 0, 0, 0));
             lastAdded = System.currentTimeMillis();
             setImage(show_volume);
 
@@ -43,8 +44,8 @@ public class Volumeup extends Actor
 
     }
     
-       // updates the volume display
-    public void update(int v) 
+       // updates the VOLUME display
+    public void update(int v)
     {      
         volume = v;
     }
