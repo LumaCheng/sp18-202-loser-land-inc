@@ -1,10 +1,14 @@
 package com.loserland.actors;
 
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import greenfoot.Greenfoot;
 
 public class PowerGenerator {
 
-    public static double powerUpRate;
+    private static Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    public static double powerUpRate = Double.parseDouble(config.get(GameContext.BALL_POWER_RATE));
 
     public static void setPowerUpRate(double rate) {
         powerUpRate = rate;

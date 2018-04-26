@@ -28,7 +28,6 @@ public class BasicBall extends SmoothMover implements IBall {
     String ballHitWallSound = "";
     String ballHitBrickSound = "";
     String ballBounceSound = "";
-    double powerUpRate = 0.0;
 
     // set true since ball is on paddle at begining of level
     boolean onPaddle = true;
@@ -50,7 +49,6 @@ public class BasicBall extends SmoothMover implements IBall {
         setBallInitCooridinate(Integer.parseInt(config.get(GameContext.BALL_INIT_X)),
                 Integer.parseInt(config.get(GameContext.BALL_INIT_Y)));
         setSmokeFrequency(Integer.parseInt(config.get(GameContext.BALL_SMOKE_FREQ)));
-        setPowerUpRate(Double.parseDouble(config.get(GameContext.BALL_POWER_RATE)));
     }
 
     // each act, check for user input, make smoke and check death
@@ -311,9 +309,6 @@ public class BasicBall extends SmoothMover implements IBall {
 
     public void setBallBounceSound(String fileName) {
         ballBounceSound = fileName;
-    }
-    public void setPowerUpRate(double rate) {
-        powerUpRate = rate;
     }
 
     public void setSmokeFrequency(int frequency) {

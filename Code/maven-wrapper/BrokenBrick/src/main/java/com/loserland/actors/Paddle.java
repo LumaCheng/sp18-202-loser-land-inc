@@ -86,9 +86,7 @@ public class Paddle extends Actor implements ControllerObserver {
         BasicBall ball = new BasicBall();
         haveBall = true;
         startBounce = false;
-        FireBallDecorator f = new FireBallDecorator();
-        f.assemble(ball);
-        getWorld().addObject(f.getBall(), getX(), getY() - (ball.getImage().getHeight()));
+        getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
     }
 
     // moves paddle accordingly with mouse input

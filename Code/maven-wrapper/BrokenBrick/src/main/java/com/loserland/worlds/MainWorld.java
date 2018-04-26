@@ -374,7 +374,8 @@ public class MainWorld extends World implements IGameProgress
     // launching ball to commence game
     public void launchBall()
     {
-        paddle.releaseBall();
+        if(paddle.haveBall())
+            paddle.releaseBall();
     }
 
     public void replaceBall()
