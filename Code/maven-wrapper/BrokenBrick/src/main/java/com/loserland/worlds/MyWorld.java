@@ -322,17 +322,11 @@ public class MyWorld extends World
 //            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
 //        }
 
-        if (Greenfoot.mouseClicked(gameOver)) {
+        if (Greenfoot.mouseClicked(gameOver)){
             //mainWorld.stopMusic();
-            if (!ifMainMenu) {
-                addObject(menu, 350, 260);
-                addObject(startGame, 350, 360);
-                addObject (loadGame, 350,410);
-                addObject (highScore, 350,460);
-                ifMainMenu = true;
+                removeObject(gameOver);
+                highScoreBoard.ShowScore();
                 //refreshMainWorld();
-            }
         }
-
     }
 }
