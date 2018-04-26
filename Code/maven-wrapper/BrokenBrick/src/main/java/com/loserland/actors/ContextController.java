@@ -26,38 +26,38 @@ public class ContextController implements ScoreObserver {
 
 
     public void update(int score){
-        String ballUiImage = ballUIChange(score);
+        GameContext.BallType ballUiImage = ballUIChange(score);
         GameContext.currentBallImg = ballUiImage;
         //ballList = mainWorld.getObjects(BasicBall.class);
         //this.setBallImage(ballList);
     }
 
-    public String ballUIChange(int score){
-        String returnString = GameContext.BALL_IMAGE;
+    public GameContext.BallType ballUIChange(int score){
+        GameContext.BallType returnString = GameContext.BallType.NORMAL;
         if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_6))){
-            returnString = GameContext.BIRD_IMAGE;
+            returnString = GameContext.BallType.BIRD;
         }
         else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_5))){
-            returnString = GameContext.SHIELD_IMAGE;
+            returnString = GameContext.BallType.SHIELD;
         }
         else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_4))){
-            returnString = GameContext.PIZZA_IMAGE;
+            returnString = GameContext.BallType.PIZZA;
         }
         else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_3))){
-            returnString = GameContext.POKEMON_IMAGE;
+            returnString = GameContext.BallType.POKEMON;
         }
         else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_2))){
-            returnString = GameContext.SOCCER_IMAGE;
+            returnString = GameContext.BallType.SOCCER;
         }
         else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_1))){
-            returnString = GameContext.BASEBALL_IMAGE;
+            returnString = GameContext.BallType.BASEBALL;
         }
         return returnString;
     }
 
     private void setBallImage(List<BasicBall> balls) {
         for (BasicBall ball : balls) {
-            ball.setImage(config.get(GameContext.currentBallImg));
+            ball.setImage(config.get(GameContext.currentBallImg.getKey()));
         }
     }
 }

@@ -45,7 +45,7 @@ public class BasicBall extends SmoothMover implements IBall {
         setBallBounceSound(config.get(GameContext.BALL_BOUNCE_SND));
         setBallHitBrickSound(config.get(GameContext.BALL_HIT_BRICK_SND));
         setBallHitWallSound(config.get(GameContext.BALL_HIT_WALL_SND));
-        setImage(config.get(GameContext.currentBallImg));
+        setImage(config.get(GameContext.currentBallImg.getKey()));
         setBallInitCooridinate(Integer.parseInt(config.get(GameContext.BALL_INIT_X)),
                 Integer.parseInt(config.get(GameContext.BALL_INIT_Y)));
         setSmokeFrequency(Integer.parseInt(config.get(GameContext.BALL_SMOKE_FREQ)));
@@ -66,7 +66,7 @@ public class BasicBall extends SmoothMover implements IBall {
             ball.moveBall();
             ball.checkBallMiss();
             ball.makeSmoke();
-            setImage(config.get(GameContext.currentBallImg));
+            setImage(config.get(GameContext.currentBallImg.getKey()));
         }
     }
     private int calculateMovement(double movement, double speed) {

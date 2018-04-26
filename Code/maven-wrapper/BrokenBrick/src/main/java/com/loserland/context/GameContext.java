@@ -81,13 +81,29 @@ public class GameContext {
 
     public static final String MULTIBALL_IMAGE = "multiball.image";
 
-    public static final String BALL_IMAGE = "ball.image";
-    public static final String SHIELD_IMAGE = "shieldball.image";
-    public static final String POKEMON_IMAGE = "pokemonball.image";
-    public static final String PIZZA_IMAGE = "pizzaball.image";
-    public static final String SOCCER_IMAGE = "soccerball.image";
-    public static final String BASEBALL_IMAGE = "baseball.image";
-    public static final String BIRD_IMAGE = "bird.image";
+    public enum BallType{
+        NORMAL("ball.image"), SHIELD("shieldball.image"), POKEMON("pokemonball.image"),
+        PIZZA("pizzaball.image"), SOCCER("soccerball.image"), BASEBALL("baseball.image"),
+        BIRD("bird.image");
+
+        private String key;
+
+        public String getKey(){
+            return key;
+        }
+
+        BallType(String key){
+            this.key = key;
+        }
+    }
+
+//    public static final String BALL_IMAGE = "ball.image";
+//    public static final String SHIELD_IMAGE = "shieldball.image";
+//    public static final String POKEMON_IMAGE = "pokemonball.image";
+//    public static final String PIZZA_IMAGE = "pizzaball.image";
+//    public static final String SOCCER_IMAGE = "soccerball.image";
+//    public static final String BASEBALL_IMAGE = "baseball.image";
+//    public static final String BIRD_IMAGE = "bird.image";
 
     public static final String SCORE_LEVEL_1 = "score.level1";
     public static final String SCORE_LEVEL_2 = "score.level2";
@@ -98,7 +114,7 @@ public class GameContext {
 
 
     /* Global variable */
-    public static String currentBallImg = BALL_IMAGE;
+    public static BallType currentBallImg = BallType.NORMAL;
     public static String currentPaddleImg = "paddle.image";
 
 }
