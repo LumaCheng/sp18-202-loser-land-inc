@@ -155,18 +155,24 @@ public class MyWorld extends World
         }
         if(Greenfoot.mouseMoved(startGame)){
             startGame.setImage(config.get(GameContext.START_HOVER));
+            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
+            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
         }
         if(Greenfoot.mousePressed(loadGame)){
             loadGame.setImage(config.get(GameContext.LOAD_PRESSED));
         }
         if(Greenfoot.mouseMoved(loadGame)){
             loadGame.setImage(config.get(GameContext.LOAD_HOVER));
+            startGame.setImage(config.get(GameContext.START_BUTTON));
+            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
         }
         if(Greenfoot.mousePressed(highScore)){
             highScore.setImage(config.get(GameContext.SCORE_PRESSED));
         }
         if(Greenfoot.mouseMoved(highScore)){
             highScore.setImage(config.get(GameContext.SCORE_HOVER));
+            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
+            startGame.setImage(config.get(GameContext.START_BUTTON));
         }
         if(Greenfoot.mouseMoved(menu)){
             startGame.setImage(config.get(GameContext.START_BUTTON));
