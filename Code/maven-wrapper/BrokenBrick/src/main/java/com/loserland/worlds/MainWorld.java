@@ -411,16 +411,18 @@ public class MainWorld extends World implements IGameProgress
     }
 
     private void render(GameState state) {
-
-        List allActors = getObjects(Brick.class);
-        if (allActors.size() > 0){
-            removeObjects(allActors);
+        List<Actor> actors = getObjects(Actor.class);
+        for (Actor actor: actors){
+            if (actor instanceof Storable){
+                removeObject(actor);
+            }
         }
+
         //render stage
         for (GameBrick gameBrick: state.getStage().getBricks()){
             Brick brick = gameBrick.restore();
             addObject(brick, gameBrick.getX(), gameBrick.getY() );
-            
+
             if (hasIntersectingActors(brick, Brick.class)){
                 removeObject(brick);
             }
