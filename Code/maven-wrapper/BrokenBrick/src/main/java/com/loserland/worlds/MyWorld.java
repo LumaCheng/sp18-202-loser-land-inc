@@ -10,6 +10,8 @@ import greenfoot.GreenfootSound;
 import greenfoot.MouseInfo;
 import greenfoot.World;
 
+import java.util.ArrayList;
+
 
 /**
  * Write a description of class MyWorld here.
@@ -31,6 +33,7 @@ public class MyWorld extends World
     private boolean ifMainMenu = true;
     private HighScoreBoard highScoreBoard;
     private Back back;
+    private ArrayList<MenuButton> buttonsList;
 
     GreenfootSound backgroundMusic;
 
