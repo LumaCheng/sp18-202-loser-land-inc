@@ -11,7 +11,7 @@ import com.loserland.context.GameContext;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Volumedown extends Actor
+public class Volumedown extends Actor implements ScoreObserver
 {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
@@ -33,7 +33,7 @@ public class Volumedown extends Actor
     public void act(){   
         if (Greenfoot.mouseClicked(this)){
             setImage(button);     
-            GreenfootImage show_volume = new GreenfootImage(""+volume, 20, Color.BLACK, new Color(0, 0, 0, 0));
+            GreenfootImage show_volume = new GreenfootImage(""+volume, 20, Color.WHITE, new Color(0, 0, 0, 0));
             lastAdded = System.currentTimeMillis();
             setImage(show_volume);
         }

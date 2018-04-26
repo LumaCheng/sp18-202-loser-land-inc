@@ -69,10 +69,10 @@ public class MainWorld extends World implements IGameProgress
     private Musicplayer musicplayer;
     private Volumeup volumeup;
     private Volumedown volumedown;
-    private HighScoreBoard highScoreBoard = new HighScoreBoard();
+    private HighScoreBoard highScoreBoard = HighScoreBoard.getInstance();
     private ManageScore managescore = new ManageScore();
+    private ManageScore managevolume = new ManageScore();
     private PlayState playState;
-    private PauseState pauseState;
     private StopState stopState;
     private Exit pause;
 
@@ -158,16 +158,19 @@ public class MainWorld extends World implements IGameProgress
     }
 
     private void initMusic() {
-        backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
+        //backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
         // play background music continuously
 
        // backgroundMusic.playLoop();
-        musicplayer = new Musicplayer(backgroundMusic);
+        musicplayer = Musicplayer.getInstance();
         playState = new PlayState();
-        pauseState = new PauseState();
         stopState = new StopState();
         volumeup = new Volumeup();
         volumedown = new Volumedown();
+        playState.doAction(musicplayer);
+        managevolume.attach(musicplayer);
+        managevolume.attach(volumeup);
+        managevolume.attach(volumedown);
 
     }
 
@@ -292,27 +295,22 @@ public class MainWorld extends World implements IGameProgress
         int mouseY;
         // check don't exceed left and right border of background
         // don't move paddle before player shoots
-        if(Greenfoot.mouseClicked(musicplayer)){
-            if(backgroundMusic.isPlaying()){
-                pauseState.doAction(musicplayer);
-            }
-            else{
-                playState.doAction(musicplayer);
-            }
-        }
-        else if(Greenfoot.mouseClicked(volumeup) && backgroundMusic.isPlaying() ){
+//        if(Greenfoot.mouseClicked(musicplayer)){
+//            if(backgroundMusic.isPlaying()){
+//                pauseState.doAction(musicplayer);
+//            }
+//            else{
+//                playState.doAction(musicplayer);
+//            }
+//        }
+
+        if(Greenfoot.mouseClicked(volumeup) && musicplayer.isPlaying()){
             volume = volume <= 95 ? volume+5 : volume;
-            backgroundMusic.setVolume(volume);
-            volumeup.update(volume);
-            volumedown.update(volume);
-
+            managevolume.notifyObservers(volume);
         }
-        else if(Greenfoot.mouseClicked(volumedown) && backgroundMusic.isPlaying()){
-
+        else if(Greenfoot.mouseClicked(volumedown) && musicplayer.isPlaying()){
             volume = volume >= 5? volume-5 : volume;
-            backgroundMusic.setVolume(volume);
-            volumeup.update(volume);
-            volumedown.update(volume);
+            managevolume.notifyObservers(volume);
         }
 
         else if(Greenfoot.mouseClicked(pause)){
