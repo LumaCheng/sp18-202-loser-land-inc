@@ -208,10 +208,12 @@ public class BasicBall extends SmoothMover implements IBall {
         }
 
         double speed = Math.sqrt(changeX * changeX + changeY * changeY);
-        if(speed < 4) {
-            changeX *= 2;
-            changeY *= 2;
-        }
+        double lowestSpeed = 6;
+        if(speed < lowestSpeed) {
+            double mult = lowestSpeed / speed;
+            changeX *= mult;
+            changeY *= mult;
+        }speed = Math.sqrt(changeX * changeX + changeY * changeY);
 
         // sound effect
         if (ballBounceSound != null)
