@@ -31,6 +31,9 @@ public class GameProgressManager implements IGameProgressManager {
 
     @Override
     public GameCheckPoint load() {
+        if (checkPoints == null || checkPoints.size() == 0){
+            return null;
+        }
         return checkPoints.get(checkPoints.size() - 1);
     }
 }
