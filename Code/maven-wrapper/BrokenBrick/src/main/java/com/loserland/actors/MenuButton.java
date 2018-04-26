@@ -8,26 +8,35 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name)
  * @version (a version number or a date)
  */
-public class MenuButton implements IMenuInvoker
+public class MenuButton extends Actor implements IMenuInvoker
 {
-    private ICommand pressCmd ;
     private ICommand clickCmd ;
-    private ICommand hoverCmd ;
+    private String normalImg;
+    private String hoverImg;
+    private String pressImg;
+
+    public MenuButton(String normalImg, String hoverImg, String pressImg){
+        this.normalImg = normalImg;
+        this.hoverImg = hoverImg;
+        this.pressImg = pressImg;
+        setImage(this.normalImg);
+    }
+
+    public MenuButton(String normalImg){
+        this.normalImg = normalImg;
+        this.hoverImg = normalImg;
+        this.pressImg = normalImg;
+        setImage(this.normalImg);
+    }
+
+    public void resetImage(){
+        this.setImage(normalImg);
+    }
 
 
     @Override
-    public void setClickCommand(ICommand c) {
+    public void setCommand(ICommand c) {
         clickCmd = c;
-    }
-
-    @Override
-    public void setHoverCommand(ICommand c) {
-        hoverCmd = c;
-    }
-
-    @Override
-    public void setPressCommand(ICommand c) {
-        pressCmd = c;
     }
 
     @Override
@@ -37,11 +46,11 @@ public class MenuButton implements IMenuInvoker
 
     @Override
     public void press() {
-        pressCmd.execute();
+        this.setImage(pressImg);
     }
 
     @Override
     public void hover() {
-        hoverCmd.execute();
+        this.setImage(hoverImg);
     }
 }
