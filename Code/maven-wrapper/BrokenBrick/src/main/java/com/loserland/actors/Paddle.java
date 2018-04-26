@@ -16,6 +16,7 @@ public class Paddle extends Actor implements ControllerObserver {
     // Declare class
 //    private BasicBall ball ;
     private boolean haveBall;
+    private static boolean startBounce;
     private int enlarge ;
     private int shrink;        
     private int mouseX, mouseY;
@@ -84,7 +85,10 @@ public class Paddle extends Actor implements ControllerObserver {
     {
         BasicBall ball = new BasicBall();
         haveBall = true;
-        getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
+        startBounce = false;
+        FireBallDecorator f = new FireBallDecorator();
+        f.assemble(ball);
+        getWorld().addObject(f.getBall(), getX(), getY() - (ball.getImage().getHeight()));
     }
 
     // moves paddle accordingly with mouse input
@@ -134,6 +138,9 @@ public class Paddle extends Actor implements ControllerObserver {
     public boolean isInWorld() {
         return true;
     }
+
+    public static void setStartBounce(boolean startBounce) {Paddle.startBounce = startBounce;}
+    public static boolean getStartBounce() { return startBounce; }
 
     @Override
     public void controllerEventReceived(ControllerEvent event) {
