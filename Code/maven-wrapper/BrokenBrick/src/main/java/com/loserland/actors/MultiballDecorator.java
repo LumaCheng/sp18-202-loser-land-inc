@@ -37,19 +37,15 @@ public class MultiballDecorator implements IBall, IBallDecorator {
     private void checkBallCollision() {
         BasicBall ball = (BasicBall)basicBall.getOneIntersectingObject(BasicBall.class);
         if ( ball != null ) {
-            int ballUpperBound = ball.getY() - ball.getImage().getHeight() / 2;
-            int ballLowerBound = ball.getY() + ball.getImage().getHeight() / 2;
-            if (basicBall.getY() > ballLowerBound || basicBall.getY() < ballUpperBound) {
+            if (basicBall.getY() > ball.getY() || basicBall.getY() < ball.getY()) {
                 basicBall.changeY = -basicBall.changeY;
-                ball.changeY = -ball.changeY;
                 // Fixes multi-kill bug
                 basicBall.setLocation(basicBall.getX() + basicBall.changeX + Greenfoot.getRandomNumber(10)-5,
                         basicBall.getY() + basicBall.changeY + Greenfoot.getRandomNumber(10)-5);
             }
-            else {
+            else{
                 // moves ball in opposite direction after collision
                 basicBall.changeX = -basicBall.changeX;
-                ball.changeX = -ball.changeX;
             }
             ball.speed+=0.001;
             basicBall.speed+=0.001;
@@ -100,7 +96,7 @@ public class MultiballDecorator implements IBall, IBallDecorator {
     }
 
     @Override
-    public PowerSquareFactory.PowerType getCurrentPower() {
+    public PowerSquareFactory.PowerType powerType() {
         return PowerSquareFactory.PowerType.MULTI_BALL;
     }
 

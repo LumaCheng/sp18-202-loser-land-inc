@@ -59,7 +59,7 @@ public class FireBallDecorator implements IBall, IBallDecorator {
 
 
     @Override
-    public PowerSquareFactory.PowerType getCurrentPower() {
+    public PowerSquareFactory.PowerType powerType() {
         return PowerSquareFactory.PowerType.FIRE_BALL;
     }
 

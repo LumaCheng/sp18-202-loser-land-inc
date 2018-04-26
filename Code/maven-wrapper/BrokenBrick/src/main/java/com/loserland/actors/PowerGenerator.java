@@ -19,6 +19,7 @@ public class PowerGenerator {
         if(hitNumber < PowerSquareFactory.getNumberOfPowers() - 1) {
             PowerSquareFactory.PowerType type = PowerSquareFactory.PowerType.values()[hitNumber];
             PowerSquare powerSquare;
+            PowerSquareFactory.PowerType a = ball.powerType();
             if(type == ball.getCurrentPower())
                 powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
             else
