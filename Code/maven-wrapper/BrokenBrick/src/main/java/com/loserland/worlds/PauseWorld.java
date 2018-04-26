@@ -147,6 +147,9 @@ public class PauseWorld extends World
             save.setImage(config.get(GameContext.SAVE_BUTTON));
             exit.setImage(config.get(GameContext.EXIT_BUTTON));
         }
+        if(Greenfoot.mouseClicked(save)){
+            //save the current scene
+        }
 
     }
 

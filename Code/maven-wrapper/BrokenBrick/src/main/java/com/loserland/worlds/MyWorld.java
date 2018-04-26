@@ -194,6 +194,14 @@ public class MyWorld extends World
         if(Greenfoot.mousePressed(loadGame)){
             loadGame.setImage(config.get(GameContext.LOAD_PRESSED));
         }
+
+
+
+        if(Greenfoot.mouseClicked(loadGame)){
+            // Load Game Scene
+        }
+
+
         if(Greenfoot.mouseMoved(loadGame)){
             loadGame.setImage(config.get(GameContext.LOAD_HOVER));
             startGame.setImage(config.get(GameContext.START_BUTTON));
@@ -224,7 +232,6 @@ public class MyWorld extends World
                 //refreshMainWorld();
             }
         }
+
     }
-
-
 }
