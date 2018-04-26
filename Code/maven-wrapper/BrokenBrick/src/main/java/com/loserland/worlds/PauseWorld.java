@@ -152,7 +152,6 @@ public class PauseWorld extends World
         }
         if(Greenfoot.mouseClicked(save)){
             //add the current scene
-            System.out.println("save clicked");
             GameProgressManager.getInstance().add(new GameCheckPoint(mainWorld.getCurrentState()));
         }
 

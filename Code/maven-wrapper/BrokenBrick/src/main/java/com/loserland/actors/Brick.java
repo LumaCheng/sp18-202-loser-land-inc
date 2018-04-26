@@ -1,10 +1,12 @@
 package com.loserland.actors;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameBrick;
 import com.loserland.context.GameContext;
+import com.loserland.context.Storable;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import com.loserland.worlds.*;
-public class Brick extends Actor
+public class Brick extends Actor implements Storable<GameBrick>
 {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     // declare and sets brick images to variables
@@ -130,5 +132,10 @@ public class Brick extends Actor
         {
             return false;
         }
+    }
+
+    @Override
+    public GameBrick save() {
+        return new GameBrick(hit, getX(), getY());
     }
 }

@@ -107,6 +107,15 @@ public class MainWorld extends World implements IGameProgress
     }
 
     public GameState getCurrentState() {
+        currentState = new GameState();
+        GameStage stage = new GameStage();
+        List<Brick> bricks = getObjects(Brick.class);
+        for (Brick brick: bricks){
+            stage.addBrick(brick.save());
+        }
+        currentState.setStage(stage);
+        currentState.setScore(score);
+        currentState.setLevel(level);
         return currentState;
     }
 
@@ -275,10 +284,12 @@ public class MainWorld extends World implements IGameProgress
     // reward points according to destroyed brick
     public void addPoints(int points)
     {
-        score+=points;
+        setScore(score + points);
+    }
+
+    public void setScore(int score){
+        this.score = score;
         managescore.notifyObservers(score);
-        // refreshes counter display for score
-        //scoreBoard.update(score);
     }
 
     // checks for player input from mouse
@@ -345,7 +356,6 @@ public class MainWorld extends World implements IGameProgress
             // reset to original location
             resetPosition();
             // increase level by 1 and call upon next level.
-            level++;
             nextLevel();
         }
     }
@@ -357,10 +367,13 @@ public class MainWorld extends World implements IGameProgress
         fader = new Fader();
         addObject (fader, 400, 300);
 
-        levelNum.update(level);
+        setLevel(level+1);
+
         fader.fadeBackIn();
 
         currentState.setStage(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
+        currentState.setScore(score);
+        currentState.setLevel(level);
         render(currentState);
 
 //        gameStageLoader.load(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
@@ -401,17 +414,27 @@ public class MainWorld extends World implements IGameProgress
 
     }
 
-    private void render(GameState state) {
+    public void setLevel(int level) {
+        this.level = level;
+        levelNum.update(level);
+    }
 
-        List allActors = getObjects(Brick.class);
-        if (allActors.size() > 0){
-            removeObjects(allActors);
+    private void render(GameState state) {
+        List<Actor> actors = getObjects(Actor.class);
+        for (Actor actor: actors){
+            if (actor instanceof Storable){
+                removeObject(actor);
+            }
         }
+
+        setScore(state.getScore());
+        setLevel(state.getLevel());
+
         //render stage
         for (GameBrick gameBrick: state.getStage().getBricks()){
             Brick brick = gameBrick.restore();
             addObject(brick, gameBrick.getX(), gameBrick.getY() );
-            
+
             if (hasIntersectingActors(brick, Brick.class)){
                 removeObject(brick);
             }
@@ -439,15 +462,15 @@ public class MainWorld extends World implements IGameProgress
         return false;
     }
 
-    public void onClickSaveCheckPoint(){
-        System.out.println("MyWorld.onClickSaveCheckPoint");
-        GameProgressManager.getInstance().add(new GameCheckPoint(currentState));
-    }
-
-    public void onClickLoadCheckPoint(){
-        System.out.println("MyWorld.onClickLoadCheckPoint");
-        restore(GameProgressManager.getInstance().load());
-    }
+//    public void onClickSaveCheckPoint(){
+//        System.out.println("MyWorld.onClickSaveCheckPoint");
+//        GameProgressManager.getInstance().add(new GameCheckPoint(currentState));
+//    }
+//
+//    public void onClickLoadCheckPoint(){
+//        System.out.println("MyWorld.onClickLoadCheckPoint");
+//        restore(GameProgressManager.getInstance().load());
+//    }
 
     @Override
     public GameCheckPoint save() {
