@@ -80,7 +80,7 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
     }
 
     @Override
-    public PowerSquareFactory.PowerType getCurrentPower() {
+    public PowerSquareFactory.PowerType powerType() {
         return PowerSquareFactory.PowerType.PYROBLAST_BALL;
     }
 

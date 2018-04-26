@@ -10,5 +10,5 @@ public interface IBall {
     void brickCollision(Brick brick);
     void wallCollision();
     void bounce(Actor actor);
-    PowerSquareFactory.PowerType getCurrentPower();
+    PowerSquareFactory.PowerType powerType();
 }

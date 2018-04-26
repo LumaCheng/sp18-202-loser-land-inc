@@ -152,26 +152,13 @@ public class BasicBall extends SmoothMover implements IBall {
 
     }
 
-    @Override
     public PowerSquareFactory.PowerType getCurrentPower() {
-        return PowerSquareFactory.PowerType.NORMAL;
+        return ball.powerType();
     }
 
-//    public void generatePowerSquare(Brick brick) {
-//        int hitNumber = Greenfoot.getRandomNumber((int)(PowerSquareFactory.getNumberOfPowers()/powerUpRate));
-//        if(hitNumber < PowerSquareFactory.getNumberOfPowers() - 1) {
-//            PowerSquareFactory.PowerType type = PowerSquareFactory.PowerType.values()[hitNumber];
-//            PowerSquare powerSquare;
-//            if(type == ball.getCurrentPower())
-//                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
-//            else
-//                powerSquare = PowerSquareFactory.makePowerSquare(type);
-//            if(powerSquare != null) {
-//                getWorld().addObject(powerSquare, brick.getX(), brick.getY());
-//                powerSquare.fall();
-//            }
-//        }
-//    }
+    public PowerSquareFactory.PowerType powerType() {
+        return PowerSquareFactory.PowerType.NORMAL;
+    }
 
     // delete ball when passes MinX
     public void checkBallMiss()
@@ -202,9 +189,7 @@ public class BasicBall extends SmoothMover implements IBall {
 
     // ball collision with paddle
     public void bounce(Actor a) {
-        int paddleUpperBound = a.getY() - a.getImage().getHeight() / 2;
-        int paddleLowerBound = a.getY() + a.getImage().getHeight() / 2;
-        if (getY() > paddleLowerBound || getY() < paddleUpperBound) {
+        if (getY() > a.getY() || getY() < a.getY()) {
             // reflect opposite side
             changeY = -changeY;
             // refelcts depending on incoming angle
@@ -221,6 +206,13 @@ public class BasicBall extends SmoothMover implements IBall {
         } else {
             changeX = -changeX;
         }
+
+        double speed = Math.sqrt(changeX * changeX + changeY * changeY);
+        if(speed < 4) {
+            changeX *= 2;
+            changeY *= 2;
+        }
+
         // sound effect
         if (ballBounceSound != null)
             Greenfoot.playSound(ballBounceSound);
