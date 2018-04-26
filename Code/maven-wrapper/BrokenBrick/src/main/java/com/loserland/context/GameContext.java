@@ -55,6 +55,8 @@ public class GameContext {
     public static String EXPLOSION_IMG = "explosion.image";
     public static String PYROBLAST_BALL = "pyroblastBall.image";
     public static String PYROBLAST_SMOKE = "pyroblastSmoke.image";
+    public static String PYROBLAST_EXPLODE_SND = "problastExplode.sound";
+    public static String FIRE_BURN_SND = "fireBurn.sound";
 
     public static String BRICK_LV1 = "brick.level1.image";
     public static String BRICK_LV2 = "brick.level2.image";

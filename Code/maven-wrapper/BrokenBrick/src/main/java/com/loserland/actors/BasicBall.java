@@ -128,9 +128,7 @@ public class BasicBall extends SmoothMover implements IBall {
         Brick brick = (Brick)getOneIntersectingObject(Brick.class);
         if ( brick != null) {
             ball.brickCollision(brick);
-            // sound effect
-            if(ballHitBrickSound != null)
-                Greenfoot.playSound(ballHitBrickSound);
+
         }
     }
 
@@ -149,7 +147,9 @@ public class BasicBall extends SmoothMover implements IBall {
         }
         // changes brick appearance accordingly
         brick.effect();
-
+        // sound e ffect
+        if(ballHitBrickSound != null)
+            Greenfoot.playSound(ballHitBrickSound);
     }
 
     public PowerSquareFactory.PowerType getCurrentPower() {

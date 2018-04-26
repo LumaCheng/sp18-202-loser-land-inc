@@ -5,7 +5,9 @@ import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
 import com.loserland.utils.GifImage;
 import greenfoot.Actor;
+import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
+import greenfoot.GreenfootSound;
 
 import java.util.List;
 
@@ -13,9 +15,11 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
     private BasicBall basicBall;
     private GreenfootImage explodeImage;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    private String hitBrickSound;
 
     public PyroblastDecorator() {
         explodeImage = new GifImage(config.get(GameContext.EXPLOSION_IMG)).getImages().get(0);
+        hitBrickSound = config.get(GameContext.PYROBLAST_EXPLODE_SND);
     }
 
     @Override
@@ -67,6 +71,10 @@ public class PyroblastDecorator implements IBall, IBallDecorator{
             basicBall.getWorld().addObject(explosion, basicBall.getX(), basicBall.getY());
             basicBall.setDecorator(basicBall);
         }
+
+        // sound effect
+        if(hitBrickSound != null)
+            Greenfoot.playSound(hitBrickSound);
     }
 
     @Override

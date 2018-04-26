@@ -79,6 +79,9 @@ public class MultiballDecorator implements IBall, IBallDecorator {
         basicBall.brickCollision(brick);
         changeRotation = Greenfoot.getRandomNumber(30);
         basicBall.setRotation(Greenfoot.getRandomNumber(360));
+        // sound effect
+        if(basicBall.ballHitBrickSound != null)
+            Greenfoot.playSound(basicBall.ballHitBrickSound);
     }
 
     @Override
