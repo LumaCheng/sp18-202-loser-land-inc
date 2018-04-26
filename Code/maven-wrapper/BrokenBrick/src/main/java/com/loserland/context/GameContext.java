@@ -53,12 +53,6 @@ public class GameContext {
     public static String PYROBLAST_BALL = "pyroblastBall.image";
     public static String PYROBLAST_SMOKE = "pyroblastSmoke.image";
 
-    public static String BRICK_LV1 = "brick.level1.image";
-    public static String BRICK_LV2 = "brick.level2.image";
-    public static String BRICK_LV3 = "brick.level3.image";
-    public static String BRICK_LV4 = "brick.level4.image";
-    public static String BRICK_LV5 = "brick.level5.image";
-    public static String BRICK_LV6 = "brick.level6.image";
 
     public static String SCOREBOARD_HEIGHT = "game.scoreboard.height";
     public static String SCOREBOARD_WIDTH = "game.scoreboard.width";
@@ -97,20 +91,36 @@ public class GameContext {
         }
     }
 
-//    public static final String BALL_IMAGE = "ball.image";
-//    public static final String SHIELD_IMAGE = "shieldball.image";
-//    public static final String POKEMON_IMAGE = "pokemonball.image";
-//    public static final String PIZZA_IMAGE = "pizzaball.image";
-//    public static final String SOCCER_IMAGE = "soccerball.image";
-//    public static final String BASEBALL_IMAGE = "baseball.image";
-//    public static final String BIRD_IMAGE = "bird.image";
 
-    public static final String SCORE_LEVEL_1 = "score.level1";
-    public static final String SCORE_LEVEL_2 = "score.level2";
-    public static final String SCORE_LEVEL_3 = "score.level3";
-    public static final String SCORE_LEVEL_4 = "score.level4";
-    public static final String SCORE_LEVEL_5 = "score.level5";
-    public static final String SCORE_LEVEL_6 = "score.level6";
+    public enum ScoreLevel{
+        SCORE_LEVEL_1("score.level1"), SCORE_LEVEL_2("score.level2"),SCORE_LEVEL_3("score.level3"),SCORE_LEVEL_4("score.level4"),
+        SCORE_LEVEL_5("score.level5"), SCORE_LEVEL_6("score.level6");
+
+        private String key;
+
+        public String getKey(){
+            return key;
+        }
+
+        ScoreLevel(String key){
+            this.key = key;
+        }
+    }
+
+    public enum BrickLevel{
+        BRICK_LV1("brick.level1.image"), BRICK_LV2("brick.level2.image"),BRICK_LV3("brick.level3.image"),BRICK_LV4("brick.level4.image"),
+        BRICK_LV5("brick.level5.image"), BRICK_LV6("brick.level6.image");
+
+        private String key;
+
+        public String getKey(){
+            return key;
+        }
+
+        BrickLevel(String key){
+            this.key = key;
+        }
+    }
 
 
     /* Global variable */

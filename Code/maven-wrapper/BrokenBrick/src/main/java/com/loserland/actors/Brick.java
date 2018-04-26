@@ -10,12 +10,12 @@ public class Brick extends Actor implements Storable<GameBrick>
 {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     // declare and sets brick images to variables
-    private  GreenfootImage brick1 = new GreenfootImage(config.get(GameContext.BRICK_LV1));
-    private  GreenfootImage brick2 = new GreenfootImage(config.get(GameContext.BRICK_LV2));
-    private  GreenfootImage brick3 = new GreenfootImage(config.get(GameContext.BRICK_LV3));
-    private  GreenfootImage brick4 = new GreenfootImage(config.get(GameContext.BRICK_LV4));
-    private  GreenfootImage brick5 = new GreenfootImage(config.get(GameContext.BRICK_LV5));
-    private  GreenfootImage brick6 = new GreenfootImage(config.get(GameContext.BRICK_LV6));
+    private  GreenfootImage brick1 = new GreenfootImage(config.get(GameContext.BrickLevel.BRICK_LV1.getKey()));
+    private  GreenfootImage brick2 = new GreenfootImage(config.get(GameContext.BrickLevel.BRICK_LV2.getKey()));
+    private  GreenfootImage brick3 = new GreenfootImage(config.get(GameContext.BrickLevel.BRICK_LV3.getKey()));
+    private  GreenfootImage brick4 = new GreenfootImage(config.get(GameContext.BrickLevel.BRICK_LV4.getKey()));
+    private  GreenfootImage brick5 = new GreenfootImage(config.get(GameContext.BrickLevel.BRICK_LV5.getKey()));
+    private  GreenfootImage brick6 = new GreenfootImage(config.get(GameContext.BrickLevel.BRICK_LV6.getKey()));
     // hit variable made for differnt brick types. Bigger num = more hits required to kill
     private int hit = 0;
     // varibale for Brick6, where it takes 3 hits to destroy

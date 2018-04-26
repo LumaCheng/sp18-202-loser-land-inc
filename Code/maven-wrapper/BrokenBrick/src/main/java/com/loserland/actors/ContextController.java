@@ -34,22 +34,22 @@ public class ContextController implements ScoreObserver {
 
     public GameContext.BallType ballUIChange(int score){
         GameContext.BallType returnString = GameContext.BallType.NORMAL;
-        if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_6))){
+        if(score >= Integer.parseInt(config.get(GameContext.ScoreLevel.SCORE_LEVEL_6.getKey()))){
             returnString = GameContext.BallType.BIRD;
         }
-        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_5))){
+        else if(score >= Integer.parseInt(config.get(GameContext.ScoreLevel.SCORE_LEVEL_5.getKey()))){
             returnString = GameContext.BallType.SHIELD;
         }
-        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_4))){
+        else if(score >= Integer.parseInt(config.get(GameContext.ScoreLevel.SCORE_LEVEL_4.getKey()))){
             returnString = GameContext.BallType.PIZZA;
         }
-        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_3))){
+        else if(score >= Integer.parseInt(config.get(GameContext.ScoreLevel.SCORE_LEVEL_3.getKey()))){
             returnString = GameContext.BallType.POKEMON;
         }
-        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_2))){
+        else if(score >= Integer.parseInt(config.get(GameContext.ScoreLevel.SCORE_LEVEL_2.getKey()))){
             returnString = GameContext.BallType.SOCCER;
         }
-        else if(score >= Integer.parseInt(config.get(GameContext.SCORE_LEVEL_1))){
+        else if(score >= Integer.parseInt(config.get(GameContext.ScoreLevel.SCORE_LEVEL_1.getKey()))){
             returnString = GameContext.BallType.BASEBALL;
         }
         return returnString;
