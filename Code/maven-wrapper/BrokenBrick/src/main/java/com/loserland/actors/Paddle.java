@@ -1,5 +1,8 @@
 package com.loserland.actors;
 
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import com.loserland.controller.ControllerEvent;
 import com.loserland.controller.ControllerObserver;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
@@ -19,6 +22,7 @@ public class Paddle extends Actor implements ControllerObserver {
     private int enlarge ;
     private int shrink;        
     private int mouseX, mouseY;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     /**
      * Act - do whatever the com.loserland.actors.Paddle wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -26,6 +30,7 @@ public class Paddle extends Actor implements ControllerObserver {
 
     public Paddle() {
         super();
+        setImage(config.get(GameContext.PADDLE_IMG));
     }
     // add new ball into world. Else NullPointerExeception
     public void addedToWorld(World world) 

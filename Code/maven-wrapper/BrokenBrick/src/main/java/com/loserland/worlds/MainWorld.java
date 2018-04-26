@@ -10,7 +10,6 @@ import greenfoot.MouseInfo;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,7 +45,7 @@ public class MainWorld extends World implements IGameProgress
     private PlayState playState;
     private PauseState pauseState;
     private StopState stopState;
-    private Exit exit;
+    private Exit pause;
 
 //    public static List<String> faceList = new ArrayList<>();
 //    private int faces = 0;
@@ -156,8 +155,9 @@ public class MainWorld extends World implements IGameProgress
         fader = new Fader();
         addObject (fader, 400, 300);
         // import menu
-        exit = new Exit();
-        addObject(exit, 100, 100);
+        pause = new Exit();
+        pause.setImage(config.get(GameContext.STAGE_PAUSE));
+        addObject(pause, 25, 25);
 
         addObject(musicplayer,680,460);
         addObject(volumeup,680,430);
@@ -288,7 +288,7 @@ public class MainWorld extends World implements IGameProgress
             volumedown.update(volume);
         }
 
-        else if(Greenfoot.mouseClicked(exit)){
+        else if(Greenfoot.mouseClicked(pause)){
             clickMenu = 2;
             Greenfoot.setWorld(pauseWorld);
         }

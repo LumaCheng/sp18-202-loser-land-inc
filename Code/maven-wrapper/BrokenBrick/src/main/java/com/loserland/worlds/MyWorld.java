@@ -28,6 +28,7 @@ public class MyWorld extends World
     private MenuOptions loadGame;
     private MenuOptions highScore;
     private boolean ifMainMenu = true;
+    private HighScoreBoard highScoreBoard;
 
     GreenfootSound backgroundMusic;
 
@@ -52,7 +53,7 @@ public class MyWorld extends World
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(MenuOptions.class, CoverPage.class, GameOver.class);
+        setPaintOrder(MenuOptions.class, CoverPage.class, GameOver.class, HighScoreBoard.class);
 
         //initialize UI components and put place
         initMenu();
@@ -77,6 +78,8 @@ public class MyWorld extends World
     public void setGameOver() {
         removeObject(menu);
         removeObject(startGame);
+        removeObject(loadGame);
+        removeObject(highScore);
         ifMainMenu = false;
     }
 
@@ -100,6 +103,8 @@ public class MyWorld extends World
         loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
         highScore = new MenuOptions();
         highScore.setImage(config.get(GameContext.SCORE_BUTTON));
+        highScoreBoard = new HighScoreBoard();
+        addObject(highScoreBoard, 350, 260);
         addObject (startGame, 350,360);
         addObject (loadGame, 350,410);
         addObject (highScore, 350,460);
@@ -145,6 +150,19 @@ public class MyWorld extends World
                 // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
             }
         }
+
+        if (Greenfoot.mouseClicked(highScore)) {
+            if (ifMainMenu) {
+                // once clicked, remove menu
+                removeObject(gameOver);
+                removeObject(menu);
+                removeObject(startGame);
+                removeObject(highScore);
+                removeObject(loadGame);
+                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
+            }
+        }
+
         if(Greenfoot.mousePressed(startGame)){
             startGame.setImage(config.get(GameContext.START_PRESSED));
         }
@@ -174,6 +192,8 @@ public class MyWorld extends World
             if (!ifMainMenu) {
                 addObject(menu, 350, 260);
                 addObject(startGame, 350, 360);
+                addObject (loadGame, 350,410);
+                addObject (highScore, 350,460);
                 ifMainMenu = true;
                 //refreshMainWorld();
             }

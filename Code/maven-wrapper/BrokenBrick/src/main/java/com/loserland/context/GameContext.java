@@ -9,6 +9,8 @@ public class GameContext {
     public static final String GAME_DEFAULT_CONFIG_FILENAME = "configs/default.properties";
     public static final String GAME_STAGE_CONFIG_FILENAME = "configs/stage.json";
 
+    public static final String STAGE_PAUSE = "page.stage.pause";
+
     public static final String START_BUTTON = "page.start.button";
     public static final String START_HOVER = "page.start.hover";
     public static final String START_PRESSED = "page.start.pressed";
@@ -74,6 +76,9 @@ public class GameContext {
     public static final String VOLUME_UP_IMG = "volume.up.image";
     public static final String VOLUME_DOWN_IMG = "volume.down.image";
     public static final String HIGHSCORE_FONT_SIZE = "highscore.font.size";
+
+    public static final String PADDLE_IMG =  "paddle.image";
+    public static final String PAUSE_STAGE_IMG = "pause.stage.image";
 
     public static final String MULTIBALL_IMAGE = "multiball.image";
 

@@ -30,6 +30,7 @@ public class PauseWorld extends World
     private MenuOptions exit;
     private PausePage pausePage;
 
+
     GreenfootSound backgroundMusic;
 
     // TODO: Using factory mode to initialize controller
@@ -90,10 +91,10 @@ public class PauseWorld extends World
         exit.setImage(config.get(GameContext.EXIT_BUTTON));
         addObject (exit, 350,320);
         pausePage = new PausePage();
-        pausePage.setImage("pauseworld.png");
+        pausePage.setImage(config.get(GameContext.PAUSE_STAGE_IMG));
         addObject (pausePage, 350, 260);
 
-        initMusic();
+        //initMusic();
         //gameOverSound();
         // Display GameOver screen
     }

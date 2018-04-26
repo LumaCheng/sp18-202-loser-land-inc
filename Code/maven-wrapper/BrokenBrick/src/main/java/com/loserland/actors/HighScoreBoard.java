@@ -29,7 +29,7 @@ public class HighScoreBoard extends Actor implements ScoreObserver {
     {
         scoreList = new ArrayList<>();
         ReadScoreFromFile();
-        //ShowScore();
+        ShowScore();
     }
 
 
