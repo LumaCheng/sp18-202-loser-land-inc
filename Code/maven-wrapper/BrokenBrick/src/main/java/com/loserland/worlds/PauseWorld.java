@@ -10,6 +10,9 @@ import com.loserland.controller.MouseController;
 import greenfoot.*;
 import greenfoot.MouseInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Write a description of class MyWorld here.
@@ -27,10 +30,15 @@ public class PauseWorld extends World
     private final int HOFFSET = 12;
     private MainWorld mainWorld;
     private MyWorld myWorld;
-    private MenuOptions resume;
-    private MenuOptions save;
-    private MenuOptions exit;
+    private MenuButton resume;
+    private MenuButton save;
+    private MenuButton exit;
+    private ICommand resumeClick ;
+    private ICommand saveClick ;
+    private ICommand exitClick ;
     private PausePage pausePage;
+    private List<MenuButton> buttonsList = new ArrayList<>();
+
 
 
     GreenfootSound backgroundMusic;
@@ -56,7 +64,7 @@ public class PauseWorld extends World
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(MenuOptions.class, PausePage.class);
+        setPaintOrder(MenuButton.class, PausePage.class);
         //initialize UI components and put place
         initMenu();
 
@@ -83,15 +91,56 @@ public class PauseWorld extends World
     public void setMainWorld(MainWorld mainWorld) { this.mainWorld = mainWorld;}
 
     private void initMenu() {
-        resume = new MenuOptions();
-        resume.setImage(config.get(GameContext.RESUME_BUTTON));
+        resume = new MenuButton(config.get(GameContext.RESUME_BUTTON), config.get(GameContext.RESUME_HOVER),
+                config.get(GameContext.RESUME_PRESSED));
+        save = new MenuButton(config.get(GameContext.SAVE_BUTTON), config.get(GameContext.SAVE_HOVER),
+                config.get(GameContext.SAVE_PRESSED));
+        exit = new MenuButton(config.get(GameContext.EXIT_BUTTON), config.get(GameContext.EXIT_HOVER),
+                config.get(GameContext.EXIT_PRESSED));
+        buttonsList.add(resume);
+        buttonsList.add(save);
+        buttonsList.add(exit);
+
+        resumeClick = new MenuCommand();
+        saveClick = new MenuCommand();
+        exitClick = new MenuCommand();
+        resumeClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        Greenfoot.setWorld(mainWorld);
+                        resume.resetImage();
+                    }
+                }
+        ) ;
+
+        saveClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        System.out.println("save clicked");
+                        GameProgressManager.getInstance().add(new GameCheckPoint(mainWorld.getCurrentState()));
+                    }
+                }
+        );
+
+        exitClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        Greenfoot.setWorld(myWorld);
+                        mainWorld.stopMusic();
+                        myWorld.resetMainWorld();
+                        exit.resetImage();
+                    }
+                }
+        ) ;
+        resume.setCommand(resumeClick);
+        save.setCommand(saveClick);
+        exit.setCommand(exitClick);
+
+
         addObject (resume, 350,180);
-        save = new MenuOptions();
-        save.setImage(config.get(GameContext.SAVE_BUTTON));
         addObject (save, 350,250);
-        exit = new MenuOptions();
-        exit.setImage(config.get(GameContext.EXIT_BUTTON));
         addObject (exit, 350,320);
+
         pausePage = new PausePage();
         pausePage.setImage(config.get(GameContext.PAUSE_STAGE_IMG));
         addObject (pausePage, 350, 260);
@@ -118,42 +167,27 @@ public class PauseWorld extends World
         // check don't exceed left and right border of background
         // don't move paddle before player shoots
         //System.out.println(mouse.getActor());
-        if (Greenfoot.mouseClicked(resume)) {
-            Greenfoot.setWorld(mainWorld);
+        for(MenuButton menuButton: buttonsList){
+            if(Greenfoot.mouseClicked(menuButton)){
+                menuButton.click();
+            }
+            if(Greenfoot.mouseMoved(menuButton)){
+                menuButton.hover();
+                for(MenuButton button: buttonsList){
+                    if(button != menuButton){
+                        button.resetImage();
+                    }
+                }
+            }
+            if(Greenfoot.mousePressed(menuButton)){
+                menuButton.press();
+            }
         }
-        if (Greenfoot.mouseClicked(exit)) {
-            Greenfoot.setWorld(myWorld);
-            mainWorld.stopMusic();
-            myWorld.resetMainWorld();
-        }
-        if(Greenfoot.mousePressed(resume)){
 
-            resume.setImage(config.get(GameContext.RESUME_PRESSED));
-        }
-        if(Greenfoot.mouseMoved(resume)){
-            resume.setImage(config.get(GameContext.RESUME_HOVER));
-        }
-        if(Greenfoot.mousePressed(save)){
-            save.setImage(config.get(GameContext.SAVE_PRESSED));
-        }
-        if(Greenfoot.mouseMoved(save)){
-            save.setImage(config.get(GameContext.SAVE_HOVER));
-        }
-        if(Greenfoot.mousePressed(exit)){
-            exit.setImage(config.get(GameContext.EXIT_PRESSED));
-        }
-        if(Greenfoot.mouseMoved(exit)){
-            exit.setImage(config.get(GameContext.EXIT_HOVER));
-        }
         if(Greenfoot.mouseMoved(pausePage)){
-            resume.setImage(config.get(GameContext.RESUME_BUTTON));
-            save.setImage(config.get(GameContext.SAVE_BUTTON));
-            exit.setImage(config.get(GameContext.EXIT_BUTTON));
-        }
-        if(Greenfoot.mouseClicked(save)){
-            //add the current scene
-            System.out.println("save clicked");
-            GameProgressManager.getInstance().add(new GameCheckPoint(mainWorld.getCurrentState()));
+            for(MenuButton menuButton: buttonsList){
+                menuButton.resetImage();
+            }
         }
 
     }

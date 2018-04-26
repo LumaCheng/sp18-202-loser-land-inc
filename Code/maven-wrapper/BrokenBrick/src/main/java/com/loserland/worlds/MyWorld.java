@@ -12,6 +12,7 @@ import greenfoot.MouseInfo;
 import greenfoot.World;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,13 +29,23 @@ public class MyWorld extends World
     private GameOver gameOver;
     private MainWorld mainWorld;
     private PauseWorld pauseWorld;
-    private MenuOptions startGame;
-    private MenuOptions loadGame;
-    private MenuOptions highScore;
+    private MenuButton startGame;
+    private MenuButton loadGame;
+    private MenuButton highScore;
+
+    private ICommand startClick ;
+
+
+    private ICommand loadClick ;
+
+
+    private ICommand scoreClick ;
+
+
     private boolean ifMainMenu = true;
     private HighScoreBoard highScoreBoard;
     private Back back;
-    private ArrayList<MenuButton> buttonsList;
+    private List<MenuButton> buttonsList = new ArrayList<>();
 
     GreenfootSound backgroundMusic;
 
@@ -59,7 +70,7 @@ public class MyWorld extends World
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(MenuOptions.class, CoverPage.class, GameOver.class, Back.class, HighScoreBoard.class);
+        setPaintOrder(MenuButton.class, CoverPage.class, GameOver.class, Back.class, HighScoreBoard.class);
 
         //initialize UI components and put place
         initMenu();
@@ -96,6 +107,9 @@ public class MyWorld extends World
         pauseWorld.setMainWorld(mainWorld);
     }
 
+
+
+
     private void initMenu() {
         mainWorld = new MainWorld();
         pauseWorld = new PauseWorld();
@@ -103,20 +117,75 @@ public class MyWorld extends World
         pauseWorld.setMyWorld(this);
         mainWorld.setPauseWorld(pauseWorld);
         pauseWorld.setMainWorld(mainWorld);
-        startGame = new MenuOptions();
-        startGame.setImage(config.get(GameContext.START_BUTTON));
-        loadGame = new MenuOptions();
-        loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
-        highScore = new MenuOptions();
-        highScore.setImage(config.get(GameContext.SCORE_BUTTON));
+
+
+        startGame = new MenuButton(config.get(GameContext.START_BUTTON), config.get(GameContext.START_HOVER),
+                config.get(GameContext.START_PRESSED));
+        loadGame = new MenuButton(config.get(GameContext.LOAD_BUTTON), config.get(GameContext.LOAD_HOVER),
+                config.get(GameContext.LOAD_PRESSED));
+        highScore = new MenuButton(config.get(GameContext.SCORE_BUTTON), config.get(GameContext.SCORE_HOVER),
+                config.get(GameContext.SCORE_PRESSED));
         highScoreBoard = HighScoreBoard.getInstance();
-        addObject(highScoreBoard, 350, 260);
+
+        buttonsList.add(startGame);
+        buttonsList.add(loadGame);
+        buttonsList.add(highScore);
+
+        startClick = new MenuCommand();
+
+        loadClick = new MenuCommand();
+
+        scoreClick = new MenuCommand();
+
+
+        startClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        Greenfoot.setWorld(mainWorld);
+                        startGame.resetImage();
+                    }
+                }
+        ) ;
+
+        loadClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        mainWorld.restore(GameProgressManager.getInstance().load());
+                        Greenfoot.setWorld(mainWorld);
+                    }
+                }
+        );
+
+        scoreClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        removeObject(gameOver);
+                        removeObject(menu);
+                        removeObject(startGame);
+                        removeObject(highScore);
+                        removeObject(loadGame);
+                        highScore.resetImage();
+                        highScoreBoard.ShowScore();
+                    }
+                }
+        ) ;
+
+        startGame.setCommand(startClick);
+        loadGame.setCommand(loadClick);
+        highScore.setCommand(scoreClick);
+
+
+
+
+        addObject (highScoreBoard, 350, 260);
         addObject (startGame, 350,360);
         addObject (loadGame, 350,410);
         addObject (highScore, 350,460);
+
         menu = new CoverPage();
         menu.setImage(config.get(GameContext.MENU_IMG));
         addObject (menu, 350,260);
+
         initMusic();
         //gameOverSound();
         // Display GameOver screen
@@ -148,85 +217,109 @@ public class MyWorld extends World
         int changeX;
         int mouseX;
         int mouseY;
+
+        for(MenuButton menuButton: buttonsList){
+            if(Greenfoot.mouseClicked(menuButton)){
+                menuButton.click();
+            }
+            if(Greenfoot.mouseMoved(menuButton)){
+                menuButton.hover();
+                for(MenuButton button: buttonsList){
+                    if(button != menuButton){
+                        button.resetImage();
+                    }
+                }
+            }
+            if(Greenfoot.mousePressed(menuButton)){
+                menuButton.press();
+            }
+        }
+
+        if(Greenfoot.mouseMoved(menu)){
+            for(MenuButton menuButton: buttonsList){
+                menuButton.resetImage();
+            }
+        }
+
+
         // check don't exceed left and right border of background
         // don't move paddle before player shoots
         //System.out.println(mouse.getActor());
-        if (Greenfoot.mouseClicked(startGame)) {
-            if (ifMainMenu) {
-                // once clicked, remove menu
-                Greenfoot.setWorld(mainWorld);
-                startGame.setImage(config.get(GameContext.START_BUTTON));
-                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
-            }
-        }
+//        if (Greenfoot.mouseClicked(startGame)) {
+//            if (ifMainMenu) {
+//                // once clicked, remove menu
+//                Greenfoot.setWorld(mainWorld);
+//                startGame.setImage(config.get(GameContext.START_BUTTON));
+//                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
+//            }
+//        }
 
-        if (Greenfoot.mouseClicked(highScore)) {
-            if (ifMainMenu) {
-                // once clicked, remove menu
-                removeObject(gameOver);
-                removeObject(menu);
-                removeObject(startGame);
-                removeObject(highScore);
-                removeObject(loadGame);
-                ifMainMenu = false;
-                highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-                highScoreBoard.ShowScore();
-                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
-            }
-        }
+//        if (Greenfoot.mouseClicked(highScore)) {
+//            if (ifMainMenu) {
+//                // once clicked, remove menu
+//                removeObject(gameOver);
+//                removeObject(menu);
+//                removeObject(startGame);
+//                removeObject(highScore);
+//                removeObject(loadGame);
+//                ifMainMenu = false;
+//                highScore.setImage(config.get(GameContext.SCORE_BUTTON));
+//                highScoreBoard.ShowScore();
+//                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
+//            }
+//        }
 
         if (Greenfoot.mouseClicked(back)) {
-            if (!ifMainMenu) {
+
                 // once clicked, remove menu
                 addObject (startGame, 350,360);
                 addObject (loadGame, 350,410);
                 addObject (highScore, 350,460);
                 addObject (gameOver, 350, 260);
                 addObject (menu, 350, 260);
-                ifMainMenu = true;
                 // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
-            }
+
         }
 
-        if(Greenfoot.mousePressed(startGame)){
-            startGame.setImage(config.get(GameContext.START_PRESSED));
-        }
-        if(Greenfoot.mouseMoved(startGame)){
-            startGame.setImage(config.get(GameContext.START_HOVER));
-            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
-            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-        }
-        if(Greenfoot.mousePressed(loadGame)){
-            loadGame.setImage(config.get(GameContext.LOAD_PRESSED));
-        }
+//        if(Greenfoot.mousePressed(startGame)){
+//            startGame.setImage(config.get(GameContext.START_PRESSED));
+//        }
+//        if(Greenfoot.mouseMoved(startGame)){
+//            startGame.setImage(config.get(GameContext.START_HOVER));
+//            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
+//            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
+//        }
+//        if(Greenfoot.mousePressed(loadGame)){
+//            loadGame.setImage(config.get(GameContext.LOAD_PRESSED));
+//        }
 
 
 
-        if(Greenfoot.mouseClicked(loadGame)){
-            // Load Game Scene
-            mainWorld.restore(GameProgressManager.getInstance().load());
-            Greenfoot.setWorld(mainWorld);
-        }
+//        if(Greenfoot.mouseClicked(loadGame)){
+//            // Load Game Scene
+//            mainWorld.restore(GameProgressManager.getInstance().load());
+//            Greenfoot.setWorld(mainWorld);
+//        }
 
 
-        if(Greenfoot.mouseMoved(loadGame)){
-            loadGame.setImage(config.get(GameContext.LOAD_HOVER));
-            startGame.setImage(config.get(GameContext.START_BUTTON));
-            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-        }
-        if(Greenfoot.mousePressed(highScore)){
-            highScore.setImage(config.get(GameContext.SCORE_PRESSED));
-        }
-        if(Greenfoot.mouseMoved(highScore)){
-            highScore.setImage(config.get(GameContext.SCORE_HOVER));
-            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
-            startGame.setImage(config.get(GameContext.START_BUTTON));
-        }
-        if(Greenfoot.mouseMoved(menu)){
-            startGame.setImage(config.get(GameContext.START_BUTTON));
-            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
-            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-        }
+//        if(Greenfoot.mouseMoved(loadGame)){
+//            loadGame.setImage(config.get(GameContext.LOAD_HOVER));
+//            startGame.setImage(config.get(GameContext.START_BUTTON));
+//            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
+//        }
+//        if(Greenfoot.mousePressed(highScore)){
+//            highScore.setImage(config.get(GameContext.SCORE_PRESSED));
+//        }
+//        if(Greenfoot.mouseMoved(highScore)){
+//            highScore.setImage(config.get(GameContext.SCORE_HOVER));
+//            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
+//            startGame.setImage(config.get(GameContext.START_BUTTON));
+//        }
+//        if(Greenfoot.mouseMoved(menu)){
+//            startGame.setImage(config.get(GameContext.START_BUTTON));
+//            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
+//            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
+//        }
 
         if (Greenfoot.mouseClicked(gameOver)) {
             //mainWorld.stopMusic();
