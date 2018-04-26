@@ -21,14 +21,7 @@ import com.loserland.actors.Volumedown;
 import com.loserland.actors.Volumeup;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
-import com.loserland.context.GameBrick;
-import com.loserland.context.GameCheckPoint;
-import com.loserland.context.GameContext;
-import com.loserland.context.GameProgressManager;
-import com.loserland.context.GameStageGenerator;
-import com.loserland.context.GameStageLoader;
-import com.loserland.context.GameState;
-import com.loserland.context.IGameProgress;
+import com.loserland.context.*;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.Actor;
@@ -39,7 +32,6 @@ import org.apache.commons.lang3.SerializationUtils;
 import java.awt.*;
 import greenfoot.World;
 import java.util.List;
-import org.apache.commons.lang3.SerializationUtils;
 
 
 /**
@@ -89,7 +81,7 @@ public class MainWorld extends World implements IGameProgress
     private Lives live1 = new Lives();
     private Lives live2 = new Lives();
     private Lives live3 = new Lives();
-    // initalize background music, save was "backgroundMusic"
+    // initalize background music, add was "backgroundMusic"
     GreenfootSound backgroundMusic;
     // boolean to determine if ball was launched
     private boolean start = false;
@@ -112,6 +104,10 @@ public class MainWorld extends World implements IGameProgress
     static {
         configFactory = ConfigFactory.getInstance();
         config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
+    }
+
+    public GameState getCurrentState() {
+        return currentState;
     }
 
     private GameState currentState;
@@ -413,8 +409,9 @@ public class MainWorld extends World implements IGameProgress
         }
         //render stage
         for (GameBrick gameBrick: state.getStage().getBricks()){
-            Brick brick = new Brick(gameBrick.getType());
-            addObject(brick, gameBrick.getX(), gameBrick.getY());
+            Brick brick = gameBrick.restore();
+            addObject(brick, gameBrick.getX(), gameBrick.getY() );
+            
             if (hasIntersectingActors(brick, Brick.class)){
                 removeObject(brick);
             }
@@ -459,6 +456,7 @@ public class MainWorld extends World implements IGameProgress
 
     @Override
     public void restore(GameCheckPoint checkPoint) {
+        if (checkPoint == null) return;
         currentState = SerializationUtils.clone(checkPoint.getState());
         render(currentState);
 

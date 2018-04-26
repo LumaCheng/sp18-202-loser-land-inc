@@ -3,6 +3,7 @@ import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
+import com.loserland.context.GameProgressManager;
 import com.loserland.controller.Controller;
 import com.loserland.controller.MouseController;
 import greenfoot.Greenfoot;
@@ -200,6 +201,8 @@ public class MyWorld extends World
 
         if(Greenfoot.mouseClicked(loadGame)){
             // Load Game Scene
+            mainWorld.restore(GameProgressManager.getInstance().load());
+            Greenfoot.setWorld(mainWorld);
         }
 
 
