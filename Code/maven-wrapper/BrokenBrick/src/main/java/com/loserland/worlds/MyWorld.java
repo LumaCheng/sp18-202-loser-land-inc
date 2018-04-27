@@ -1,12 +1,5 @@
 package com.loserland.worlds;
-import com.loserland.actors.Back;
-import com.loserland.actors.CoverPage;
-import com.loserland.actors.GameOver;
-import com.loserland.actors.HighScoreBoard;
-import com.loserland.actors.ICommand;
-import com.loserland.actors.IReceiver;
-import com.loserland.actors.MenuButton;
-import com.loserland.actors.MenuCommand;
+import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
@@ -37,11 +30,14 @@ public class MyWorld extends World
     private MenuButton startGame;
     private MenuButton loadGame;
     private MenuButton highScore;
+    private MenuButton animeButton;
     private ICommand startClick ;
     private ICommand loadClick ;
     private ICommand scoreClick ;
+    private ICommand animeClick;
     private HighScoreBoard highScoreBoard;
     private Back back;
+    private Anime anime;
     private List<MenuButton> buttonsList = new ArrayList<>();
 
     GreenfootSound backgroundMusic;
@@ -66,7 +62,7 @@ public class MyWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
         // Sets the order of display of Actors
-        setPaintOrder(MenuButton.class, CoverPage.class, GameOver.class, Back.class, HighScoreBoard.class);
+        setPaintOrder(Anime.class, MenuButton.class, CoverPage.class, GameOver.class, Back.class, HighScoreBoard.class);
         //initialize UI components and put place
         initMenu();
     }
@@ -81,6 +77,9 @@ public class MyWorld extends World
         mainWorld.setPauseWorld(pauseWorld);
         pauseWorld.setMainWorld(mainWorld);
 
+        anime = new Anime();
+        anime.animeGif.pause();
+
         //creating Buttons on the menu
         startGame = new MenuButton(config.get(GameContext.START_BUTTON), config.get(GameContext.START_HOVER),
                 config.get(GameContext.START_PRESSED));
@@ -88,15 +87,19 @@ public class MyWorld extends World
                 config.get(GameContext.LOAD_PRESSED));
         highScore = new MenuButton(config.get(GameContext.SCORE_BUTTON), config.get(GameContext.SCORE_HOVER),
                 config.get(GameContext.SCORE_PRESSED));
+        animeButton = new MenuButton(config.get(GameContext.SCORE_BUTTON), config.get(GameContext.SCORE_HOVER),
+                config.get(GameContext.SCORE_PRESSED));
         highScoreBoard = HighScoreBoard.getInstance();
 
         buttonsList.add(startGame);
         buttonsList.add(loadGame);
         buttonsList.add(highScore);
+        buttonsList.add(animeButton);
 
         startClick = new MenuCommand();
         loadClick = new MenuCommand();
         scoreClick = new MenuCommand();
+        animeClick = new MenuCommand();
 
         startClick.setReceiver(
                 new IReceiver() {
@@ -130,15 +133,26 @@ public class MyWorld extends World
                     }
                 }
         ) ;
+        animeClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        addObject(anime, 350, 260);
+                        anime.animeGif.resume();
+                    }
+                }
+        ) ;
+
         startGame.setCommand(startClick);
         loadGame.setCommand(loadClick);
         highScore.setCommand(scoreClick);
+        animeButton.setCommand(animeClick);
 
         //Add objects to MyWorld
         addObject (highScoreBoard, 350, 250);
         addObject (startGame, 615,395);
         addObject (loadGame, 615,435);
         addObject (highScore, 615,475);
+        addObject (animeButton, 615,515);
 
         menu = new CoverPage();
         menu.setImage(config.get(GameContext.MENU_IMG));
@@ -212,6 +226,10 @@ public class MyWorld extends World
         if (mouse.clicked(gameOver)){
                 removeObject(gameOver);
                 highScoreBoard.ShowScore();
+        }
+
+        if(mouse.clicked(anime)){
+            removeObject(anime);
         }
     }
 }

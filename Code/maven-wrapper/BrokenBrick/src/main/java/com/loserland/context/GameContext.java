@@ -85,6 +85,7 @@ public class GameContext {
 
     public static final String MULTIBALL_IMAGE = "multiball.image";
     public static final String MULTIBALL_NUMBER = "multiball.number";
+    public static final String GIFIMAGE_ANIME = "gif.image.anime";
 
     public enum BallType implements KeyEnum {
         NORMAL("ball.image"),
