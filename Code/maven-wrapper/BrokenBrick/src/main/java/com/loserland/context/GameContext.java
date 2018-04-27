@@ -29,6 +29,10 @@ public class GameContext {
     public static final String SCORE_HOVER = "page.score.hover";
     public static final String SCORE_PRESSED = "page.score.pressed";
 
+    public static final String ABOUT_BUTTON = "page.about.button";
+    public static final String ABOUT_HOVER = "page.about.hover";
+    public static final String ABOUT_PRESSED = "page.about.pressed";
+
     public static final String RESUME_BUTTON = "page.resume.button";
     public static final String RESUME_HOVER = "page.resume.hover";
     public static final String RESUME_PRESSED = "page.resume.pressed";
