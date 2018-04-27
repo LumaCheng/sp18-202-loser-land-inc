@@ -20,7 +20,7 @@ public class BasicBall extends SmoothMover implements IBall {
     int smokeTimingCount = 0;
     double ballX = 0;
     double ballY = 0;
-
+    boolean shouldPause = false;
     GifImage gifImage;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
@@ -45,15 +45,18 @@ public class BasicBall extends SmoothMover implements IBall {
         setBallBounceSound(config.get(GameContext.BALL_BOUNCE_SND));
         setBallHitBrickSound(config.get(GameContext.BALL_HIT_BRICK_SND));
         setBallHitWallSound(config.get(GameContext.BALL_HIT_WALL_SND));
-        setImage(config.get(GameContext.currentBallImg));
+        setImage(config.get(GameContext.currentBallImg.getKey()));
         setBallInitCooridinate(Integer.parseInt(config.get(GameContext.BALL_INIT_X)),
                 Integer.parseInt(config.get(GameContext.BALL_INIT_Y)));
         setSmokeFrequency(Integer.parseInt(config.get(GameContext.BALL_SMOKE_FREQ)));
+        setSpeed(Double.parseDouble(config.get(GameContext.BALL_SPEED)));
     }
 
     // each act, check for user input, make smoke and check death
     public void act()
     {
+        if(shouldPause) return;
+
         if(getWorld() != null) {
             ball.action();
         }
@@ -66,7 +69,7 @@ public class BasicBall extends SmoothMover implements IBall {
             ball.moveBall();
             ball.checkBallMiss();
             ball.makeSmoke();
-            setImage(config.get(GameContext.currentBallImg));
+            setImage(config.get(GameContext.currentBallImg.getKey()));
         }
     }
     private int calculateMovement(double movement, double speed) {
@@ -128,9 +131,7 @@ public class BasicBall extends SmoothMover implements IBall {
         Brick brick = (Brick)getOneIntersectingObject(Brick.class);
         if ( brick != null) {
             ball.brickCollision(brick);
-            // sound effect
-            if(ballHitBrickSound != null)
-                Greenfoot.playSound(ballHitBrickSound);
+
         }
     }
 
@@ -149,7 +150,9 @@ public class BasicBall extends SmoothMover implements IBall {
         }
         // changes brick appearance accordingly
         brick.effect();
-
+        // sound effect
+        if(ballHitBrickSound != null)
+            Greenfoot.playSound(ballHitBrickSound);
     }
 
     public PowerSquareFactory.PowerType getCurrentPower() {
@@ -163,7 +166,7 @@ public class BasicBall extends SmoothMover implements IBall {
     // delete ball when passes MinX
     public void checkBallMiss()
     {
-        if (getY() == getWorld().getHeight()-1) {
+        if (getY() >= getWorld().getHeight()-10) {
             // send to method for update on counter
             ballDead();
             getWorld().removeObject(this);
@@ -345,6 +348,18 @@ public class BasicBall extends SmoothMover implements IBall {
 
     public void setOnPaddle(boolean isOnPaddle) {
         onPaddle = isOnPaddle;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public void pause() {
+        shouldPause = true;
+    }
+
+    public void resume() {
+        shouldPause = false;
     }
 
     public void remove() {

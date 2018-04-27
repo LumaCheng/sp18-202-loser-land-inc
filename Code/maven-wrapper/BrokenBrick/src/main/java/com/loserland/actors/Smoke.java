@@ -14,6 +14,8 @@ public class Smoke  extends Actor
     private GreenfootImage image;   // the original image
     private int fade;               // the rate of fading
 
+    private boolean shouldPause = false;
+
     // smoke constructor
     public Smoke()
     {
@@ -27,6 +29,7 @@ public class Smoke  extends Actor
 
     public void act() 
     {
+        if(shouldPause) return;
         // fades the smoke image with each act
         shrink();
     }    
@@ -49,6 +52,14 @@ public class Smoke  extends Actor
     public void setImage(String fileName) {
         super.setImage(fileName);
         image = getImage();
+    }
+
+    public void pause() {
+        shouldPause = true;
+    }
+
+    public void resume() {
+        shouldPause = false;
     }
 
 }

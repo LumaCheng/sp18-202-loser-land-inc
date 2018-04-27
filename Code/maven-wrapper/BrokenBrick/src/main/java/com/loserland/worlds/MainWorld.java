@@ -1,17 +1,16 @@
 package com.loserland.worlds;
 
+import com.loserland.actors.Back;
 import com.loserland.actors.BasicBall;
 import com.loserland.actors.Brick;
 import com.loserland.actors.ContextController;
-import com.loserland.actors.Counter;
-import com.loserland.actors.Exit;
+import com.loserland.actors.LevelLabel;
 import com.loserland.actors.Fader;
 import com.loserland.actors.HighScoreBoard;
 import com.loserland.actors.Lives;
 import com.loserland.actors.ManageScore;
-import com.loserland.actors.Musicplayer;
+import com.loserland.actors.MusicPlayer;
 import com.loserland.actors.Paddle;
-import com.loserland.actors.PauseState;
 import com.loserland.actors.PlayState;
 import com.loserland.actors.Pointy;
 import com.loserland.actors.ScoreBoard;
@@ -19,19 +18,21 @@ import com.loserland.actors.Smoke;
 import com.loserland.actors.StopState;
 import com.loserland.actors.Volumedown;
 import com.loserland.actors.Volumeup;
+import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.*;
 import com.loserland.controller.Controller;
+import com.loserland.controller.KeyBoardController;
 import com.loserland.controller.MouseController;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootSound;
-import greenfoot.MouseInfo;
-import org.apache.commons.lang3.SerializationUtils;
-import java.awt.*;
 import greenfoot.World;
+import java.awt.Rectangle;
 import java.util.List;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 
 /**
@@ -43,22 +44,20 @@ import java.util.List;
 public class MainWorld extends World implements IGameProgress
 {
     // Declare variables, booleans and classes.
-    private final int BRICKWIDTH = 45;
-    private final int BRICKHEIGHT = 20;
-    private final int VOFFSET = 12;
-    private final int HOFFSET = 12;
-    private Paddle paddle;
+
     private Fader fader;
     private MyWorld myWorld;
     private PauseWorld pauseWorld;
     private ContextController contextController = new ContextController();
 
-    private ScoreBoard scoreBoard=new ScoreBoard();
+    private ScoreBoard scoreBoard;
+    private LevelLabel levelLabel;
+    private Paddle paddle;
 
-    private Counter levelNum = new Counter();
+
     private Pointy aim = new Pointy();  
 
-    private Musicplayer musicplayer;
+    public MusicPlayer musicPlayer;
     private Volumeup volumeup;
     private Volumedown volumedown;
     private HighScoreBoard highScoreBoard = HighScoreBoard.getInstance();
@@ -66,21 +65,8 @@ public class MainWorld extends World implements IGameProgress
     private ManageScore managevolume = new ManageScore();
     private PlayState playState;
     private StopState stopState;
-    private Exit pause;
+    private Back pause;
 
-//    public static List<String> faceList = new ArrayList<>();
-//    private int faces = 0;
-
-    // a total of 4 lives per game
-    private int lives = 4;
-    // start score from 0
-    private int score = 0;
-    // start game with level 1
-    private int level = 1;
-    // create 3 new life "bars"
-    private Lives live1 = new Lives();
-    private Lives live2 = new Lives();
-    private Lives live3 = new Lives();
     // initalize background music, add was "backgroundMusic"
     GreenfootSound backgroundMusic;
     // boolean to determine if ball was launched
@@ -88,13 +74,12 @@ public class MainWorld extends World implements IGameProgress
     // boolean to determine is gameOver music was played
     private boolean played = false;
     // instead of boolean uses integers to meet if statement for main menu. Fixes launch bug where ball launches immediatly after menu.
-    private int clickMenu = 2;
     //volume
     private int volume = config.get(Integer.class, GameContext.VOLUME_DEFAULT);
 
-    // TODO: Using factory mode to initialize controller
-    private Controller controller = new MouseController(this);
-    //private Controller controller = new MouseController(this);
+    // TODO: Using factory mode to initialize mouse
+    private Controller mouse = new MouseController(this);
+    private Controller keyboard = new KeyBoardController(this);
 
 
     //Configs
@@ -104,10 +89,6 @@ public class MainWorld extends World implements IGameProgress
     static {
         configFactory = ConfigFactory.getInstance();
         config = configFactory.getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
-    }
-
-    public GameState getCurrentState() {
-        return currentState;
     }
 
     private GameState currentState;
@@ -122,86 +103,145 @@ public class MainWorld extends World implements IGameProgress
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(Exit.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
+        setPaintOrder(Back.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, LevelLabel.class);
 
         //initialize UI components and put place
         initMusic();
+        initUI();
 
         //init game state
         currentState = new GameState();
-        currentState.setStage(GameStageLoader.getInstance().load());
         render(currentState);
-
-        initUI();
 
         initScoreObserver();
 
         // clears screen instantly to show level 1
         fader.fadeBackIn();
 
-        controller.addObserver(aim);
-        controller.addObserver(paddle);
+        mouse.addObserver(aim);
+        mouse.addObserver(paddle);
 
+        keyboard.addObserver(aim);
+        keyboard.addObserver(paddle);
+    }
+
+    private void render(GameState state) {
+        List<Actor> actors = getObjects(Actor.class);
+        for (Actor actor: actors){
+            if (actor instanceof Storable){
+                removeObject(actor);
+            }
+        }
+
+        //render stage
+        for (GameBrick gameBrick: state.getGameStage().getBricks()){
+            Brick brick = gameBrick.restore();
+            addObject(brick, gameBrick.getX(), gameBrick.getY() );
+
+            if (hasIntersectingActors(brick, Brick.class)){
+                removeObject(brick);
+            }
+        }
+
+        //render paddle
+        GamePaddle gamePaddle = state.getGamePaddle();
+        renderPaddle(gamePaddle);
+
+        //render LevelLabel
+        GameLevel gameLevel = state.getGameLevel();
+        renderLevel(gameLevel);
+
+        //render ScoreBoard
+        GameScore gameScore = state.getGameScore();
+        renderScore(gameScore);
+
+        //render LivesBar
+        renderLivesBar(state.getGameLives());
+    }
+
+    private void renderPaddle(GamePaddle gamePaddle) {
+        paddle.setWidth(gamePaddle.getPaddleWidth());
+        paddle.setLocation(gamePaddle.getX(), gamePaddle.getY());
+    }
+
+    private void renderLevel(GameLevel gameLevel) {
+        levelLabel = gameLevel.restore();
+        addObject(levelLabel, gameLevel.getX(), gameLevel.getY());
+    }
+
+    private void renderScore(GameScore gameScore) {
+        scoreBoard = gameScore.restore();
+        addObject(scoreBoard, gameScore.getX(), gameScore.getY());
+    }
+
+    private void renderLivesBar(GameLives gameLives) {
+        removeObjects(getObjects(Lives.class));
+        int livesNum = gameLives.getLivesNum();
+        int x = gameLives.getLives_x();
+        int y = gameLives.getLives_y();
+        int x_increment = gameLives.getLives_x_incremental();
+        for (int i = 0; i < livesNum; i++){
+            addObject(new Lives(), x, y);
+            x += x_increment;
+        }
+    }
+
+    private void initUI() {
+        setBackground(config.get(GameContext.MAIN_IMG));
+
+        paddle = new Paddle();
+        addObject(paddle, getWidth()/2, getHeight()-26);
+
+        // TODO: Padding need had consistent pos with mouse
+        // read init points from config
+        // add paddle into world
+//        addObject(paddle, getWidth()/2, getHeight()-26);
+        addObject(aim, 350,474);
+
+        fader = new Fader();
+        addObject (fader, 400, 300);
+        // import menu
+        pause = new Back();
+        pause.setImage(config.get(GameContext.STAGE_PAUSE));
+        addObject(pause, 25, 25);
+
+        addObject(musicPlayer,680,460);
+        addObject(volumeup,680,430);
+        addObject(volumedown,680,490);
+
+        contextController.setMainWorld(this);
+    }
+
+    public GameState getCurrentState() {
+//        currentState = new GameState();
+        GameStage stage = new GameStage();
+        List<Brick> bricks = getObjects(Brick.class);
+        for (Brick brick: bricks){
+            stage.addBrick(brick.save());
+        }
+        currentState.setGameStage(stage);
+//        currentState.setGamePaddle(paddle.save());
+        currentState.getGamePaddle().setPaddleWidth(paddle.getImage().getWidth());
+        return currentState;
     }
 
     private void initScoreObserver(){
-
         managescore.attach(highScoreBoard);
         managescore.attach(scoreBoard);
         managescore.attach(contextController);
-
-
     }
 
     private void initMusic() {
-        //backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
-        // play background music continuously
-
-       // backgroundMusic.playLoop();
-        musicplayer = Musicplayer.getInstance();
+        musicPlayer = MusicPlayer.getInstance();
         playState = new PlayState();
         stopState = new StopState();
         volumeup = new Volumeup();
         volumedown = new Volumedown();
-        playState.doAction(musicplayer);
-        managevolume.attach(musicplayer);
+        playState.doAction();
+        managevolume.attach(musicPlayer);
         managevolume.attach(volumeup);
         managevolume.attach(volumedown);
 
-    }
-
-    private void initUI() {
-        // create new paddle and ball
-        paddle = new Paddle();
-
-
-        // TODO: Padding need had consistent pos with controller
-        // read init points from config
-        // add paddle into world
-        addObject(paddle, getWidth()/2, getHeight()-26);
-        addObject(aim,paddle.getX(),paddle.getY()-20);
-        // Add the score board into the world
-        addObject(scoreBoard,658,511);
-        // Add the level counter to world
-        addObject(levelNum,575,511);
-        // Create a new fader for this class and add it to the world
-        fader = new Fader();
-        addObject (fader, 400, 300);
-        // import menu
-        pause = new Exit();
-        pause.setImage(config.get(GameContext.STAGE_PAUSE));
-        addObject(pause, 25, 25);
-
-        addObject(musicplayer,680,460);
-        addObject(volumeup,680,430);
-        addObject(volumedown,680,490);
-
-        //Add life "bar" into world
-        addObject( live1, 23, 510);
-        addObject( live2, 69, 510);
-        addObject( live3, 115, 510);
-
-        contextController.setMainWorld(this);
     }
 
     // each act check for death, mouse input and whether to create new level
@@ -211,32 +251,20 @@ public class MainWorld extends World implements IGameProgress
         checkMouse();
         checkLives();
         
-        controller.polling();
+        mouse.polling();
+        keyboard.polling();
     }
 
     public void setMyWorld(MyWorld myWorld){
         this.myWorld = myWorld;
     }
     public void setPauseWorld(PauseWorld pauseWorld) { this.pauseWorld = pauseWorld;}
-    public void stopMusic(){
-        stopState.doAction(musicplayer);
-    }
+
 
     // checks if player looses life
     public  void checkLives()
     {
-        // Whenever player lose life, remove corresponding life bar
-        if (lives == 3)
-        {
-            removeObject(live3);
-        }
-        if (lives == 2)
-        {
-            removeObject(live2);
-        }
-        if (lives == 1)
-        {
-            removeObject(live1);
+        if (currentState.getGameLives().getLivesNum() == 0){
             // End game. Remove Actors from world.
             highScoreBoard.SaveScore();
             // play game over sound
@@ -245,16 +273,8 @@ public class MainWorld extends World implements IGameProgress
             myWorld.setGameOver();
             Greenfoot.setWorld(myWorld);
             myWorld.resetMainWorld();
-            addObject( live1, 23, 510);
-            addObject( live2, 69, 510);
-            addObject( live3, 115, 510);
-            lives = 4;
-//            gameStageLoader.load();
-            currentState.setStage(GameStageLoader.getInstance().load());
+            currentState.setGameStage(GameStageLoader.getInstance().load());
             render(currentState);
-
-            // end game when gameover sound is finished playing
-
         }
     }
 
@@ -269,51 +289,37 @@ public class MainWorld extends World implements IGameProgress
     public void takeLife()
     {
         replaceBall();
-        lives--;
+        currentState.getGameLives().setLivesNum(currentState.getGameLives().getLivesNum() - 1);
+        renderLivesBar(currentState.getGameLives());
     }
 
     // reward points according to destroyed brick
     public void addPoints(int points)
     {
-        score+=points;
-        managescore.notifyObservers(score);
-        // refreshes counter display for score
-        //scoreBoard.update(score);
+        currentState.getGameScore().setScore(currentState.getGameScore().getScore() + points);
+        managescore.notifyObservers(currentState.getGameScore().getScore());
+        renderScore(currentState.getGameScore());
     }
 
     // checks for player input from mouse
     public void checkMouse()
     {
-        // send cursor value to mouse variable
-        MouseInfo mouse = Greenfoot.getMouseInfo();
-        int changeX;
-        int mouseX;
-        int mouseY;
-        // check don't exceed left and right border of background
-        // don't move paddle before player shoots
-//        if(Greenfoot.mouseClicked(musicplayer)){
-//            if(backgroundMusic.isPlaying()){
-//                pauseState.doAction(musicplayer);
-//            }
-//            else{
-//                playState.doAction(musicplayer);
-//            }
-//        }
-
-        if(Greenfoot.mouseClicked(volumeup) && musicplayer.isPlaying()){
+        if(mouse.clicked(volumeup) && musicPlayer.isPlaying()){
             volume = volume <= 95 ? volume+5 : volume;
             managevolume.notifyObservers(volume);
         }
-        else if(Greenfoot.mouseClicked(volumedown) && musicplayer.isPlaying()){
+        else if(mouse.clicked(volumedown) && musicPlayer.isPlaying()){
             volume = volume >= 5? volume-5 : volume;
             managevolume.notifyObservers(volume);
         }
 
-        else if(Greenfoot.mouseClicked(pause)){
-            clickMenu = 2;
+        else if(mouse.clicked(pause)){
             Greenfoot.setWorld(pauseWorld);
         }
-        else if(Greenfoot.mouseClicked(null)){
+        else if(Greenfoot.mouseClicked(musicPlayer)){
+            musicPlayer.changeState();
+        }
+        else if(mouse.clicked(null)){
             start = true;
             // launches ball according to angle of launch
             launchBall();
@@ -321,18 +327,7 @@ public class MainWorld extends World implements IGameProgress
             removeObject(aim);
         }
 
-        // if ball has launched, move paddle according to user input
-
-
-        // boolean does NOT work. Since the click from the menu will meet this statement. As a result, ball launches immediatly after menu screen.
-
-
     }
-//    // move paddle accordingly
-//    public void movePaddle(int distance)
-//    {
-//        paddle.moveMe(distance);
-//    }
 
     // checks to see if start new level
     public void checkLevel()
@@ -345,7 +340,6 @@ public class MainWorld extends World implements IGameProgress
             // reset to original location
             resetPosition();
             // increase level by 1 and call upon next level.
-            level++;
             nextLevel();
         }
     }
@@ -357,14 +351,12 @@ public class MainWorld extends World implements IGameProgress
         fader = new Fader();
         addObject (fader, 400, 300);
 
-        levelNum.update(level);
         fader.fadeBackIn();
 
-        currentState.setStage(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
+        currentState.setGameStage(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
+        currentState.getGameLevel().setLevel(currentState.getGameLevel().getLevel() + 1);
+        levelLabel.setLevel(currentState.getGameLevel().getLevel());
         render(currentState);
-
-//        gameStageLoader.load(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
-
     }
 
     // launching ball to commence game
@@ -398,26 +390,7 @@ public class MainWorld extends World implements IGameProgress
 
         paddle.setLocation(getWidth()/2, getHeight()-25);
         addObject(aim,paddle.getX(),paddle.getY()-20);
-
     }
-
-    private void render(GameState state) {
-
-        List allActors = getObjects(Brick.class);
-        if (allActors.size() > 0){
-            removeObjects(allActors);
-        }
-        //render stage
-        for (GameBrick gameBrick: state.getStage().getBricks()){
-            Brick brick = gameBrick.restore();
-            addObject(brick, gameBrick.getX(), gameBrick.getY() );
-            
-            if (hasIntersectingActors(brick, Brick.class)){
-                removeObject(brick);
-            }
-        }
-    }
-
 
     /**
      * @Author Jiaqi Qin
@@ -439,19 +412,9 @@ public class MainWorld extends World implements IGameProgress
         return false;
     }
 
-    public void onClickSaveCheckPoint(){
-        System.out.println("MyWorld.onClickSaveCheckPoint");
-        GameProgressManager.getInstance().add(new GameCheckPoint(currentState));
-    }
-
-    public void onClickLoadCheckPoint(){
-        System.out.println("MyWorld.onClickLoadCheckPoint");
-        restore(GameProgressManager.getInstance().load());
-    }
-
     @Override
     public GameCheckPoint save() {
-        return new GameCheckPoint(currentState);
+        return new GameCheckPoint(getCurrentState());
     }
 
     @Override
@@ -459,6 +422,39 @@ public class MainWorld extends World implements IGameProgress
         if (checkPoint == null) return;
         currentState = SerializationUtils.clone(checkPoint.getState());
         render(currentState);
+    }
 
+    public void pause() {
+        List<BasicBall> ballList = getObjects(BasicBall.class);
+        List<Smoke> smokeList = getObjects(Smoke.class);
+        List<PowerSquare> powerSquareList = getObjects(PowerSquare.class);
+        for(BasicBall ball : ballList) {
+            ball.pause();
+        }
+
+        for(Smoke smoke : smokeList) {
+            smoke.pause();
+        }
+
+        for(PowerSquare powerSquare : powerSquareList) {
+            powerSquare.pause();
+        }
+    }
+
+    public void resume() {
+        List<BasicBall> ballList = getObjects(BasicBall.class);
+        List<Smoke> smokeList = getObjects(Smoke.class);
+        List<PowerSquare> powerSquareList = getObjects(PowerSquare.class);
+        for(BasicBall ball : ballList) {
+            ball.resume();
+        }
+
+        for(Smoke smoke : smokeList) {
+            smoke.resume();
+        }
+
+        for(PowerSquare powerSquare : powerSquareList) {
+            powerSquare.resume();
+        }
     }
 }

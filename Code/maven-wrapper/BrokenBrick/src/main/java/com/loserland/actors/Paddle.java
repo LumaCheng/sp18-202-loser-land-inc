@@ -3,6 +3,8 @@ package com.loserland.actors;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
+import com.loserland.context.GamePaddle;
+import com.loserland.context.Storable;
 import com.loserland.controller.ControllerEvent;
 import com.loserland.controller.ControllerObserver;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
@@ -16,6 +18,7 @@ import java.util.List;
  * @version (a version number or a date)
  */
 public class Paddle extends Actor implements ControllerObserver {
+//public class Paddle extends Actor implements ControllerObserver, Storable<GamePaddle> {
     // Declare class
 //    private BasicBall ball ;
     private boolean haveBall;
@@ -70,7 +73,7 @@ public class Paddle extends Actor implements ControllerObserver {
         // change its dimensions according to preference
         img.scale(width, img.getHeight());
         // refresh, display new paddle
-        setImage(img);                            
+        setImage(img);
     }
 
     private void shrinkImage(int width) {    
@@ -161,4 +164,13 @@ public class Paddle extends Actor implements ControllerObserver {
             }
         }
     }
+
+    public void setWidth(int width){
+        expandImage(width);
+    }
+
+//    @Override
+//    public GamePaddle save() {
+//        return new GamePaddle(getImage().getWidth());
+//    }
 }

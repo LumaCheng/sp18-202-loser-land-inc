@@ -55,7 +55,7 @@ public class MultiballDecorator implements IBall, IBallDecorator {
     @Override
     public void checkBallMiss() {
         if (basicBall.getY() == basicBall.getWorld().getHeight()-1) {
-            // send to method for update on counter
+            // send to method for setGameLevel on counter
             ballDead();
             basicBall.getWorld().removeObject(basicBall);
         }
@@ -79,6 +79,9 @@ public class MultiballDecorator implements IBall, IBallDecorator {
         basicBall.brickCollision(brick);
         changeRotation = Greenfoot.getRandomNumber(30);
         basicBall.setRotation(Greenfoot.getRandomNumber(360));
+        // sound effect
+        if(basicBall.ballHitBrickSound != null)
+            Greenfoot.playSound(basicBall.ballHitBrickSound);
     }
 
     @Override
