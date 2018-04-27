@@ -82,6 +82,7 @@ public class GameContext {
     public static final String BACK_BUTTON = "back.menu.button";
 
     public static final String MULTIBALL_IMAGE = "multiball.image";
+    public static final String MULTIBALL_NUMBER = "multiball.number";
 
     public enum BallType implements KeyEnum {
         NORMAL("ball.image"),

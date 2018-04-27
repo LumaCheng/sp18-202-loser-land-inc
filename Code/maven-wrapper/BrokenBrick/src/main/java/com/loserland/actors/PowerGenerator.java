@@ -19,10 +19,10 @@ public class PowerGenerator {
         if(hitNumber < PowerSquareFactory.getNumberOfPowers() - 1) {
             PowerSquareFactory.PowerType type = PowerSquareFactory.PowerType.values()[hitNumber];
             PowerSquare powerSquare;
-            if(type == ball.getCurrentPower())
-                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
-            else
-                powerSquare = PowerSquareFactory.makePowerSquare(type);
+//            if(type == ball.getCurrentPower())
+//                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
+//            else
+                powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.MULTI_BALL);
             if(powerSquare != null) {
                 ball.getWorld().addObject(powerSquare, brick.getX(), brick.getY());
                 powerSquare.fall();
