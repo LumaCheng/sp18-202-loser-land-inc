@@ -10,6 +10,8 @@ public class GameContext {
     public static final String MENU_IMG = "page.menu.image";
     public static final String MAIN_IMG = "page.main.image";
 
+    public static final String PLAYER_LIVES ="player.lives";
+
 
     public static final String STAGE_PAUSE = "page.stage.pause";
 
@@ -41,7 +43,6 @@ public class GameContext {
     public static final String WORLD_WIDTH = "world.width";
     public static final String WORLD_HEIGHT = "world.height";
     public static final String WORLD_CELL_SIZE = "world.cell.size";
-
 
 
     public static String BALL_BOUNCE_SND = "ball.bounce.sound";
@@ -80,7 +81,7 @@ public class GameContext {
 
     public static final String MULTIBALL_IMAGE = "multiball.image";
 
-    public enum BallType implements KeyEnum  {
+    public enum BallType implements KeyEnum {
         NORMAL("ball.image"),
         SHIELD("shieldball.image"),
         POKEMON("pokemonball.image"),
@@ -101,7 +102,7 @@ public class GameContext {
     }
 
 
-    public enum ScoreLevel implements KeyEnum  {
+    public enum ScoreLevel implements KeyEnum {
         SCORE_LEVEL_1("score.level1"),
         SCORE_LEVEL_2("score.level2"),
         SCORE_LEVEL_3("score.level3"),

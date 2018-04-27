@@ -1,5 +1,6 @@
 package com.loserland.context;
 
+import com.loserland.configs.ConfigFactory;
 import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ public class GameState implements Serializable {
         stage = new GameStage();
         score = 0;
         level = 1;
-        lives = 4;
+        lives = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME).get(Integer.class, GameContext.PLAYER_LIVES);
     }
 
     public GameStage getStage() {
