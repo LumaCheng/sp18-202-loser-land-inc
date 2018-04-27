@@ -70,7 +70,7 @@ public class Paddle extends Actor implements ControllerObserver {
         // change its dimensions according to preference
         img.scale(width, img.getHeight());
         // refresh, display new paddle
-        setImage(img);                            
+        setImage(img);
     }
 
     private void shrinkImage(int width) {    

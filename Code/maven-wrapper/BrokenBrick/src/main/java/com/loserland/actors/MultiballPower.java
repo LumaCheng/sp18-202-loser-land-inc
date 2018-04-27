@@ -4,6 +4,7 @@ import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -17,6 +18,7 @@ public class MultiballPower extends PowerSquare {
     int number = Integer.parseInt(config.get(GameContext.MULTIBALL_NUMBER));
     Random rand = new Random();
     Set<Integer> usedImg = new HashSet<>();
+    GreenfootImage currentImg;
 
     @Override
     void launchPower() {
@@ -39,7 +41,9 @@ public class MultiballPower extends PowerSquare {
                 n = rand.nextInt(size-1);
             }
             usedImg.add(n);
-            ball.setImage(multiballImg.get(n));
+            currentImg = new GreenfootImage(multiballImg.get(n));
+            currentImg.scale(30, 30);
+            ball.setImage(currentImg);
             int randomX = Greenfoot.getRandomNumber(100) - 50;
             int randomY = Greenfoot.getRandomNumber(100) - 50;
             int newX = origBall.getX()+randomX;
