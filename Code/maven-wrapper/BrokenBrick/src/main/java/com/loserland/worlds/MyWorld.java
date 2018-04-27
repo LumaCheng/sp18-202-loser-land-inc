@@ -2,6 +2,7 @@ package com.loserland.worlds;
 import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameCheckPoint;
 import com.loserland.context.GameContext;
 import com.loserland.context.GameProgressManager;
 import com.loserland.controller.Controller;
@@ -113,9 +114,12 @@ public class MyWorld extends World
         loadClick.setReceiver(
                 new IReceiver() {
                     public void doAction() {
-                        mainWorld.restore(GameProgressManager.getInstance().load());
-                        Greenfoot.setWorld(mainWorld);
-                        loadGame.resetImage();
+                        GameCheckPoint checkPoint = GameProgressManager.getInstance().load();
+                        if (checkPoint != null){
+                            mainWorld.restore(checkPoint);
+                            Greenfoot.setWorld(mainWorld);
+                            loadGame.resetImage();
+                        }
                     }
                 }
         );
