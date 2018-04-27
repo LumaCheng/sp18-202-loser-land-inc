@@ -347,6 +347,8 @@ public class MainWorld extends World implements IGameProgress
     // create new level
     public void nextLevel()
     {
+        removeObjects(getObjects(PowerSquare.class));
+
         // fader effect. Consume screen
         fader = new Fader();
         addObject (fader, 400, 300);
