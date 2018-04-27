@@ -52,6 +52,7 @@ public class GameContext {
     public static String BALL_SMOKE_FREQ = "ball.smokeFreq";
     public static String BALL_INIT_X = "ball.initX";
     public static String BALL_INIT_Y = "ball.initY";
+    public static String BALL_SPEED = "ball.speed";
 
     public static String FIREBALL = "fireBall.image";
     public static String FIRE_SMOKE = "fireSmoke.image";
@@ -61,6 +62,7 @@ public class GameContext {
     public static String PYROBLAST_EXPLODE_SND = "problastExplode.sound";
     public static String FIRE_BURN_SND = "fireBurn.sound";
 
+    public static String POWER_LIST = "powerSquare.list";
 
     public static String SCOREBOARD_HEIGHT = "game.scoreboard.height";
     public static String SCOREBOARD_WIDTH = "game.scoreboard.width";

@@ -49,6 +49,7 @@ public class BasicBall extends SmoothMover implements IBall {
         setBallInitCooridinate(Integer.parseInt(config.get(GameContext.BALL_INIT_X)),
                 Integer.parseInt(config.get(GameContext.BALL_INIT_Y)));
         setSmokeFrequency(Integer.parseInt(config.get(GameContext.BALL_SMOKE_FREQ)));
+        setSpeed(Double.parseDouble(config.get(GameContext.BALL_SPEED)));
     }
 
     // each act, check for user input, make smoke and check death
@@ -345,6 +346,10 @@ public class BasicBall extends SmoothMover implements IBall {
 
     public void setOnPaddle(boolean isOnPaddle) {
         onPaddle = isOnPaddle;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     public void remove() {

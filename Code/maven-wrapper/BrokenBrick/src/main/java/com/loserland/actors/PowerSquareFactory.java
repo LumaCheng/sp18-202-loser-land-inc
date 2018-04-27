@@ -1,6 +1,7 @@
 package com.loserland.actors;
 
 public class PowerSquareFactory {
+
     public enum PowerType {
         LARGE_PADDLE, SMALL_PADDLE, FAST_BALL, SLOW_BALL, FIRE_BALL, PYROBLAST_BALL, MULTI_BALL, NORMAL
     }
@@ -11,7 +12,6 @@ public class PowerSquareFactory {
                 return new NormalPower();
             case FAST_BALL:
                 return new SpeedUpPower();
-//                break;
             case SLOW_BALL:
                 return new SpeedDownPower();
             case FIRE_BALL:
