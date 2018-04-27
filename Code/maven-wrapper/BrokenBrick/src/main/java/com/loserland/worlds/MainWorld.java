@@ -372,6 +372,8 @@ public class MainWorld extends World implements IGameProgress
                 removeObject(brick);
             }
         }
+
+        renderLivesBar();
     }
 
     private void setLives(int lives) {
