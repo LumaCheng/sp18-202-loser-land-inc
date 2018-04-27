@@ -5,10 +5,7 @@ import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameCheckPoint;
 import com.loserland.context.GameContext;
 import com.loserland.context.GameProgressManager;
-import com.loserland.controller.Controller;
-import com.loserland.controller.MouseController;
 import greenfoot.*;
-import greenfoot.MouseInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +21,6 @@ import java.util.List;
 public class PauseWorld extends World
 {
     // Declare variables, booleans and classes.
-    private final int BRICKWIDTH = 45;
-    private final int BRICKHEIGHT = 20;
-    private final int VOFFSET = 12;
-    private final int HOFFSET = 12;
     private MainWorld mainWorld;
     private MyWorld myWorld;
     private MenuButton resume;
@@ -38,11 +31,6 @@ public class PauseWorld extends World
     private ICommand exitClick ;
     private PausePage pausePage;
     private List<MenuButton> buttonsList = new ArrayList<>();
-
-    GreenfootSound backgroundMusic;
-
-    // TODO: Using factory mode to initialize controller
-    private Controller controller = new MouseController(this);
 
     //Configs
     private static ConfigFactory configFactory;
@@ -60,27 +48,10 @@ public class PauseWorld extends World
     public PauseWorld() {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
-
         // Sets the order of display of Actors
         setPaintOrder(MenuButton.class, PausePage.class);
         //initialize UI components and put place
         initMenu();
-
-        initMusic();
-
-        // clears screen instantly to show level 1
-//        fader.fadeBackIn();
-    }
-
-
-
-    private void initMusic() {
-        backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
-        // play background music continuously
-
-        //backgroundMusic.playLoop();
-        //backgroundMusic.playLoop();
-
     }
 
     public void setMyWorld(MyWorld myWorld){
@@ -143,9 +114,6 @@ public class PauseWorld extends World
         pausePage.setImage(config.get(GameContext.PAUSE_STAGE_IMG));
         addObject (pausePage, 350, 260);
 
-        //initMusic();
-        //gameOverSound();
-        // Display GameOver screen
     }
 
     // each act check for death, mouse input and whether to create new level
@@ -157,14 +125,7 @@ public class PauseWorld extends World
 
     // checks for player input from mouse
     public void checkMouse() {
-        // send cursor value to mouse variable
-        MouseInfo mouse = Greenfoot.getMouseInfo();
-        int changeX;
-        int mouseX;
-        int mouseY;
-        // check don't exceed left and right border of background
-        // don't move paddle before player shoots
-        //System.out.println(mouse.getActor());
+        // check mouse events
         for(MenuButton menuButton: buttonsList){
             if(Greenfoot.mouseClicked(menuButton)){
                 menuButton.click();

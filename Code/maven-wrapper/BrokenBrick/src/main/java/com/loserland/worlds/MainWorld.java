@@ -44,7 +44,7 @@ public class MainWorld extends World implements IGameProgress
     private ManageScore managevolume = new ManageScore();
     private PlayState playState;
     private StopState stopState;
-    private Exit pause;
+    private Back pause;
 
     // start score from 0
     private int score = 0;
@@ -62,7 +62,6 @@ public class MainWorld extends World implements IGameProgress
     // boolean to determine is gameOver music was played
     private boolean played = false;
     // instead of boolean uses integers to meet if statement for main menu. Fixes launch bug where ball launches immediatly after menu.
-    private int clickMenu = 2;
     //volume
     private int volume = config.get(Integer.class, GameContext.VOLUME_DEFAULT);
 
@@ -106,7 +105,7 @@ public class MainWorld extends World implements IGameProgress
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(Exit.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
+        setPaintOrder(Back.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, Counter.class);
 
         //initialize UI components and put place
         initMusic();
@@ -165,7 +164,7 @@ public class MainWorld extends World implements IGameProgress
         fader = new Fader();
         addObject (fader, 400, 300);
         // import menu
-        pause = new Exit();
+        pause = new Back();
         pause.setImage(config.get(GameContext.STAGE_PAUSE));
         addObject(pause, 25, 25);
 
@@ -274,7 +273,6 @@ public class MainWorld extends World implements IGameProgress
         }
 
         else if(Greenfoot.mouseClicked(pause)){
-            clickMenu = 2;
             Greenfoot.setWorld(pauseWorld);
         }
         else if(Greenfoot.mouseClicked(null)){

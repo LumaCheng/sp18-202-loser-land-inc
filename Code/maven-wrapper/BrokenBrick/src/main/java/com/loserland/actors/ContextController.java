@@ -5,13 +5,10 @@ import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
 import com.loserland.worlds.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ContextController implements ScoreObserver {
 
     MainWorld mainWorld;
-    List ballList = new ArrayList();
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
 
@@ -53,11 +50,5 @@ public class ContextController implements ScoreObserver {
             returnString = GameContext.BallType.BASEBALL;
         }
         return returnString;
-    }
-
-    private void setBallImage(List<BasicBall> balls) {
-        for (BasicBall ball : balls) {
-            ball.setImage(config.get(GameContext.currentBallImg.getKey()));
-        }
     }
 }

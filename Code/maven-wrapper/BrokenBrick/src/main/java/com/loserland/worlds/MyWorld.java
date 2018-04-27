@@ -32,17 +32,9 @@ public class MyWorld extends World
     private MenuButton startGame;
     private MenuButton loadGame;
     private MenuButton highScore;
-
     private ICommand startClick ;
-
-
     private ICommand loadClick ;
-
-
     private ICommand scoreClick ;
-
-
-    private boolean ifMainMenu = true;
     private HighScoreBoard highScoreBoard;
     private Back back;
     private List<MenuButton> buttonsList = new ArrayList<>();
@@ -68,49 +60,17 @@ public class MyWorld extends World
     public MyWorld() {
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
-
         // Sets the order of display of Actors
         setPaintOrder(MenuButton.class, CoverPage.class, GameOver.class, Back.class, HighScoreBoard.class);
-
         //initialize UI components and put place
         initMenu();
-
-        //initMusic();
-
-        // clears screen instantly to show level 1
-//        fader.fadeBackIn();
-    }
-
-
-
-    private void initMusic() {
-        backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
-        // play background music continuously
-
-        //backgroundMusic.playLoop();
-        //backgroundMusic.playLoop();
-
-    }
-
-    public void setGameOver() {
-        removeObject(menu);
-        removeObject(startGame);
-        removeObject(loadGame);
-        removeObject(highScore);
-        ifMainMenu = false;
-    }
-
-    public void resetMainWorld() {
-        mainWorld = new MainWorld();
-        mainWorld.setMyWorld(this);
-        mainWorld.setPauseWorld(pauseWorld);
-        pauseWorld.setMainWorld(mainWorld);
     }
 
 
 
 
     private void initMenu() {
+        //Creating three worlds
         mainWorld = new MainWorld();
         pauseWorld = new PauseWorld();
         mainWorld.setMyWorld(this);
@@ -118,7 +78,7 @@ public class MyWorld extends World
         mainWorld.setPauseWorld(pauseWorld);
         pauseWorld.setMainWorld(mainWorld);
 
-
+        //creating Buttons on the menu
         startGame = new MenuButton(config.get(GameContext.START_BUTTON), config.get(GameContext.START_HOVER),
                 config.get(GameContext.START_PRESSED));
         loadGame = new MenuButton(config.get(GameContext.LOAD_BUTTON), config.get(GameContext.LOAD_HOVER),
@@ -132,11 +92,8 @@ public class MyWorld extends World
         buttonsList.add(highScore);
 
         startClick = new MenuCommand();
-
         loadClick = new MenuCommand();
-
         scoreClick = new MenuCommand();
-
 
         startClick.setReceiver(
                 new IReceiver() {
@@ -170,14 +127,11 @@ public class MyWorld extends World
                     }
                 }
         ) ;
-
         startGame.setCommand(startClick);
         loadGame.setCommand(loadClick);
         highScore.setCommand(scoreClick);
 
-
-
-
+        //Add objects to MyWorld
         addObject (highScoreBoard, 350, 250);
         addObject (startGame, 615,395);
         addObject (loadGame, 615,435);
@@ -187,14 +141,27 @@ public class MyWorld extends World
         menu.setImage(config.get(GameContext.MENU_IMG));
         addObject (menu, 350,260);
 
-        initMusic();
-        //gameOverSound();
-        // Display GameOver screen
         gameOver = new GameOver();
         addObject(gameOver, 350, 260);
         back = new Back();
         back.setImage(config.get(GameContext.BACK_BUTTON));
         addObject(back, 25, 25);
+    }
+
+
+
+    public void setGameOver() {
+        removeObject(menu);
+        removeObject(startGame);
+        removeObject(loadGame);
+        removeObject(highScore);
+    }
+
+    public void resetMainWorld() {
+        mainWorld = new MainWorld();
+        mainWorld.setMyWorld(this);
+        mainWorld.setPauseWorld(pauseWorld);
+        pauseWorld.setMainWorld(mainWorld);
     }
 
     // each act check for death, mouse input and whether to create new level
@@ -203,22 +170,10 @@ public class MyWorld extends World
         controller.polling();
     }
 
-    // checks if player looses life
-
-    // return boolean after gameover sound played
-    public void gameOverSound() {
-        Greenfoot.playSound("gameOver.wav");
-    }
 
 
-    // checks for player input from mouse
+
     public void checkMouse() {
-        // send cursor value to mouse variable
-        MouseInfo mouse = Greenfoot.getMouseInfo();
-        int changeX;
-        int mouseX;
-        int mouseY;
-
         for(MenuButton menuButton: buttonsList){
             if(Greenfoot.mouseClicked(menuButton)){
                 menuButton.click();
@@ -242,91 +197,21 @@ public class MyWorld extends World
             }
         }
 
-
-        // check don't exceed left and right border of background
-        // don't move paddle before player shoots
-        //System.out.println(mouse.getActor());
-//        if (Greenfoot.mouseClicked(startGame)) {
-//            if (ifMainMenu) {
-//                // once clicked, remove menu
-//                Greenfoot.setWorld(mainWorld);
-//                startGame.setImage(config.get(GameContext.START_BUTTON));
-//                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
-//            }
-//        }
-
-//        if (Greenfoot.mouseClicked(highScore)) {
-//            if (ifMainMenu) {
-//                // once clicked, remove menu
-//                removeObject(gameOver);
-//                removeObject(menu);
-//                removeObject(startGame);
-//                removeObject(highScore);
-//                removeObject(loadGame);
-//                ifMainMenu = false;
-//                highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-//                highScoreBoard.ShowScore();
-//                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
-//            }
-//        }
-
         if (Greenfoot.mouseClicked(back)) {
 
-                // once clicked, remove menu
+
                 addObject (startGame, 615,395);
                 addObject (loadGame, 615,435);
                 addObject (highScore, 615,475);;
                 addObject (gameOver, 350, 260);
                 addObject (menu, 350, 260);
-                // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.
+
 
         }
 
-//        if(Greenfoot.mousePressed(startGame)){
-//            startGame.setImage(config.get(GameContext.START_PRESSED));
-//        }
-//        if(Greenfoot.mouseMoved(startGame)){
-//            startGame.setImage(config.get(GameContext.START_HOVER));
-//            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
-//            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-//        }
-//        if(Greenfoot.mousePressed(loadGame)){
-//            loadGame.setImage(config.get(GameContext.LOAD_PRESSED));
-//        }
-
-
-
-//        if(Greenfoot.mouseClicked(loadGame)){
-//            // Load Game Scene
-//            mainWorld.restore(GameProgressManager.getInstance().load());
-//            Greenfoot.setWorld(mainWorld);
-//        }
-
-
-//        if(Greenfoot.mouseMoved(loadGame)){
-//            loadGame.setImage(config.get(GameContext.LOAD_HOVER));
-//            startGame.setImage(config.get(GameContext.START_BUTTON));
-//            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-//        }
-//        if(Greenfoot.mousePressed(highScore)){
-//            highScore.setImage(config.get(GameContext.SCORE_PRESSED));
-//        }
-//        if(Greenfoot.mouseMoved(highScore)){
-//            highScore.setImage(config.get(GameContext.SCORE_HOVER));
-//            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
-//            startGame.setImage(config.get(GameContext.START_BUTTON));
-//        }
-//        if(Greenfoot.mouseMoved(menu)){
-//            startGame.setImage(config.get(GameContext.START_BUTTON));
-//            loadGame.setImage(config.get(GameContext.LOAD_BUTTON));
-//            highScore.setImage(config.get(GameContext.SCORE_BUTTON));
-//        }
-
         if (Greenfoot.mouseClicked(gameOver)){
-            //mainWorld.stopMusic();
                 removeObject(gameOver);
                 highScoreBoard.ShowScore();
-                //refreshMainWorld();
         }
     }
 }
