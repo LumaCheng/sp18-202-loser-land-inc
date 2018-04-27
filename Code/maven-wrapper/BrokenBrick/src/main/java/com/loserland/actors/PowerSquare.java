@@ -13,6 +13,7 @@ public abstract class PowerSquare extends Actor{
     // declare classes and booleans
     protected Paddle paddle;
     private boolean move = true;
+    private boolean shouldPause = false;
     /**
      * Act - do whatever the com.loserland.actors.LargePaddle wants to do. This method is called whenever
      * the 'Act' or 'Run' button gets pressed in the environment.
@@ -20,6 +21,7 @@ public abstract class PowerSquare extends Actor{
 
     public void act()
     {
+        if(shouldPause) return;
         //checks collision with each act
         checkCollision();
     }
@@ -49,6 +51,14 @@ public abstract class PowerSquare extends Actor{
             // if reaches bottom of world, remove object
             getWorld().removeObject(this);
         }
+    }
+
+    public void pause() {
+        shouldPause = true;
+    }
+
+    public void resume() {
+        shouldPause = false;
     }
 
     abstract void launchPower();

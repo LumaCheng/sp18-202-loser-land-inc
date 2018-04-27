@@ -18,6 +18,7 @@ import com.loserland.actors.Smoke;
 import com.loserland.actors.StopState;
 import com.loserland.actors.Volumedown;
 import com.loserland.actors.Volumeup;
+import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.*;
@@ -319,9 +320,6 @@ public class MainWorld extends World implements IGameProgress
             musicPlayer.changeState();
         }
         else if(mouse.clicked(null)){
-            if(mouse.clicked(pause)){
-                System.out.println("Click me bitch!");
-            }
             start = true;
             // launches ball according to angle of launch
             launchBall();
@@ -424,5 +422,39 @@ public class MainWorld extends World implements IGameProgress
         if (checkPoint == null) return;
         currentState = SerializationUtils.clone(checkPoint.getState());
         render(currentState);
+    }
+
+    public void pause() {
+        List<BasicBall> ballList = getObjects(BasicBall.class);
+        List<Smoke> smokeList = getObjects(Smoke.class);
+        List<PowerSquare> powerSquareList = getObjects(PowerSquare.class);
+        for(BasicBall ball : ballList) {
+            ball.pause();
+        }
+
+        for(Smoke smoke : smokeList) {
+            smoke.pause();
+        }
+
+        for(PowerSquare powerSquare : powerSquareList) {
+            powerSquare.pause();
+        }
+    }
+
+    public void resume() {
+        List<BasicBall> ballList = getObjects(BasicBall.class);
+        List<Smoke> smokeList = getObjects(Smoke.class);
+        List<PowerSquare> powerSquareList = getObjects(PowerSquare.class);
+        for(BasicBall ball : ballList) {
+            ball.resume();
+        }
+
+        for(Smoke smoke : smokeList) {
+            smoke.resume();
+        }
+
+        for(PowerSquare powerSquare : powerSquareList) {
+            powerSquare.resume();
+        }
     }
 }
