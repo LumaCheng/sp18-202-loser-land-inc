@@ -44,7 +44,7 @@ import org.apache.commons.lang3.SerializationUtils;
 public class MainWorld extends World implements IGameProgress
 {
     // Declare variables, booleans and classes.
-    private Paddle paddle = new Paddle();
+
     private Fader fader;
     private MyWorld myWorld;
     private PauseWorld pauseWorld;
@@ -52,6 +52,7 @@ public class MainWorld extends World implements IGameProgress
 
     private ScoreBoard scoreBoard;
     private LevelLabel levelLabel;
+    private Paddle paddle;
 
 
     private Pointy aim = new Pointy();  
@@ -151,6 +152,10 @@ public class MainWorld extends World implements IGameProgress
             }
         }
 
+        //render paddle
+        GamePaddle gamePaddle = state.getGamePaddle();
+        renderPaddle(gamePaddle);
+
         //render LevelLabel
         GameLevel gameLevel = state.getGameLevel();
         renderLevel(gameLevel);
@@ -163,6 +168,11 @@ public class MainWorld extends World implements IGameProgress
         renderLivesBar(state.getGameLives());
     }
 
+    private void renderPaddle(GamePaddle gamePaddle) {
+        paddle.setWidth(gamePaddle.getPaddleWidth());
+        paddle.setLocation(gamePaddle.getX(), gamePaddle.getY());
+    }
+
     private void renderLevel(GameLevel gameLevel) {
         levelLabel = gameLevel.restore();
         addObject(levelLabel, gameLevel.getX(), gameLevel.getY());
@@ -171,7 +181,6 @@ public class MainWorld extends World implements IGameProgress
     private void renderScore(GameScore gameScore){
         scoreBoard = gameScore.restore();
         addObject(scoreBoard, gameScore.getX(), gameScore.getY());
-
     }
 
     private void renderLivesBar(GameLives gameLives) {
@@ -189,11 +198,14 @@ public class MainWorld extends World implements IGameProgress
     private void initUI() {
         setBackground(config.get(GameContext.MAIN_IMG));
 
+        paddle = new Paddle();
+        addObject(paddle, getWidth()/2, getHeight()-26);
+
         // TODO: Padding need had consistent pos with mouse
         // read init points from config
         // add paddle into world
-        addObject(paddle, getWidth()/2, getHeight()-26);
-        addObject(aim,paddle.getX(),paddle.getY()-20);
+//        addObject(paddle, getWidth()/2, getHeight()-26);
+        addObject(aim, 350,474);
 
         fader = new Fader();
         addObject (fader, 400, 300);
@@ -217,7 +229,8 @@ public class MainWorld extends World implements IGameProgress
             stage.addBrick(brick.save());
         }
         currentState.setGameStage(stage);
-        currentState.setPaddleWidth(paddle.getImage().getWidth());
+//        currentState.setGamePaddle(paddle.save());
+        currentState.getGamePaddle().setPaddleWidth(paddle.getImage().getWidth());
         return currentState;
     }
 
