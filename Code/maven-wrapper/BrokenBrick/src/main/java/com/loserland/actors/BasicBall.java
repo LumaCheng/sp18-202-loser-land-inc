@@ -142,12 +142,13 @@ public class BasicBall extends SmoothMover implements IBall {
             changeY = -changeY;
             // Fixes multi-kill bug
             setLocation(getX(),getY() + 1);
-            PowerGenerator.generatePowerSquare(this, brick);
+
         }
         else {
             // moves ball in opposite direction after collision
             changeX = -changeX;
         }
+        PowerGenerator.generatePowerSquare(this, brick);
         // changes brick appearance accordingly
         brick.effect();
         // sound effect
@@ -184,7 +185,7 @@ public class BasicBall extends SmoothMover implements IBall {
     public void checkPaddleCollision()
     {
         Paddle paddle = (Paddle) getOneIntersectingObject(Paddle.class);
-        if (paddle != null && paddle.getStartBounce()) {
+        if (paddle != null) {
             // bounce if made contact
             ball.bounce(paddle);
         }
@@ -216,8 +217,7 @@ public class BasicBall extends SmoothMover implements IBall {
             double mult = lowestSpeed / speed;
             changeX *= mult;
             changeY *= mult;
-        }speed = Math.sqrt(changeX * changeX + changeY * changeY);
-
+        }
         // sound effect
         if (ballBounceSound != null)
             Greenfoot.playSound(ballBounceSound);
@@ -263,10 +263,7 @@ public class BasicBall extends SmoothMover implements IBall {
     public void launch(int mouseX, int mouseY)
     {
         // change to negative so ball can move upwards
-        if(!Paddle.getStartBounce()) {
-            Paddle.setStartBounce(true);
-            setLocation(getX(), getY() - 5);
-        }
+        setLocation(getX(), getY() - 5);
         trajectoryPath(mouseX,mouseY);
         // ball launched
         onPaddle = false;

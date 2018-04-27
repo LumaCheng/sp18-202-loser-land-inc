@@ -6,7 +6,6 @@ import com.loserland.context.GameContext;
 import greenfoot.Greenfoot;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class PowerGenerator {
@@ -61,12 +60,12 @@ public class PowerGenerator {
         }
 
         do {
-            hitNumber = Greenfoot.getRandomNumber((int) (PowerSquareFactory.getNumberOfPowers() / powerUpRate));
-            if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 2)
+            hitNumber = Greenfoot.getRandomNumber((int) (PowerSquareFactory.getNumberOfPowers()-1 / powerUpRate));
+            if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 1)
                 type = PowerSquareFactory.PowerType.values()[hitNumber];
         } while (type != null && !powerSet.contains(type.toString()));
 
-        if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 2) {
+        if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 1) {
             if (type == ball.getCurrentPower() && powerSet.contains("NORMAL"))
                 powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
             else

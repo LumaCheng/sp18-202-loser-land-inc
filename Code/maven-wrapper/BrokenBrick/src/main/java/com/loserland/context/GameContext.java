@@ -75,6 +75,7 @@ public class GameContext {
     public static String SMALL_PAD_PWR_IMG = "smallPaddlePower.image";
     public static String GOLDEN_EGG_PWR_IMG = "goldenEggPower.image";
     public static String GOLDEN_EGG_PWR_RATE = "goldenEggPower.rate";
+    public static String GOLDEN_EGG_CUSTOM_PWR_RATE = "goldenEggCustomPowerRate";
 
     public static String SCOREBOARD_HEIGHT = "game.scoreboard.height";
     public static String SCOREBOARD_WIDTH = "game.scoreboard.width";

@@ -428,6 +428,7 @@ public class MainWorld extends World implements IGameProgress
         List<BasicBall> ballList = getObjects(BasicBall.class);
         List<Smoke> smokeList = getObjects(Smoke.class);
         List<PowerSquare> powerSquareList = getObjects(PowerSquare.class);
+        List<Paddle> paddleList = getObjects(Paddle.class);
         for(BasicBall ball : ballList) {
             ball.pause();
         }
@@ -439,12 +440,17 @@ public class MainWorld extends World implements IGameProgress
         for(PowerSquare powerSquare : powerSquareList) {
             powerSquare.pause();
         }
+
+        for(Paddle paddle : paddleList) {
+            paddle.pause();
+        }
     }
 
     public void resume() {
         List<BasicBall> ballList = getObjects(BasicBall.class);
         List<Smoke> smokeList = getObjects(Smoke.class);
         List<PowerSquare> powerSquareList = getObjects(PowerSquare.class);
+        List<Paddle> paddleList = getObjects(Paddle.class);
         for(BasicBall ball : ballList) {
             ball.resume();
         }
@@ -455,6 +461,10 @@ public class MainWorld extends World implements IGameProgress
 
         for(PowerSquare powerSquare : powerSquareList) {
             powerSquare.resume();
+        }
+
+        for(Paddle paddle :  paddleList) {
+            paddle.resume();
         }
     }
 }

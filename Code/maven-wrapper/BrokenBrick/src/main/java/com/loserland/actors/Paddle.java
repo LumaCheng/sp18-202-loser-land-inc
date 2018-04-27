@@ -20,12 +20,11 @@ import java.util.List;
 public class Paddle extends Actor implements ControllerObserver {
 //public class Paddle extends Actor implements ControllerObserver, Storable<GamePaddle> {
     // Declare class
-//    private BasicBall ball ;
     private boolean haveBall;
-    private static boolean startBounce;
     private int enlarge ;
     private int shrink;        
     private int mouseX, mouseY;
+    private boolean shouldPause = false;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     /**
      * Act - do whatever the com.loserland.actors.Paddle wants to do. This method is called whenever
@@ -44,6 +43,7 @@ public class Paddle extends Actor implements ControllerObserver {
 
     public void act()
     {
+        if(shouldPause) return;
         // sends information to expandImage method where it stretches the paddle
         if(enlarge > -1) {
             expandImage(getImage().getWidth()+1);
@@ -93,7 +93,6 @@ public class Paddle extends Actor implements ControllerObserver {
     {
         BasicBall ball = new BasicBall();
         haveBall = true;
-        startBounce = false;
         getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
     }
 
@@ -145,9 +144,6 @@ public class Paddle extends Actor implements ControllerObserver {
         return true;
     }
 
-    public static void setStartBounce(boolean startBounce) {Paddle.startBounce = startBounce;}
-    public static boolean getStartBounce() { return startBounce; }
-
     @Override
     public void controllerEventReceived(ControllerEvent event) {
         if (event.type == ControllerEvent.CommandType.MOVE) {
@@ -169,8 +165,11 @@ public class Paddle extends Actor implements ControllerObserver {
         expandImage(width);
     }
 
-//    @Override
-//    public GamePaddle save() {
-//        return new GamePaddle(getImage().getWidth());
-//    }
+    public void pause() {
+        shouldPause = true;
+    }
+
+    public void resume() {
+        shouldPause = false;
+    }
 }
