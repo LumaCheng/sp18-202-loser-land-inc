@@ -178,10 +178,10 @@ public class MyWorld extends World
 
 
 
-        addObject (highScoreBoard, 350, 260);
-        addObject (startGame, 350,360);
-        addObject (loadGame, 350,410);
-        addObject (highScore, 350,460);
+        addObject (highScoreBoard, 350, 250);
+        addObject (startGame, 615,395);
+        addObject (loadGame, 615,435);
+        addObject (highScore, 615,475);
 
         menu = new CoverPage();
         menu.setImage(config.get(GameContext.MENU_IMG));
@@ -273,9 +273,9 @@ public class MyWorld extends World
         if (Greenfoot.mouseClicked(back)) {
 
                 // once clicked, remove menu
-                addObject (startGame, 350,360);
-                addObject (loadGame, 350,410);
-                addObject (highScore, 350,460);
+                addObject (startGame, 615,395);
+                addObject (loadGame, 615,435);
+                addObject (highScore, 615,475);;
                 addObject (gameOver, 350, 260);
                 addObject (menu, 350, 260);
                 // fixes bug. Instead of boolean, increase int by 1 to meet the if statement of ball launch.

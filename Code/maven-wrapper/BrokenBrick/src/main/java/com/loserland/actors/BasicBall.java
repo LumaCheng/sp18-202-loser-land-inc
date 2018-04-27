@@ -147,7 +147,7 @@ public class BasicBall extends SmoothMover implements IBall {
         }
         // changes brick appearance accordingly
         brick.effect();
-        // sound e ffect
+        // sound effect
         if(ballHitBrickSound != null)
             Greenfoot.playSound(ballHitBrickSound);
     }
