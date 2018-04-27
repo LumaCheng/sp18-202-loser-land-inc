@@ -23,11 +23,8 @@ public class MultiballPower extends PowerSquare {
     @Override
     void launchPower() {
         usedImg.clear();
-        System.out.println(number);
         int size = multiballImg.size();
-        System.out.println(size);
         number = Math.min(size, number);
-        System.out.println(number);
         BasicBall origBall = getWorld().getObjects(BasicBall.class).get(0);
         for(int i = 0; i < number; i++) {
             BasicBall ball;
