@@ -10,7 +10,7 @@ import com.loserland.actors.HighScoreBoard;
 import com.loserland.actors.Lives;
 import com.loserland.actors.LivesBar;
 import com.loserland.actors.ManageScore;
-import com.loserland.actors.Musicplayer;
+import com.loserland.actors.MusicPlayer;
 import com.loserland.actors.Paddle;
 import com.loserland.actors.PlayState;
 import com.loserland.actors.Pointy;
@@ -62,7 +62,7 @@ public class MainWorld extends World implements IGameProgress
     private Counter levelNum = new Counter();
     private Pointy aim = new Pointy();  
 
-    private Musicplayer musicplayer;
+    public MusicPlayer musicPlayer;
     private Volumeup volumeup;
     private Volumedown volumedown;
     private HighScoreBoard highScoreBoard = HighScoreBoard.getInstance();
@@ -162,13 +162,11 @@ public class MainWorld extends World implements IGameProgress
     }
 
     private void initMusic() {
-        musicplayer = Musicplayer.getInstance();
-        playState = new PlayState();
-        stopState = new StopState();
+        musicPlayer = MusicPlayer.getInstance();
+        musicPlayer.getCurrentState().doAction();
         volumeup = new Volumeup();
         volumedown = new Volumedown();
-        playState.doAction(musicplayer);
-        managevolume.attach(musicplayer);
+        managevolume.attach(musicPlayer);
         managevolume.attach(volumeup);
         managevolume.attach(volumedown);
 
@@ -197,7 +195,7 @@ public class MainWorld extends World implements IGameProgress
         pause.setImage(config.get(GameContext.STAGE_PAUSE));
         addObject(pause, 25, 25);
 
-        addObject(musicplayer,680,460);
+        addObject(musicPlayer,680,460);
         addObject(volumeup,680,430);
         addObject(volumedown,680,490);
 
@@ -235,9 +233,7 @@ public class MainWorld extends World implements IGameProgress
         this.myWorld = myWorld;
     }
     public void setPauseWorld(PauseWorld pauseWorld) { this.pauseWorld = pauseWorld;}
-    public void stopMusic(){
-        stopState.doAction(musicplayer);
-    }
+
 
     // checks if player looses life
     public  void checkLives()
@@ -293,11 +289,11 @@ public class MainWorld extends World implements IGameProgress
     // checks for player input from mouse
     public void checkMouse()
     {
-        if(mouse.clicked(volumeup) && musicplayer.isPlaying()){
+        if(mouse.clicked(volumeup) && musicPlayer.isPlaying()){
             volume = volume <= 95 ? volume+5 : volume;
             managevolume.notifyObservers(volume);
         }
-        else if(mouse.clicked(volumedown) && musicplayer.isPlaying()){
+        else if(mouse.clicked(volumedown) && musicPlayer.isPlaying()){
             volume = volume >= 5? volume-5 : volume;
             managevolume.notifyObservers(volume);
         }
@@ -305,7 +301,13 @@ public class MainWorld extends World implements IGameProgress
         else if(mouse.clicked(pause)){
             Greenfoot.setWorld(pauseWorld);
         }
+        else if(Greenfoot.mouseClicked(musicPlayer)){
+            musicPlayer.changeState();
+        }
         else if(mouse.clicked(null)){
+            if(mouse.clicked(pause)){
+                System.out.println("Click me bitch!");
+            }
             start = true;
             // launches ball according to angle of launch
             launchBall();
