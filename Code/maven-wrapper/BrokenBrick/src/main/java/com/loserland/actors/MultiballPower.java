@@ -20,6 +20,10 @@ public class MultiballPower extends PowerSquare {
     Set<Integer> usedImg = new HashSet<>();
     GreenfootImage currentImg;
 
+    public MultiballPower() {
+        setImage(config.get(GameContext.MULTIBALL_PWR_IMG));
+    }
+
     @Override
     void launchPower() {
         usedImg.clear();
