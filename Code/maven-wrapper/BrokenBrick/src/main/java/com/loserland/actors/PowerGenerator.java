@@ -60,7 +60,7 @@ public class PowerGenerator {
         }
 
         do {
-            hitNumber = Greenfoot.getRandomNumber((int) (PowerSquareFactory.getNumberOfPowers()-1 / powerUpRate));
+            hitNumber = Greenfoot.getRandomNumber((int)(PowerSquareFactory.getNumberOfPowers() / powerUpRate));
             if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 1)
                 type = PowerSquareFactory.PowerType.values()[hitNumber];
         } while (type != null && !powerSet.contains(type.toString()));
