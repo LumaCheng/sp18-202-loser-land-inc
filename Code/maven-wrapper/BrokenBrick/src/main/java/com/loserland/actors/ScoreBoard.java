@@ -3,13 +3,15 @@ package com.loserland.actors;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
+import com.loserland.context.GameScore;
+import com.loserland.context.Storable;
 import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
 // allow to change color
 
 // allow to change font
 
 import java.awt.Graphics;
-public class ScoreBoard extends Actor implements ScoreObserver
+public class ScoreBoard extends Actor implements ScoreObserver, Storable<GameScore>
 {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     // declare instance variables
@@ -66,5 +68,10 @@ public class ScoreBoard extends Actor implements ScoreObserver
         // display image onto screen in place of the previous
         image.drawString("Score: " + score, x, y);  
         setImage(image);         
+    }
+
+    @Override
+    public GameScore save() {
+        return new GameScore(score, getX(), getY());
     }
 }

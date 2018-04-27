@@ -153,13 +153,13 @@ public class MainWorld extends World implements IGameProgress
 
         //render LevelLabel
         GameLevel gameLevel = state.getGameLevel();
-        LevelLabel levelLabel = gameLevel.restore();
+        levelLabel = gameLevel.restore();
         addObject(levelLabel, gameLevel.getX(), gameLevel.getY());
 
 
         //render ScoreBoard
         GameScore gameScore = state.getGameScore();
-        ScoreBoard scoreBoard = gameScore.restore();
+        scoreBoard = gameScore.restore();
         addObject(scoreBoard, gameScore.getX(), gameScore.getY());
 
         //render LivesBar

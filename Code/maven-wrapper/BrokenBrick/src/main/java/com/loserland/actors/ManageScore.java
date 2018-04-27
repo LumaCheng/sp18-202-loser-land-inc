@@ -6,8 +6,7 @@ import java.util.List;
 
 public class ManageScore implements ScoreSubject {
 
-    List<ScoreObserver> observers;
-
+    private List<ScoreObserver> observers;
 
     public ManageScore(){
         observers = new ArrayList<>();
