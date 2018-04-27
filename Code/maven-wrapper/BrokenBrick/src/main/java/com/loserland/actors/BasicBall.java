@@ -164,7 +164,7 @@ public class BasicBall extends SmoothMover implements IBall {
     public void checkBallMiss()
     {
         if (getY() == getWorld().getHeight()-1) {
-            // send to method for update on counter
+            // send to method for setGameLevel on counter
             ballDead();
             getWorld().removeObject(this);
         }

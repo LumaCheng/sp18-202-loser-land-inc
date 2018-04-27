@@ -161,4 +161,8 @@ public class Paddle extends Actor implements ControllerObserver {
             }
         }
     }
+
+    public void setWidth(int width){
+        expandImage(width);
+    }
 }

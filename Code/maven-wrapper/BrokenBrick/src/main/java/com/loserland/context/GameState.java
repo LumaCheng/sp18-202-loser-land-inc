@@ -1,58 +1,52 @@
 package com.loserland.context;
 
 import com.loserland.configs.ConfigFactory;
-import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.Serializable;
 
 public class GameState implements Serializable {
 
-    private GameStage stage;
-    private int level;
-    private int score;
+    private GameStage gameStage;
+    private GameLevel gameLevel;
+    private GameScore gameScore;
+    private GameLives gameLives;
+    private int paddleWidth;
 
-    private int lives;
+    public GameScore getGameScore() {
+        return gameScore;
+    }
 
     public GameState() {
-        stage = new GameStage();
-        score = 0;
-        level = 1;
-        lives = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME).get(Integer.class, GameContext.PLAYER_LIVES);
+        gameStage = GameStageLoader.getInstance().load();
+        gameScore = new GameScore();
+        gameLevel = new GameLevel();
+        gameLives = new GameLives(ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME).get(Integer.class, GameContext.PLAYER_LIVES));
+        paddleWidth = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME).get(Integer.class, GameContext.PADDLE_WIDTH);
+
     }
 
-    public GameStage getStage() {
-        return stage;
+    public GameStage getGameStage() {
+        return gameStage;
     }
 
-    public void setStage(GameStage stage) {
-        this.stage = stage;
+    public void setGameStage(GameStage gameStage) {
+        this.gameStage = gameStage;
     }
 
-    public int getScore() {
-        return score;
+    public GameLevel getGameLevel() {
+        return gameLevel;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setGameLevel(GameLevel gameLevel) {
+        this.gameLevel = gameLevel;
     }
 
-    public void clear() {
-        stage.clear();
+
+    public GameLives getGameLives() {
+        return gameLives;
     }
 
-    public void setLevel(int level){
-        this.level = level;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public int getLives() {
-        return lives;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
+    public void setPaddleWidth(int paddleWidth){
+        this.paddleWidth = paddleWidth;
     }
 }

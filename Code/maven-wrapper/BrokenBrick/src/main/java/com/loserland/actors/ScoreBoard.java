@@ -17,20 +17,33 @@ public class ScoreBoard extends Actor implements ScoreObserver
     private int WIDTH = Integer.parseInt(config.get(GameContext.SCOREBOARD_WIDTH));
     // height of the score board
     private int HEIGHT = Integer.parseInt(config.get(GameContext.SCOREBOARD_HEIGHT));
-    int score;
+    private int score;
 
     // The constructor composes the image for the com.loserland.actors.ScoreBoard.
-    public ScoreBoard()
+//    public ScoreBoard()
+//    {
+//        // initalized new image
+//        GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
+//        // cosmetic porcedures for color and font
+//        Font myFont = new Font("TIMES", true, false, 12);
+//        image.setFont(myFont);
+//        // display on screen
+//        setImage(image);
+//        // Set score to 0 at begining
+//        update(0);
+//    }
+
+    public ScoreBoard(int score)
     {
         // initalized new image
         GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
-        // cosmetic porcedures for color and font     
+        // cosmetic porcedures for color and font
         Font myFont = new Font("TIMES", true, false, 12);
         image.setFont(myFont);
         // display on screen
-        setImage(image); 
+        setImage(image);
         // Set score to 0 at begining
-        update(0);
+        update(score);
     }
 
     // updates the score display

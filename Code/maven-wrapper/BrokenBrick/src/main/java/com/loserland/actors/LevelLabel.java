@@ -1,12 +1,13 @@
 
 package com.loserland.actors;
+import com.loserland.context.GameLevel;
+import com.loserland.context.Storable;
 import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
 // allow to change color
 
 // allow to change font
 
-import java.awt.Graphics;
-public class Counter extends Actor
+public class LevelLabel extends Actor implements Storable<GameLevel>
 {  
     // Declare instance constants. Value set and cannot be changed
     // width of the score board
@@ -15,22 +16,38 @@ public class Counter extends Actor
     private final int HEIGHT = 20;      
 
     // The constructor composes the image for the com.loserland.actors.ScoreBoard.
-    public Counter()
+//    public LevelLabel()
+//    {
+//        // initalized new image
+//        GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
+//        // cosmetic porcedures for color and font
+//        Font myFont = new Font("TIMES", true, false, 12);
+//        image.setFont(myFont);
+//        // display on screen
+//        setImage(image);
+//        // Set level to 1 at begining
+//        setGameLevel(1);
+//    }
+    private int level;
+
+    public LevelLabel(int level)
     {
+        this.level = level;
         // initalized new image
         GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
-        // cosmetic porcedures for color and font     
+        // cosmetic porcedures for color and font
         Font myFont = new Font("TIMES", true, false, 12);
         image.setFont(myFont);
         // display on screen
-        setImage(image); 
+        setImage(image);
         // Set level to 1 at begining
-        update(1);
+        setLevel(level);
     }
 
     // updates the score display
-    public void update(int level) 
+    public void setLevel(int level)
     {
+        this.level = level;
         // x and y relative to the image. baseline of leftmost character.
         int x = 5;      
         int y = 15;        
@@ -45,5 +62,10 @@ public class Counter extends Actor
         // display image onto screen in place of the previous
         image.drawString("Level: " + level, x, y);     
         setImage(image);         
+    }
+
+    @Override
+    public GameLevel save() {
+        return new GameLevel(level, getX(), getY());
     }
 }

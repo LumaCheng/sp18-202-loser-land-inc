@@ -12,6 +12,7 @@ public class GameContext {
 
     public static final String PLAYER_LIVES ="player.lives";
 
+    public static final String PADDLE_WIDTH = "game.paddle.width";
 
     public static final String STAGE_PAUSE = "page.stage.pause";
 
