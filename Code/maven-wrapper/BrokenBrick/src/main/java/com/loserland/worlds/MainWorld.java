@@ -153,17 +153,25 @@ public class MainWorld extends World implements IGameProgress
 
         //render LevelLabel
         GameLevel gameLevel = state.getGameLevel();
-        levelLabel = gameLevel.restore();
-        addObject(levelLabel, gameLevel.getX(), gameLevel.getY());
-
+        renderLevel(gameLevel);
 
         //render ScoreBoard
         GameScore gameScore = state.getGameScore();
-        scoreBoard = gameScore.restore();
-        addObject(scoreBoard, gameScore.getX(), gameScore.getY());
+        renderScore(gameScore);
 
         //render LivesBar
         renderLivesBar(state.getGameLives());
+    }
+
+    private void renderLevel(GameLevel gameLevel) {
+        levelLabel = gameLevel.restore();
+        addObject(levelLabel, gameLevel.getX(), gameLevel.getY());
+    }
+
+    private void renderScore(GameScore gameScore){
+        scoreBoard = gameScore.restore();
+        addObject(scoreBoard, gameScore.getX(), gameScore.getY());
+
     }
 
     private void renderLivesBar(GameLives gameLives) {
@@ -279,10 +287,8 @@ public class MainWorld extends World implements IGameProgress
     public void takeLife()
     {
         replaceBall();
-        GameState state = getCurrentState();
-        state.getGameLives().setLivesNum(currentState.getGameLives().getLivesNum() - 1);
-        render(state);
-        currentState = state;
+        currentState.getGameLives().setLivesNum(currentState.getGameLives().getLivesNum() - 1);
+        renderLivesBar(currentState.getGameLives());
     }
 
     // reward points according to destroyed brick
@@ -290,7 +296,7 @@ public class MainWorld extends World implements IGameProgress
     {
         currentState.getGameScore().setScore(currentState.getGameScore().getScore() + points);
         managescore.notifyObservers(currentState.getGameScore().getScore());
-//        setScore(score + points);
+        renderScore(currentState.getGameScore());
     }
 
     // checks for player input from mouse

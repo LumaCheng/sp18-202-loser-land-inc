@@ -45,6 +45,9 @@ public class GameLives implements Serializable {
     private int lives_x_incremental;
     private int lives_y;
 
+    public GameLives() {
+    }
+
     public GameLives(int lives) {
         this.livesNum = lives;
         lives_x = 23;
