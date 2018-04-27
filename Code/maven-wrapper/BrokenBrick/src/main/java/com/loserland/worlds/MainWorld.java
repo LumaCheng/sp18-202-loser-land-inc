@@ -164,14 +164,17 @@ public class MainWorld extends World implements IGameProgress
 
         //render LivesBar
         renderLivesBar(state.getGameLives());
-
     }
 
     private void renderLivesBar(GameLives gameLives) {
+
         int livesNum = gameLives.getLivesNum();
+        int x = gameLives.getLives_x();
+        int y = gameLives.getLives_y();
+        int x_increment = gameLives.getLives_x_incremental();
         for (int i = 0; i < livesNum; i++){
-            addObject(new Lives(), gameLives.getLives_x(), gameLives.getLives_y());
-            gameLives.setLives_x(gameLives.getLives_x() + gameLives.getLives_x_incremental());
+            addObject(new Lives(), x, y);
+            x += x_increment;
         }
     }
 
