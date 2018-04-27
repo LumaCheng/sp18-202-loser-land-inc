@@ -176,6 +176,8 @@ public class MainWorld extends World implements IGameProgress
     }
 
     private void initUI() {
+        setBackground(config.get(GameContext.MAIN_IMG));
+
         // create new paddle and ball
         paddle = new Paddle();
 

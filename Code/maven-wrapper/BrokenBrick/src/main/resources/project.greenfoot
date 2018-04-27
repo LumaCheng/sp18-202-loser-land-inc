@@ -1,9 +1,6 @@
 #Greenfoot properties
 
 #Components
-class.com.loserland.worlds.MainWorld.image=stagepage2.png
-class.com.loserland.worlds.MainWorld.superclass=greenfoot.World
-
 
 class.com.loserland.actors.GameOver.superclass=greenfoot.Actor
 class.com.loserland.actors.GameOver.image=GameOver.png

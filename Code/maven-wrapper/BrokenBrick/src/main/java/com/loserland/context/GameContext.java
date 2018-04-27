@@ -6,6 +6,11 @@ public class GameContext {
     public static final String GAME_DEFAULT_CONFIG_FILENAME = "configs/default.properties";
     public static final String GAME_STAGE_CONFIG_FILENAME = "configs/stage.json";
 
+
+    public static final String MENU_IMG = "page.menu.image";
+    public static final String MAIN_IMG = "page.main.image";
+
+
     public static final String STAGE_PAUSE = "page.stage.pause";
 
     public static final String START_BUTTON = "page.start.button";
@@ -37,7 +42,7 @@ public class GameContext {
     public static final String WORLD_HEIGHT = "world.height";
     public static final String WORLD_CELL_SIZE = "world.cell.size";
 
-    public static final String MENU_IMG = "page.menu.image";
+
 
     public static String BALL_BOUNCE_SND = "ball.bounce.sound";
     public static String BALL_HIT_BRICK_SND = "ball.hitBrick.sound";
@@ -68,56 +73,68 @@ public class GameContext {
     public static final String VOLUME_DOWN_IMG = "volume.down.image";
     public static final String HIGHSCORE_FONT_SIZE = "highscore.font.size";
 
-    public static final String PADDLE_IMG =  "paddle.image";
+    public static final String PADDLE_IMG = "paddle.image";
     public static final String PAUSE_STAGE_IMG = "pause.stage.image";
 
     public static final String BACK_BUTTON = "back.menu.button";
 
     public static final String MULTIBALL_IMAGE = "multiball.image";
 
-    public enum BallType{
-        NORMAL("ball.image"), SHIELD("shieldball.image"), POKEMON("pokemonball.image"),
-        PIZZA("pizzaball.image"), SOCCER("soccerball.image"), BASEBALL("baseball.image"),
+    public enum BallType implements KeyEnum  {
+        NORMAL("ball.image"),
+        SHIELD("shieldball.image"),
+        POKEMON("pokemonball.image"),
+        PIZZA("pizzaball.image"),
+        SOCCER("soccerball.image"),
+        BASEBALL("baseball.image"),
         BIRD("bird.image");
 
         private String key;
 
-        public String getKey(){
+        public String getKey() {
             return key;
         }
 
-        BallType(String key){
+        BallType(String key) {
             this.key = key;
         }
     }
 
 
-    public enum ScoreLevel{
-        SCORE_LEVEL_1("score.level1"), SCORE_LEVEL_2("score.level2"),SCORE_LEVEL_3("score.level3"),SCORE_LEVEL_4("score.level4"),
-        SCORE_LEVEL_5("score.level5"), SCORE_LEVEL_6("score.level6");
+    public enum ScoreLevel implements KeyEnum  {
+        SCORE_LEVEL_1("score.level1"),
+        SCORE_LEVEL_2("score.level2"),
+        SCORE_LEVEL_3("score.level3"),
+        SCORE_LEVEL_4("score.level4"),
+        SCORE_LEVEL_5("score.level5"),
+        SCORE_LEVEL_6("score.level6");
 
         private String key;
 
-        public String getKey(){
+        public String getKey() {
             return key;
         }
 
-        ScoreLevel(String key){
+        ScoreLevel(String key) {
             this.key = key;
         }
     }
 
-    public enum BrickLevel{
-        BRICK_LV1("brick.level1.image"), BRICK_LV2("brick.level2.image"),BRICK_LV3("brick.level3.image"),BRICK_LV4("brick.level4.image"),
-        BRICK_LV5("brick.level5.image"), BRICK_LV6("brick.level6.image");
+    public enum BrickLevel implements KeyEnum {
+        BRICK_LV1("brick.level1.image"),
+        BRICK_LV2("brick.level2.image"),
+        BRICK_LV3("brick.level3.image"),
+        BRICK_LV4("brick.level4.image"),
+        BRICK_LV5("brick.level5.image"),
+        BRICK_LV6("brick.level6.image");
 
         private String key;
 
-        public String getKey(){
+        public String getKey() {
             return key;
         }
 
-        BrickLevel(String key){
+        BrickLevel(String key) {
             this.key = key;
         }
     }
