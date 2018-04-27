@@ -2,6 +2,8 @@ package com.loserland.context;
 
 
 
+import com.loserland.actors.PowerGenerator;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ public class GameStage implements Serializable{
 
     public GameStage() {
         bricks = new ArrayList<>();
+        PowerGenerator.reset();
     }
 
     public List<GameBrick> getBricks() {
@@ -31,9 +34,5 @@ public class GameStage implements Serializable{
             string +=  "(" + brick.getX() + "," + brick.getY() + ")\n";
         }
         return string;
-    }
-
-    public void clear() {
-        bricks = new ArrayList<>();
     }
 }

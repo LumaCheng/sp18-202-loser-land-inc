@@ -20,7 +20,7 @@ public class BasicBall extends SmoothMover implements IBall {
     int smokeTimingCount = 0;
     double ballX = 0;
     double ballY = 0;
-
+    boolean shouldPause = false;
     GifImage gifImage;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 
@@ -55,6 +55,8 @@ public class BasicBall extends SmoothMover implements IBall {
     // each act, check for user input, make smoke and check death
     public void act()
     {
+        if(shouldPause) return;
+
         if(getWorld() != null) {
             ball.action();
         }
@@ -350,6 +352,14 @@ public class BasicBall extends SmoothMover implements IBall {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    public void pause() {
+        shouldPause = true;
+    }
+
+    public void resume() {
+        shouldPause = false;
     }
 
     public void remove() {

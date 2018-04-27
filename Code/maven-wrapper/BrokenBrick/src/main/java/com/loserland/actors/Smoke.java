@@ -1,5 +1,8 @@
 package com.loserland.actors;
 
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 /**
@@ -14,10 +17,13 @@ public class Smoke  extends Actor
     private GreenfootImage image;   // the original image
     private int fade;               // the rate of fading
 
+    private boolean shouldPause = false;
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     // smoke constructor
     public Smoke()
     {
         // initalize smoke image and fades it with each act
+        setImage(config.get(GameContext.SMOKE_IMG));
         image = getImage();
         fade = Greenfoot.getRandomNumber(4) + 1;  // 1 to 3
         if (fade > 3) {
@@ -27,6 +33,7 @@ public class Smoke  extends Actor
 
     public void act() 
     {
+        if(shouldPause) return;
         // fades the smoke image with each act
         shrink();
     }    
@@ -49,6 +56,14 @@ public class Smoke  extends Actor
     public void setImage(String fileName) {
         super.setImage(fileName);
         image = getImage();
+    }
+
+    public void pause() {
+        shouldPause = true;
+    }
+
+    public void resume() {
+        shouldPause = false;
     }
 
 }

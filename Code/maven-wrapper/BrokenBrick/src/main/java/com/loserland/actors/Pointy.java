@@ -1,5 +1,8 @@
 package com.loserland.actors;
 
+import com.loserland.configs.Config;
+import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameContext;
 import com.loserland.controller.ControllerEvent;
 import com.loserland.controller.ControllerEvent.CommandType;
 import com.loserland.controller.ControllerObserver;
@@ -7,8 +10,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
 public class Pointy extends Actor implements ControllerObserver
 {
+    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     // declare new instance variable
     private int angle = 270;
+
+    public Pointy() {
+        setImage(config.get(GameContext.POINTY_IMG));
+    }
     
     // each act, check mouse input and rotation   
     public void act() 
