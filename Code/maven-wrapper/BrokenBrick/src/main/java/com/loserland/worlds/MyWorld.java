@@ -188,6 +188,7 @@ public class MyWorld extends World
                     }
                 }
             }
+
             if(Greenfoot.mousePressed(menuButton)){
                 menuButton.press();
             }
@@ -199,8 +200,8 @@ public class MyWorld extends World
             }
         }
 
-        if (mouse.clicked(back)) {
 
+        if (mouse.clicked(back)) {
                 addObject (startGame, 615,395);
                 addObject (loadGame, 615,435);
                 addObject (highScore, 615,475);;
