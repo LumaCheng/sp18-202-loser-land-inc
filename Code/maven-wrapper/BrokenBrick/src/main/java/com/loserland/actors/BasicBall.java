@@ -218,6 +218,8 @@ public class BasicBall extends SmoothMover implements IBall {
             changeX *= mult;
             changeY *= mult;
         }
+
+        setLocation(getX(), getY() - getImage().getHeight() / 2);
         // sound effect
         if (ballBounceSound != null)
             Greenfoot.playSound(ballBounceSound);
