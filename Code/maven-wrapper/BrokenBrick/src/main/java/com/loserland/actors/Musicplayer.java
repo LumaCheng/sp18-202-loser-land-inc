@@ -10,61 +10,36 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Musicplayer extends Actor implements ScoreObserver
+public class MusicPlayer extends Actor implements ScoreObserver
 {
 
-    private static Musicplayer instance = new Musicplayer();
+    private static MusicPlayer instance;
 
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     GreenfootSound backgroundMusic = new GreenfootSound(config.get(GameContext.GAME_BACKGROUND_MUSIC));
     private GreenfootImage button = new GreenfootImage(config.get(GameContext.PLAYER_PAUSE_IMG));
-    private int WIDTH = config.get(Integer.class, GameContext.PLAYER_SIZE);
-    private int HEIGHT = config.get(Integer.class, GameContext.PLAYER_SIZE);
     private PlayState playState = new PlayState();
-    private PauseState pauseState = new PauseState();;
+    private StopState stopState = new StopState();
 //    int volume;
 
-    private State state;
+    private State currentState;
 
 
-    public Musicplayer() {
-        //backgroundMusic.playLoop();
-        button.scale(WIDTH,HEIGHT);
-        // display on screen
-        setImage(button);
-        state = null;
+    private MusicPlayer() {
+        currentState = playState;
     }
 
-    public static Musicplayer getInstance(){
+    public static MusicPlayer getInstance(){
+        if(instance == null){
+            instance = new MusicPlayer();
+        }
         return instance;
     }
  
     public void act() {
-        if(Greenfoot.mouseClicked(this)){
-            if(backgroundMusic.isPlaying()){
-                pauseState.doAction(this);
-            }
-            else{
-                playState.doAction(this);
-            }
-        }
+
     }
 
-    public void change() {
-        if (this.state.toString().equals("StopState")) {
-            backgroundMusic.stop();
-        } else if (this.state.toString().equals("PauseState")) {
-            GreenfootImage button = state.getImage();
-            button.scale(WIDTH, HEIGHT);
-            setImage(button);
-            backgroundMusic.pause();
-        } else if (this.state.toString().equals("PlayState")) {
-            GreenfootImage button = state.getImage();
-            button.scale(WIDTH, HEIGHT);
-            setImage(button);
-            backgroundMusic.playLoop();
-        }
-    }
 
     public void update(int v){
         backgroundMusic.setVolume(v);
@@ -75,13 +50,31 @@ public class Musicplayer extends Actor implements ScoreObserver
     }
 
 
-    public void setState(State state){
-        this.state = state;
-        change();
+    public void setCurrentState(String string){
+        if(string.equals("stop")){
+            this.currentState = stopState;
+            currentState.doAction();
+        }
+        if(string.equals("play")){
+            this.currentState = playState;
+            currentState.doAction();
+        }
     }
 
-    public State getState(){
-        return state;
+
+    public void changeState(){
+        if(currentState.equals(playState)){
+            currentState = stopState;
+            currentState.doAction();
+        }
+        else{
+            currentState = playState;
+            currentState.doAction();
+        }
+    }
+
+    public State getCurrentState(){
+        return currentState;
     }
 }
 

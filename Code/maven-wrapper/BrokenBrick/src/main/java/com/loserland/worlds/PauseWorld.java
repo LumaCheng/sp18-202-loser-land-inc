@@ -95,7 +95,7 @@ public class PauseWorld extends World
                 new IReceiver() {
                     public void doAction() {
                         Greenfoot.setWorld(myWorld);
-                        mainWorld.stopMusic();
+                        mainWorld.musicPlayer.setCurrentState("stop");
                         myWorld.resetMainWorld();
                         exit.resetImage();
                     }
