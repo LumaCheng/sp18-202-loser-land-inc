@@ -1,9 +1,15 @@
 package com.loserland.configs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ConfigFactory {
     private static ConfigFactory instance = null;
+    private Map<String, Config> configMap;
 
-    private ConfigFactory(){ }
+    private ConfigFactory(){
+        configMap = new HashMap<>();
+    }
 
     public static ConfigFactory getInstance(){
         if (instance == null){
@@ -17,13 +23,19 @@ public class ConfigFactory {
     }
 
     public Config getConfig(String fileName){
-
-        if (fileName.endsWith(".properties")){
-            return new PropertiesConfig(fileName);
-        } else if(fileName.endsWith(".json")){
-            return new JsonConfig(fileName);
-        } else { //by default, load config as .properties
-            return new PropertiesConfig(fileName);
+        Config config = null;
+        if (configMap.containsKey(fileName)){
+            config = configMap.get(fileName);
+        } else{
+            if(fileName.endsWith(".properties")){
+                config = new PropertiesConfig(fileName);
+            } else if(fileName.endsWith(".json")){
+                config = new JsonConfig(fileName);
+            } else { //by default, load config as .properties
+                config = new PropertiesConfig(fileName);
+            }
+            configMap.put(fileName, config);
         }
+        return config;
     }
 }
