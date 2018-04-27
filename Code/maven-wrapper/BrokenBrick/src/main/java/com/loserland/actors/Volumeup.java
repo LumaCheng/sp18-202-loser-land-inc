@@ -2,9 +2,10 @@ package com.loserland.actors;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
-import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
-import com.loserland.configs.*;
-import com.loserland.context.GameContext;
+import greenfoot.Actor;
+import greenfoot.Color;
+import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 /**
  * Write a description of class VOLUME here.
  * 
@@ -35,7 +36,6 @@ public class Volumeup extends Actor implements ScoreObserver
             GreenfootImage show_volume = new GreenfootImage(""+volume, 20, Color.WHITE, new Color(0, 0, 0, 0));
             lastAdded = System.currentTimeMillis();
             setImage(show_volume);
-
         }
         
         if (System.currentTimeMillis() >= lastAdded + 500){

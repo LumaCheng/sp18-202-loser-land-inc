@@ -1,19 +1,24 @@
 package com.loserland.worlds;
-import com.loserland.actors.*;
+import com.loserland.actors.Back;
+import com.loserland.actors.CoverPage;
+import com.loserland.actors.GameOver;
+import com.loserland.actors.HighScoreBoard;
+import com.loserland.actors.ICommand;
+import com.loserland.actors.IReceiver;
+import com.loserland.actors.MenuButton;
+import com.loserland.actors.MenuCommand;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
 import com.loserland.context.GameProgressManager;
 import com.loserland.controller.Controller;
+import com.loserland.controller.KeyBoardController;
 import com.loserland.controller.MouseController;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootSound;
-import greenfoot.MouseInfo;
 import greenfoot.World;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Write a description of class MyWorld here.
@@ -41,8 +46,8 @@ public class MyWorld extends World
 
     GreenfootSound backgroundMusic;
 
-    // TODO: Using factory mode to initialize controller
-    private Controller controller = new MouseController(this);
+    private Controller mouse = new MouseController(this);
+    private Controller keyboard = new KeyBoardController(this);
 
     //Configs
     private static ConfigFactory configFactory;
@@ -65,8 +70,6 @@ public class MyWorld extends World
         //initialize UI components and put place
         initMenu();
     }
-
-
 
 
     private void initMenu() {
@@ -167,15 +170,14 @@ public class MyWorld extends World
     // each act check for death, mouse input and whether to create new level
     public void act() {
         checkMouse();
-        controller.polling();
+        mouse.polling();
+        keyboard.polling();
     }
-
-
 
 
     public void checkMouse() {
         for(MenuButton menuButton: buttonsList){
-            if(Greenfoot.mouseClicked(menuButton)){
+            if(mouse.clicked(menuButton)){
                 menuButton.click();
             }
             if(Greenfoot.mouseMoved(menuButton)){
@@ -197,19 +199,16 @@ public class MyWorld extends World
             }
         }
 
-        if (Greenfoot.mouseClicked(back)) {
-
+        if (mouse.clicked(back)) {
 
                 addObject (startGame, 615,395);
                 addObject (loadGame, 615,435);
                 addObject (highScore, 615,475);;
                 addObject (gameOver, 350, 260);
                 addObject (menu, 350, 260);
-
-
         }
 
-        if (Greenfoot.mouseClicked(gameOver)){
+        if (mouse.clicked(gameOver)){
                 removeObject(gameOver);
                 highScoreBoard.ShowScore();
         }

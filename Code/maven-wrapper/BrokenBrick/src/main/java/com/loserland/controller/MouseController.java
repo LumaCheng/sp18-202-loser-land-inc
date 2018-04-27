@@ -1,6 +1,7 @@
 package com.loserland.controller;
 
 import com.loserland.controller.ControllerEvent.CommandType;
+import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.MouseInfo;
 import greenfoot.World;
@@ -28,6 +29,11 @@ public class MouseController extends Controller {
             }
         }
 
+    }
+
+    @Override
+    public boolean clicked(Actor actor) {
+        return Greenfoot.mouseClicked(actor);
     }
 
     @Override

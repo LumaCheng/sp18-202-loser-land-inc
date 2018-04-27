@@ -1,19 +1,45 @@
 package com.loserland.worlds;
 
-import com.loserland.actors.*;
+import com.loserland.actors.Back;
+import com.loserland.actors.BasicBall;
+import com.loserland.actors.Brick;
+import com.loserland.actors.ContextController;
+import com.loserland.actors.Counter;
+import com.loserland.actors.Fader;
+import com.loserland.actors.HighScoreBoard;
+import com.loserland.actors.Lives;
+import com.loserland.actors.LivesBar;
+import com.loserland.actors.ManageScore;
+import com.loserland.actors.Musicplayer;
+import com.loserland.actors.Paddle;
+import com.loserland.actors.PlayState;
+import com.loserland.actors.Pointy;
+import com.loserland.actors.ScoreBoard;
+import com.loserland.actors.Smoke;
+import com.loserland.actors.StopState;
+import com.loserland.actors.Volumedown;
+import com.loserland.actors.Volumeup;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
-import com.loserland.context.*;
+import com.loserland.context.GameBrick;
+import com.loserland.context.GameCheckPoint;
+import com.loserland.context.GameContext;
+import com.loserland.context.GameStage;
+import com.loserland.context.GameStageGenerator;
+import com.loserland.context.GameStageLoader;
+import com.loserland.context.GameState;
+import com.loserland.context.IGameProgress;
+import com.loserland.context.Storable;
 import com.loserland.controller.Controller;
+import com.loserland.controller.KeyBoardController;
 import com.loserland.controller.MouseController;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootSound;
-import greenfoot.MouseInfo;
-import org.apache.commons.lang3.SerializationUtils;
-import java.awt.*;
 import greenfoot.World;
+import java.awt.Rectangle;
 import java.util.List;
+import org.apache.commons.lang3.SerializationUtils;
 
 
 /**
@@ -65,9 +91,9 @@ public class MainWorld extends World implements IGameProgress
     //volume
     private int volume = config.get(Integer.class, GameContext.VOLUME_DEFAULT);
 
-    // TODO: Using factory mode to initialize controller
-    private Controller controller = new MouseController(this);
-    //private Controller controller = new MouseController(this);
+    // TODO: Using factory mode to initialize mouse
+    private Controller mouse = new MouseController(this);
+    private Controller keyboard = new KeyBoardController(this);
 
 
     //Configs
@@ -121,8 +147,11 @@ public class MainWorld extends World implements IGameProgress
         // clears screen instantly to show level 1
         fader.fadeBackIn();
 
-        controller.addObserver(aim);
-        controller.addObserver(paddle);
+        mouse.addObserver(aim);
+        mouse.addObserver(paddle);
+
+        keyboard.addObserver(aim);
+        keyboard.addObserver(paddle);
 
     }
 
@@ -151,7 +180,7 @@ public class MainWorld extends World implements IGameProgress
         // create new paddle and ball
         paddle = new Paddle();
 
-        // TODO: Padding need had consistent pos with controller
+        // TODO: Padding need had consistent pos with mouse
         // read init points from config
         // add paddle into world
         addObject(paddle, getWidth()/2, getHeight()-26);
@@ -198,7 +227,8 @@ public class MainWorld extends World implements IGameProgress
         checkMouse();
         checkLives();
         
-        controller.polling();
+        mouse.polling();
+        keyboard.polling();
     }
 
     public void setMyWorld(MyWorld myWorld){
@@ -263,19 +293,19 @@ public class MainWorld extends World implements IGameProgress
     // checks for player input from mouse
     public void checkMouse()
     {
-        if(Greenfoot.mouseClicked(volumeup) && musicplayer.isPlaying()){
+        if(mouse.clicked(volumeup) && musicplayer.isPlaying()){
             volume = volume <= 95 ? volume+5 : volume;
             managevolume.notifyObservers(volume);
         }
-        else if(Greenfoot.mouseClicked(volumedown) && musicplayer.isPlaying()){
+        else if(mouse.clicked(volumedown) && musicplayer.isPlaying()){
             volume = volume >= 5? volume-5 : volume;
             managevolume.notifyObservers(volume);
         }
 
-        else if(Greenfoot.mouseClicked(pause)){
+        else if(mouse.clicked(pause)){
             Greenfoot.setWorld(pauseWorld);
         }
-        else if(Greenfoot.mouseClicked(null)){
+        else if(mouse.clicked(null)){
             start = true;
             // launches ball according to angle of launch
             launchBall();
