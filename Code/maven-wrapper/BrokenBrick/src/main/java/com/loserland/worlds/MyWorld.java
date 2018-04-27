@@ -27,7 +27,6 @@ public class MyWorld extends World
     private CoverPage menu;
     private GameOver gameOver;
     private MainWorld mainWorld;
-    private PauseWorld pauseWorld;
     private MenuButton startGame;
     private MenuButton loadGame;
     private MenuButton highScore;
@@ -72,11 +71,8 @@ public class MyWorld extends World
     private void initMenu() {
         //Creating three worlds
         mainWorld = new MainWorld();
-        pauseWorld = new PauseWorld();
         mainWorld.setMyWorld(this);
-        pauseWorld.setMyWorld(this);
-        mainWorld.setPauseWorld(pauseWorld);
-        pauseWorld.setMainWorld(mainWorld);
+
 
         anime = new Anime();
         anime.animeGif.pause();
@@ -129,9 +125,9 @@ public class MyWorld extends World
                     public void doAction() {
                         removeObject(gameOver);
                         removeObject(menu);
-                        removeObject(startGame);
-                        removeObject(highScore);
-                        removeObject(loadGame);
+                        for(MenuButton menuButton: buttonsList){
+                            removeObject(menuButton);
+                        }
                         highScore.resetImage();
                         highScoreBoard.ShowScore();
                     }
@@ -173,16 +169,14 @@ public class MyWorld extends World
 
     public void setGameOver() {
         removeObject(menu);
-        removeObject(startGame);
-        removeObject(loadGame);
-        removeObject(highScore);
+        for(MenuButton menuButton: buttonsList){
+            removeObject(menuButton);
+        }
     }
 
     public void resetMainWorld() {
         mainWorld = new MainWorld();
         mainWorld.setMyWorld(this);
-        mainWorld.setPauseWorld(pauseWorld);
-        pauseWorld.setMainWorld(mainWorld);
     }
 
     // each act check for death, mouse input and whether to create new level
@@ -220,11 +214,12 @@ public class MyWorld extends World
 
 
         if (mouse.clicked(back)) {
-                addObject (startGame, 615,395);
-                addObject (loadGame, 615,435);
-                addObject (highScore, 615,475);;
-                addObject (gameOver, 350, 260);
-                addObject (menu, 350, 260);
+            addObject (startGame, 615,365);
+            addObject (loadGame, 615,405);
+            addObject (highScore, 615,445);
+            addObject (animeButton, 615,485);
+            addObject (gameOver, 350, 260);
+            addObject (menu, 350, 260);
         }
 
         if (mouse.clicked(gameOver)){

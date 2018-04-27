@@ -25,11 +25,13 @@ import com.loserland.context.*;
 import com.loserland.controller.Controller;
 import com.loserland.controller.KeyBoardController;
 import com.loserland.controller.MouseController;
+import com.loserland.context.GameCheckPoint;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootSound;
 import greenfoot.World;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -47,13 +49,21 @@ public class MainWorld extends World implements IGameProgress
 
     private Fader fader;
     private MyWorld myWorld;
-    private PauseWorld pauseWorld;
+    private MainWorld mainWorld = this;
     private ContextController contextController = new ContextController();
 
     private ScoreBoard scoreBoard;
     private LevelLabel levelLabel;
     private Paddle paddle;
 
+    private MenuButton resume ;
+    private MenuButton save ;
+    private MenuButton exit ;
+    private ICommand resumeClick ;
+    private ICommand saveClick ;
+    private ICommand exitClick ;
+    private PausePage pausePage ;
+    private List<MenuButton> buttonsList = new ArrayList<>();
 
     private Pointy aim = new Pointy();  
 
@@ -103,7 +113,7 @@ public class MainWorld extends World implements IGameProgress
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(Back.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, LevelLabel.class);
+        setPaintOrder(MenuButton.class, PausePage.class, Back.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, LevelLabel.class);
 
         //initialize UI components and put place
         initMusic();
@@ -189,6 +199,57 @@ public class MainWorld extends World implements IGameProgress
     private void initUI() {
         setBackground(config.get(GameContext.MAIN_IMG));
 
+        resume = new MenuButton(config.get(GameContext.RESUME_BUTTON), config.get(GameContext.RESUME_HOVER),
+                config.get(GameContext.RESUME_PRESSED));
+        save = new MenuButton(config.get(GameContext.SAVE_BUTTON), config.get(GameContext.SAVE_HOVER),
+                config.get(GameContext.SAVE_PRESSED));
+        exit = new MenuButton(config.get(GameContext.EXIT_BUTTON), config.get(GameContext.EXIT_HOVER),
+                config.get(GameContext.EXIT_PRESSED));
+        buttonsList.add(resume);
+        buttonsList.add(save);
+        buttonsList.add(exit);
+
+        resumeClick = new MenuCommand();
+        saveClick = new MenuCommand();
+        exitClick = new MenuCommand();
+        resumeClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        removeObject(pausePage);
+                        removeObject(resume);
+                        removeObject(save);
+                        removeObject(exit);
+                        resume();
+                    }
+                }
+        ) ;
+
+        saveClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        GameProgressManager.getInstance().add(mainWorld.save());
+                        save.resetImage();
+                    }
+                }
+        );
+
+        exitClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        Greenfoot.setWorld(myWorld);
+                        musicPlayer.setCurrentState("stop");
+                        myWorld.resetMainWorld();
+                        exit.resetImage();
+                    }
+                }
+        ) ;
+        resume.setCommand(resumeClick);
+        save.setCommand(saveClick);
+        exit.setCommand(exitClick);
+
+        pausePage = new PausePage();
+        pausePage.setImage(config.get(GameContext.PAUSE_STAGE_IMG));
+
         paddle = new Paddle();
         addObject(paddle, getWidth()/2, getHeight()-26);
 
@@ -258,7 +319,6 @@ public class MainWorld extends World implements IGameProgress
     public void setMyWorld(MyWorld myWorld){
         this.myWorld = myWorld;
     }
-    public void setPauseWorld(PauseWorld pauseWorld) { this.pauseWorld = pauseWorld;}
 
 
     // checks if player looses life
@@ -314,17 +374,45 @@ public class MainWorld extends World implements IGameProgress
         }
 
         else if(mouse.clicked(pause)){
-            Greenfoot.setWorld(pauseWorld);
+            pause();
+            addObject (pausePage, 350, 260);
+            addObject (resume, 350,180);
+            addObject (save, 350,250);
+            addObject (exit, 350,320);
         }
         else if(Greenfoot.mouseClicked(musicPlayer)){
             musicPlayer.changeState();
         }
+
         else if(mouse.clicked(null)){
             start = true;
             // launches ball according to angle of launch
             launchBall();
             // removes pointer
             removeObject(aim);
+        }
+        for(MenuButton menuButton: buttonsList){
+            if(Greenfoot.mouseClicked(menuButton)){
+                menuButton.click();
+            }
+            if(Greenfoot.mouseMoved(menuButton)){
+                menuButton.hover();
+                for(MenuButton button: buttonsList){
+                    if(button != menuButton){
+                        button.resetImage();
+                    }
+                }
+            }
+            if(Greenfoot.mousePressed(menuButton)){
+                menuButton.press();
+            }
+        }
+
+        if(Greenfoot.mouseMoved(pausePage)){
+
+            for(MenuButton menuButton: buttonsList){
+                menuButton.resetImage();
+            }
         }
 
     }
