@@ -553,7 +553,7 @@ public class MainWorld extends World implements IGameProgress
             powerSquare.resume();
         }
 
-        for(Paddle paddle :  paddleList) {
+        for(Paddle paddle : paddleList) {
             paddle.resume();
         }
     }

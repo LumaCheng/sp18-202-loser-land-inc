@@ -43,7 +43,6 @@ public class Paddle extends Actor implements ControllerObserver {
 
     public void act()
     {
-        if(shouldPause) return;
         // sends information to expandImage method where it stretches the paddle
         if(enlarge > -1) {
             expandImage(getImage().getWidth()+1);
@@ -99,16 +98,17 @@ public class Paddle extends Actor implements ControllerObserver {
     // moves paddle accordingly with mouse input
     public void moveMe(int distance)
     {
-        setLocation(getX()+distance, getY());
+        if(!shouldPause) {
+            setLocation(getX() + distance, getY());
 
-        List<BasicBall> ballList = getWorld().getObjects(BasicBall.class);
-        for(BasicBall ball:ballList) {
-            if (haveBall()) {
-                // calls method in ball for ball to move along with paddle
-                ball.move(distance);
+            List<BasicBall> ballList = getWorld().getObjects(BasicBall.class);
+            for (BasicBall ball : ballList) {
+                if (haveBall()) {
+                    // calls method in ball for ball to move along with paddle
+                    ball.move(distance);
+                }
             }
         }
-
     }
     // mutator to access boolean information of ball status
     public boolean haveBall()
