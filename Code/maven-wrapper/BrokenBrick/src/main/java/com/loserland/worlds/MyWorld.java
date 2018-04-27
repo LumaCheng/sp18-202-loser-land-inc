@@ -88,8 +88,8 @@ public class MyWorld extends World
                 config.get(GameContext.LOAD_PRESSED));
         highScore = new MenuButton(config.get(GameContext.SCORE_BUTTON), config.get(GameContext.SCORE_HOVER),
                 config.get(GameContext.SCORE_PRESSED));
-        animeButton = new MenuButton(config.get(GameContext.SCORE_BUTTON), config.get(GameContext.SCORE_HOVER),
-                config.get(GameContext.SCORE_PRESSED));
+        animeButton = new MenuButton(config.get(GameContext.ABOUT_BUTTON), config.get(GameContext.ABOUT_HOVER),
+                config.get(GameContext.ABOUT_PRESSED));
         highScoreBoard = HighScoreBoard.getInstance();
 
         buttonsList.add(startGame);
@@ -153,10 +153,10 @@ public class MyWorld extends World
 
         //Add objects to MyWorld
         addObject (highScoreBoard, 350, 250);
-        addObject (startGame, 615,395);
-        addObject (loadGame, 615,435);
-        addObject (highScore, 615,475);
-        addObject (animeButton, 615,515);
+        addObject (startGame, 615,365);
+        addObject (loadGame, 615,405);
+        addObject (highScore, 615,445);
+        addObject (animeButton, 615,485);
 
         menu = new CoverPage();
         menu.setImage(config.get(GameContext.MENU_IMG));
