@@ -2,7 +2,9 @@ package com.loserland.context;
 
 import com.loserland.actors.LevelLabel;
 
-public class GameLevel implements Restorable<LevelLabel>{
+import java.io.Serializable;
+
+public class GameLevel implements Serializable, Restorable<LevelLabel>{
 
     private int level;
     private int x;

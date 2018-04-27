@@ -167,7 +167,7 @@ public class MainWorld extends World implements IGameProgress
     }
 
     private void renderLivesBar(GameLives gameLives) {
-
+        removeObjects(getObjects(Lives.class));
         int livesNum = gameLives.getLivesNum();
         int x = gameLives.getLives_x();
         int y = gameLives.getLives_y();
@@ -178,19 +178,6 @@ public class MainWorld extends World implements IGameProgress
         }
     }
 
-
-    //    private void renderLivesBar() {
-//        removeObjects(getObjects(Lives.class));
-//        int livesBar_x = 23;
-//        int incremental_x = 50;
-//        int livesBar_y = 510;
-//
-//        for (Actor actor: livesBar.getBars()){
-//            addObject(actor,  livesBar_x, livesBar_y);
-//            livesBar_x += incremental_x;
-//        }
-//    }
-
     private void initUI() {
         setBackground(config.get(GameContext.MAIN_IMG));
 
@@ -199,11 +186,7 @@ public class MainWorld extends World implements IGameProgress
         // add paddle into world
         addObject(paddle, getWidth()/2, getHeight()-26);
         addObject(aim,paddle.getX(),paddle.getY()-20);
-        // Add the score board into the world
-//        addObject(scoreBoard,658,511);
-        // Add the level counter to world
-//        addObject(levelLabel,575,511);
-        // Create a new fader for this class and add it to the world
+
         fader = new Fader();
         addObject (fader, 400, 300);
         // import menu
@@ -215,30 +198,17 @@ public class MainWorld extends World implements IGameProgress
         addObject(volumeup,680,430);
         addObject(volumedown,680,490);
 
-        //Add life "bar" into world
-//        livesBar = new LivesBar();
-//        renderLivesBar();
-
         contextController.setMainWorld(this);
     }
 
-
-
-
-
-
-
     public GameState getCurrentState() {
-        currentState = new GameState();
+//        currentState = new GameState();
         GameStage stage = new GameStage();
         List<Brick> bricks = getObjects(Brick.class);
         for (Brick brick: bricks){
             stage.addBrick(brick.save());
         }
         currentState.setGameStage(stage);
-//        currentState.setScore(score);
-//        currentState.setGameLevel(level);
-//        currentState.setLives(livesBar.getLives());
         currentState.setPaddleWidth(paddle.getImage().getWidth());
         return currentState;
     }
@@ -284,10 +254,6 @@ public class MainWorld extends World implements IGameProgress
     // checks if player looses life
     public  void checkLives()
     {
-//        if (currentState.getGameLives() != livesBar.getLives()){
-//            renderLivesBar();
-//        }
-
         if (currentState.getGameLives().getLivesNum() == 0){
             // End game. Remove Actors from world.
             highScoreBoard.SaveScore();
@@ -313,9 +279,10 @@ public class MainWorld extends World implements IGameProgress
     public void takeLife()
     {
         replaceBall();
-        currentState.getGameLives().setLivesNum(currentState.getGameLives().getLivesNum() - 1);
-        render(currentState);
-//        livesBar.remove(1);
+        GameState state = getCurrentState();
+        state.getGameLives().setLivesNum(currentState.getGameLives().getLivesNum() - 1);
+        render(state);
+        currentState = state;
     }
 
     // reward points according to destroyed brick
@@ -325,17 +292,6 @@ public class MainWorld extends World implements IGameProgress
         managescore.notifyObservers(currentState.getGameScore().getScore());
 //        setScore(score + points);
     }
-
-//    public void setScore(int score){
-//        this.score = score;
-//
-//    }
-
-//    public void setLevel(int level) {
-//        this.level = level;
-//        currentState.setGameLevel(level);
-//        levelLabel.setLevel(level);
-//    }
 
     // checks for player input from mouse
     public void checkMouse()
@@ -388,8 +344,7 @@ public class MainWorld extends World implements IGameProgress
 
         currentState.setGameStage(GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.HARD));
         currentState.getGameLevel().setLevel(currentState.getGameLevel().getLevel() + 1);
-//        levelLabel.setLevel(level);
-//        setLevel(level+1);
+        levelLabel.setLevel(currentState.getGameLevel().getLevel());
         render(currentState);
     }
 
@@ -424,15 +379,7 @@ public class MainWorld extends World implements IGameProgress
 
         paddle.setLocation(getWidth()/2, getHeight()-25);
         addObject(aim,paddle.getX(),paddle.getY()-20);
-
     }
-
-
-
-//    private void setLives(int lives) {
-//        livesBar.resetLives(lives);
-//    }
-
 
     /**
      * @Author Jiaqi Qin
@@ -464,6 +411,5 @@ public class MainWorld extends World implements IGameProgress
         if (checkPoint == null) return;
         currentState = SerializationUtils.clone(checkPoint.getState());
         render(currentState);
-
     }
 }

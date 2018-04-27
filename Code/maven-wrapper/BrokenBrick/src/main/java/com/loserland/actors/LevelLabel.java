@@ -49,19 +49,19 @@ public class LevelLabel extends Actor implements Storable<GameLevel>
     {
         this.level = level;
         // x and y relative to the image. baseline of leftmost character.
-        int x = 5;      
-        int y = 15;        
-        // "Repaint" the score display         
+        int x = 5;
+        int y = 15;
+        // "Repaint" the score display
         GreenfootImage image = getImage();
         // background color
         image.setColor(Color.DARK_GRAY);
         // "erase" the display
-        image.fillRect(1, 1, WIDTH-2, HEIGHT-2);  
+        image.fillRect(1, 1, WIDTH-2, HEIGHT-2);
         // text color
-        image.setColor(Color.WHITE);        
+        image.setColor(Color.WHITE);
         // display image onto screen in place of the previous
-        image.drawString("Level: " + level, x, y);     
-        setImage(image);         
+        image.drawString("Level: " + level, x, y);
+        setImage(image);
     }
 
     @Override

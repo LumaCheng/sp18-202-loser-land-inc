@@ -2,9 +2,10 @@ package com.loserland.context;
 
 import com.loserland.actors.Lives;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class GameLives {
+public class GameLives implements Serializable {
 
     public int getLivesNum() {
         return livesNum;

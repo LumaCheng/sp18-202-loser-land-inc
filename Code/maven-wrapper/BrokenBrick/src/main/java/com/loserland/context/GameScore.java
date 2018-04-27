@@ -2,7 +2,9 @@ package com.loserland.context;
 
 import com.loserland.actors.ScoreBoard;
 
-public class GameScore implements Restorable<ScoreBoard>{
+import java.io.Serializable;
+
+public class GameScore implements Serializable, Restorable<ScoreBoard>{
 
     private int score;
     private int x;
