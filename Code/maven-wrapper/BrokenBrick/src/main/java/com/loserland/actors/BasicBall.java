@@ -163,7 +163,7 @@ public class BasicBall extends SmoothMover implements IBall {
     // delete ball when passes MinX
     public void checkBallMiss()
     {
-        if (getY() == getWorld().getHeight()-1) {
+        if (getY() >= getWorld().getHeight()-10) {
             // send to method for update on counter
             ballDead();
             getWorld().removeObject(this);
