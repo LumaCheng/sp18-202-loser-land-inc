@@ -12,7 +12,6 @@ public class LivesBar{
 
     List<Lives> bars;
 
-
     public LivesBar() {
         bars = new ArrayList<>();
 

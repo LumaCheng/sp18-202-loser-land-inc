@@ -85,7 +85,7 @@ public class PauseWorld extends World
         saveClick.setReceiver(
                 new IReceiver() {
                     public void doAction() {
-                        GameProgressManager.getInstance().add(new GameCheckPoint(mainWorld.getCurrentState()));
+                        GameProgressManager.getInstance().add(mainWorld.save());
                         save.resetImage();
                     }
                 }
