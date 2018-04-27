@@ -41,7 +41,7 @@ public class GameProgressManager implements IGameProgressManager {
     private void saveCheckPoint(GameCheckPoint checkPoint) {
         try {
             jsonSerializationUtils.objectToJson("configs/game-progress-save.json", checkPoint);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -52,7 +52,7 @@ public class GameProgressManager implements IGameProgressManager {
         if (checkPoints == null || checkPoints.size() == 0){
             try {
                 return jsonSerializationUtils.jsonToObject("configs/game-progress-save.json", GameCheckPoint.class);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }

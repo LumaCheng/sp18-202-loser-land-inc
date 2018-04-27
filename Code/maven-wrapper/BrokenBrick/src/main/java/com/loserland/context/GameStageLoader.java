@@ -26,7 +26,7 @@ public class GameStageLoader {
         JsonSerializationUtils jsonSerializationUtils = new JsonSerializationUtils();
         try {
             stage = jsonSerializationUtils.jsonToObject(GameContext.GAME_STAGE_CONFIG_FILENAME, GameStage.class);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             stage = GameStageGenerator.getInstance().createStage(GameStageGenerator.Difficulty.EASY);
         }
