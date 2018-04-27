@@ -1,5 +1,6 @@
 package com.loserland.actors;
 
+import com.loserland.context.BallPool;
 import com.loserland.utils.GifImage;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import static java.lang.Math.*;
@@ -9,6 +10,12 @@ import com.loserland.configs.*;
 import java.util.List;
 
 public class BasicBall extends SmoothMover implements IBall {
+
+    public String getReuseIdentifier() {
+        return reuseIdentifier;
+    }
+
+    private String reuseIdentifier;
 
     private IBall ball = this;
 
@@ -37,7 +44,8 @@ public class BasicBall extends SmoothMover implements IBall {
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
 
-    public BasicBall() {
+    public BasicBall(String reuseIdentifier) {
+        this.reuseIdentifier = reuseIdentifier;
         setParam();
     }
 
@@ -169,6 +177,7 @@ public class BasicBall extends SmoothMover implements IBall {
         if (getY() >= getWorld().getHeight()-10) {
             // send to method for update on counter
             ballDead();
+            BallPool.getInstance().revert(this);
             getWorld().removeObject(this);
         }
     }

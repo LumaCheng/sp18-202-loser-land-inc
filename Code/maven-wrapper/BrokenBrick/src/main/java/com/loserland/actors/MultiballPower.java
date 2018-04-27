@@ -2,6 +2,7 @@ package com.loserland.actors;
 
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
+import com.loserland.context.BallPool;
 import com.loserland.context.GameContext;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
@@ -35,7 +36,7 @@ public class MultiballPower extends PowerSquare {
             if(i == 0) {
                 ball = origBall;
             } else {
-                ball = new BasicBall();
+                ball = BallPool.getInstance().fetch();
             }
             int  n = rand.nextInt(size-1);
             while(usedImg.contains(n)){

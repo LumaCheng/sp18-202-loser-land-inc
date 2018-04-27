@@ -2,6 +2,7 @@ package com.loserland.actors;
 
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
+import com.loserland.context.BallPool;
 import com.loserland.context.GameContext;
 import com.loserland.context.GamePaddle;
 import com.loserland.context.Storable;
@@ -91,7 +92,7 @@ public class Paddle extends Actor implements ControllerObserver {
     // method called to create new ball after original ball dies and removed from world.
     public void newBall() 
     {
-        BasicBall ball = new BasicBall();
+        BasicBall ball = BallPool.getInstance().fetch();
         haveBall = true;
         startBounce = false;
         getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
