@@ -1,28 +1,22 @@
-package com.loserland.actors;
 
-import com.loserland.configs.Config;
-import com.loserland.configs.ConfigFactory;
-import com.loserland.context.GameContext;
-import com.loserland.context.GameScore;
+package com.loserland.actors;
+import com.loserland.context.GameLevel;
 import com.loserland.context.Storable;
 import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
 // allow to change color
 
 // allow to change font
 
-import java.awt.Graphics;
-public class ScoreBoard extends Actor implements ScoreObserver, Storable<GameScore>
-{
-    private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
-    // declare instance variables
+public class LevelLabel extends Actor implements Storable<GameLevel>
+{  
+    // Declare instance constants. Value set and cannot be changed
     // width of the score board
-    private int WIDTH = Integer.parseInt(config.get(GameContext.SCOREBOARD_WIDTH));
+    private final int WIDTH = 85;  
     // height of the score board
-    private int HEIGHT = Integer.parseInt(config.get(GameContext.SCOREBOARD_HEIGHT));
-    private int score;
+    private final int HEIGHT = 20;      
 
     // The constructor composes the image for the com.loserland.actors.ScoreBoard.
-//    public ScoreBoard()
+//    public LevelLabel()
 //    {
 //        // initalized new image
 //        GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
@@ -31,12 +25,14 @@ public class ScoreBoard extends Actor implements ScoreObserver, Storable<GameSco
 //        image.setFont(myFont);
 //        // display on screen
 //        setImage(image);
-//        // Set score to 0 at begining
-//        update(0);
+//        // Set level to 1 at begining
+//        setGameLevel(1);
 //    }
+    private int level;
 
-    public ScoreBoard(int score)
+    public LevelLabel(int level)
     {
+        this.level = level;
         // initalized new image
         GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
         // cosmetic porcedures for color and font
@@ -44,34 +40,32 @@ public class ScoreBoard extends Actor implements ScoreObserver, Storable<GameSco
         image.setFont(myFont);
         // display on screen
         setImage(image);
-        // Set score to 0 at begining
-        update(score);
+        // Set level to 1 at begining
+        setLevel(level);
     }
 
     // updates the score display
-    @Override
-    public void update(int s)
+    public void setLevel(int level)
     {
-        score = s;
+        this.level = level;
         // x and y relative to the image. baseline of leftmost character.
-        int x = 5;      
-        int y = 15;        
-        // "Repaint" the score display         
+        int x = 5;
+        int y = 15;
+        // "Repaint" the score display
         GreenfootImage image = getImage();
         // background color
         image.setColor(Color.DARK_GRAY);
         // "erase" the display
-        image.fillRect(1, 1, WIDTH-2, HEIGHT-2);  
+        image.fillRect(1, 1, WIDTH-2, HEIGHT-2);
         // text color
-        image.setColor(Color.WHITE);      
-
+        image.setColor(Color.WHITE);
         // display image onto screen in place of the previous
-        image.drawString("Score: " + score, x, y);  
-        setImage(image);         
+        image.drawString("Level: " + level, x, y);
+        setImage(image);
     }
 
     @Override
-    public GameScore save() {
-        return new GameScore(score, getX(), getY());
+    public GameLevel save() {
+        return new GameLevel(level, getX(), getY());
     }
 }

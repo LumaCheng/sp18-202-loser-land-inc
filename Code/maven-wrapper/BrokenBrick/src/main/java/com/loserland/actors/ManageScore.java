@@ -6,8 +6,7 @@ import java.util.List;
 
 public class ManageScore implements ScoreSubject {
 
-    List<ScoreObserver> observers;
-
+    private List<ScoreObserver> observers;
 
     public ManageScore(){
         observers = new ArrayList<>();
@@ -26,11 +25,7 @@ public class ManageScore implements ScoreSubject {
     @Override
     public void notifyObservers(int scores) {
         for (ScoreObserver observer : observers){
-
                 observer.update(scores);
-
-
-
         }
     }
 
