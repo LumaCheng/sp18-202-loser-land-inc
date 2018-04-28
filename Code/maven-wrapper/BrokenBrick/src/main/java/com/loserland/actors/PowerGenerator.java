@@ -50,7 +50,7 @@ public class PowerGenerator {
 
         // Golden egg power
         hitNumber = Greenfoot.getRandomNumber((int) (1 / goldenEggRate));
-        if(hitNumber == 0) {
+        if(hitNumber == 235) {
             powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.GOLDEN_EGG);
             if (powerSquare != null) {
                 ball.getWorld().addObject(powerSquare, brick.getX(), brick.getY());
@@ -61,11 +61,11 @@ public class PowerGenerator {
 
         do {
             hitNumber = Greenfoot.getRandomNumber((int)(PowerSquareFactory.getNumberOfPowers() / powerUpRate));
-            if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 1)
+            if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 2)
                 type = PowerSquareFactory.PowerType.values()[hitNumber];
         } while (type != null && !powerSet.contains(type.toString()));
 
-        if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 1) {
+        if (hitNumber < PowerSquareFactory.getNumberOfPowers() - 2) {
             if (type == ball.getCurrentPower() && powerSet.contains("NORMAL"))
                 powerSquare = PowerSquareFactory.makePowerSquare(PowerSquareFactory.PowerType.NORMAL);
             else

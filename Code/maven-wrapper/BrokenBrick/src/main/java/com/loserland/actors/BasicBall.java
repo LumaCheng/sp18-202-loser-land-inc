@@ -50,6 +50,7 @@ public class BasicBall extends SmoothMover implements IBall {
     }
 
     private void setParam() {
+        setRotation(0);
         setBallBounceSound(config.get(GameContext.BALL_BOUNCE_SND));
         setBallHitBrickSound(config.get(GameContext.BALL_HIT_BRICK_SND));
         setBallHitWallSound(config.get(GameContext.BALL_HIT_WALL_SND));
@@ -185,9 +186,12 @@ public class BasicBall extends SmoothMover implements IBall {
 
     private void ballDead()
     {
+        reset();
+
         // reset to original position. Updates status to world
         ((MainWorld) getWorld()).getStartAgain();
         ((MainWorld) getWorld()).takeLife();
+
     }
 
     // checks to see if ball made contact with paddle
@@ -228,10 +232,16 @@ public class BasicBall extends SmoothMover implements IBall {
             changeY *= mult;
         }
 
-        setLocation(getX(), getY() - getImage().getHeight() / 2);
+        setLocation(getX(), getY() - Math.abs(getImage().getWidth() - getImage().getHeight()));
         // sound effect
         if (ballBounceSound != null)
             Greenfoot.playSound(ballBounceSound);
+    }
+
+    public void reset() {
+        setParam();
+        onPaddle = true;
+        setDecorator(this);
     }
 
     public void replaceBall()
