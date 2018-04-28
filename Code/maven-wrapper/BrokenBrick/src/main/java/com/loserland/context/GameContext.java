@@ -10,6 +10,7 @@ public class GameContext {
     public static final String MENU_IMG = "page.menu.image";
     public static final String MAIN_IMG = "page.main.image";
     public static final String GAMEOVER_IMG = "page.end.image";
+    public static final String SCORE_BG_IMG = "page.score.image";
 
     public static final String PLAYER_LIVES ="player.lives";
 

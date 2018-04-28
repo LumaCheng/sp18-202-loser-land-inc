@@ -22,18 +22,6 @@ public class ScoreBoard extends Actor implements ScoreObserver, Storable<GameSco
     private int score;
 
     // The constructor composes the image for the com.loserland.actors.ScoreBoard.
-//    public ScoreBoard()
-//    {
-//        // initalized new image
-//        GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
-//        // cosmetic porcedures for color and font
-//        Font myFont = new Font("TIMES", true, false, 12);
-//        image.setFont(myFont);
-//        // display on screen
-//        setImage(image);
-//        // Set score to 0 at begining
-//        update(0);
-//    }
 
     public ScoreBoard(int score)
     {
