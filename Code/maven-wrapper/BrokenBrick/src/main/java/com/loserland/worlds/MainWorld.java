@@ -353,6 +353,15 @@ public class MainWorld extends World implements IGameProgress
         renderLivesBar(currentState.getGameLives());
     }
 
+    public boolean checkButtonClicked(){
+        for(MenuButton menuButton: buttonsList){
+            if(mouse.clicked(menuButton)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     // reward points according to destroyed brick
     public void addPoints(int points)
     {
@@ -364,11 +373,11 @@ public class MainWorld extends World implements IGameProgress
     // checks for player input from mouse
     public void checkMouse()
     {
-        if(mouse.clicked(volumeup) && musicPlayer.isPlaying()){
+        if(mouse.clicked(volumeup)){
             volume = volume <= 95 ? volume+5 : volume;
             managevolume.notifyObservers(volume);
         }
-        else if(mouse.clicked(volumedown) && musicPlayer.isPlaying()){
+        else if(mouse.clicked(volumedown)){
             volume = volume >= 5? volume-5 : volume;
             managevolume.notifyObservers(volume);
         }
@@ -380,11 +389,11 @@ public class MainWorld extends World implements IGameProgress
             addObject (save, 350,250);
             addObject (exit, 350,320);
         }
-        else if(Greenfoot.mouseClicked(musicPlayer)){
+        else if(mouse.clicked(musicPlayer)){
             musicPlayer.changeState();
         }
 
-        else if(mouse.clicked(null)){
+        else if(mouse.clicked(null) && !checkButtonClicked()){
             start = true;
             // launches ball according to angle of launch
             launchBall();
@@ -392,7 +401,7 @@ public class MainWorld extends World implements IGameProgress
             removeObject(aim);
         }
         for(MenuButton menuButton: buttonsList){
-            if(Greenfoot.mouseClicked(menuButton)){
+            if(mouse.clicked(menuButton)){
                 menuButton.click();
             }
             if(Greenfoot.mouseMoved(menuButton)){
