@@ -51,9 +51,8 @@ public class HighScoreBoard extends Actor implements ScoreObserver {
 
     public void ShowScore(){
         SortScore();
-        GreenfootImage image = new GreenfootImage(WIDTH, HEIGHT);
-        image.setColor(Color.BLACK);
-        image.fillRect(1, 1, WIDTH, HEIGHT);
+        GreenfootImage image = new GreenfootImage(config.get(GameContext.SCORE_BG_IMG));
+//        image.fillRect(1, 1, WIDTH, HEIGHT);
         Font myFont = new Font("Tahoma", true, false, fontsize);
         image.setFont(myFont);
 
