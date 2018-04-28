@@ -436,6 +436,7 @@ public class MainWorld extends World implements IGameProgress
     public void nextLevel()
     {
         removeObjects(getObjects(PowerSquare.class));
+        BallPool.getInstance().reset();
 
         // fader effect. Consume screen
         fader = new Fader();

@@ -2,15 +2,12 @@ package com.loserland.actors;
 
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
+import com.loserland.context.BallPool;
 import com.loserland.context.GameContext;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
-import java.util.HashSet;
-import java.util.Random;
-
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class MultiballPower extends PowerSquare {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
@@ -30,12 +27,15 @@ public class MultiballPower extends PowerSquare {
         int size = multiballImg.size();
         number = Math.min(size, number);
         BasicBall origBall = getWorld().getObjects(BasicBall.class).get(0);
-        for(int i = 0; i < number; i++) {
+        List<BasicBall> newBalls = BallPool.getInstance().fetch(number - 1);
+
+        for(int i = 0; i < newBalls.size() + 1; i++) {
             BasicBall ball;
             if(i == 0) {
                 ball = origBall;
             } else {
-                ball = new BasicBall();
+                ball = newBalls.get(i - 1);
+                if (ball == null) return;
             }
             int  n = rand.nextInt(size-1);
             while(usedImg.contains(n)){
