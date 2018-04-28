@@ -7,7 +7,6 @@ import java.util.*;
 public class BallPool {
 
     private static BallPool instance = new BallPool();
-    private final int POOL_SIZE = 30;
     private Map<String, BasicBall> pool;
     private Set<String> availableSet;
 
@@ -30,22 +29,6 @@ public class BallPool {
         return list;
     }
 
-//    public BasicBall fetch() {
-//        BasicBall ball = null;
-//        if (available()){
-//            for (String id: pool.keySet()){
-//                if (availableSet.contains(id)){
-//                    ball = pool.get(id);
-//                }
-//            }
-//        }
-//        return ball;
-//    }
-
-    private boolean available() {
-        return availableSet.size() > 1;
-    }
-
     public void revert(BasicBall ball){
         availableSet.add(ball.getReuseIdentifier());
     }
@@ -53,7 +36,7 @@ public class BallPool {
     public void reset() {
         pool = new HashMap<>();
         availableSet = new HashSet<>();
-        for (int i = 0; i < POOL_SIZE; i++){
+        for (int i = 0; i < GameContext.BALL_POOL_SIZE; i++){
             String id = UUID.randomUUID().toString();
             availableSet.add(id);
             pool.put(id, new BasicBall(id));

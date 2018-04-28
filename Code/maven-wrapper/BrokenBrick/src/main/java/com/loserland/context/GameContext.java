@@ -106,6 +106,8 @@ public class GameContext {
     public static final String MULTIBALL_NUMBER = "multiball.number";
     public static final String GIFIMAGE_ANIME = "gif.image.anime";
 
+    public static final int BALL_POOL_SIZE = 100;
+
     public enum BallType implements KeyEnum {
         NORMAL("ball.image"),
         SHIELD("shieldball.image"),
