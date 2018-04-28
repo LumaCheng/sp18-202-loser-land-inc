@@ -332,9 +332,8 @@ public class MainWorld extends World implements IGameProgress
             // Display GameOver screen
             myWorld.setGameOver();
             Greenfoot.setWorld(myWorld);
+            managescore.notifyObservers(0);
             myWorld.resetMainWorld();
-            currentState.setGameStage(GameStageLoader.getInstance().load());
-            render(currentState);
         }
     }
 
