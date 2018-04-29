@@ -179,8 +179,6 @@ public class BasicBall extends SmoothMover implements IBall {
         if (getY() >= getWorld().getHeight()-10) {
             // send to method for update on counter
             ballDead();
-            BallPool.getInstance().revert(this);
-            getWorld().removeObject(this);
         }
     }
 
@@ -188,10 +186,8 @@ public class BasicBall extends SmoothMover implements IBall {
     {
         reset();
 
-        // reset to original position. Updates status to world
-        ((MainWorld) getWorld()).getStartAgain();
-        ((MainWorld) getWorld()).takeLife();
-
+        getWorld().removeObject(this);
+        BallPool.getInstance().revert(this);
     }
 
     // checks to see if ball made contact with paddle

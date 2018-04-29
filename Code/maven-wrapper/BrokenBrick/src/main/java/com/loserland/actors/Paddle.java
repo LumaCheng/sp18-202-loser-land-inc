@@ -4,8 +4,6 @@ import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
 import com.loserland.context.BallPool;
 import com.loserland.context.GameContext;
-import com.loserland.context.GamePaddle;
-import com.loserland.context.Storable;
 import com.loserland.controller.ControllerEvent;
 import com.loserland.controller.ControllerObserver;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
@@ -19,7 +17,6 @@ import java.util.List;
  * @version (a version number or a date)
  */
 public class Paddle extends Actor implements ControllerObserver {
-//public class Paddle extends Actor implements ControllerObserver, Storable<GamePaddle> {
     // Declare class
     private boolean haveBall;
     private int enlarge ;

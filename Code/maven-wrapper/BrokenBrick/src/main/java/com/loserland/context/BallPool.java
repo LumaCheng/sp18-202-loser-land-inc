@@ -25,26 +25,25 @@ public class BallPool {
         List<BasicBall> list = new ArrayList<>();
 
         String[] availableIds = availableSet.toArray(new String[0]);
-        try {
-            for (int i = 0; i < quantity && i < availableIds.length; i++) {
-                BasicBall ball = pool.get(availableIds[i]);
-                ball.setImage(config.get(GameContext.currentBallImg.getKey()));
-                list.add(ball);
-                availableSet.remove(availableIds[i]);
-            }
-        }catch (Exception e){};
-        return list;
 
+        for (int i = 0; i < quantity && i < availableIds.length; i++) {
+            BasicBall ball = pool.get(availableIds[i]);
+            ball.setImage(config.get(GameContext.currentBallImg.getKey()));
+            list.add(ball);
+            availableSet.remove(availableIds[i]);
+        }
+        return list;
     }
 
     public void revert(BasicBall ball){
+        ball.reset();
         availableSet.add(ball.getReuseIdentifier());
     }
 
     public void reset() {
         pool = new HashMap<>();
         availableSet = new HashSet<>();
-        for (int i = 0; i < GameContext.BALL_POOL_SIZE; i++){
+        for (int i = 0; i < Integer.parseInt(config.get(GameContext.BALL_POOL_SIZE)); i++){
             String id = UUID.randomUUID().toString();
             availableSet.add(id);
             pool.put(id, new BasicBall(id));
