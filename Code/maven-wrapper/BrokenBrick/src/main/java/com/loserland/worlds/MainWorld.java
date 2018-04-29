@@ -308,12 +308,20 @@ public class MainWorld extends World implements IGameProgress
     // each act check for death, mouse input and whether to create new level
     public void act()
     {
+        checkBall();
         checkLevel();
         checkMouse();
         checkLives();
         
         mouse.polling();
         keyboard.polling();
+    }
+
+    private void checkBall() {
+        if(getObjects(BasicBall.class).size() == 0) {
+            getStartAgain();
+            takeLife();
+        }
     }
 
     public void setMyWorld(MyWorld myWorld){
@@ -331,6 +339,13 @@ public class MainWorld extends World implements IGameProgress
             gameOverSound();
             // Display GameOver screen
             myWorld.setGameOver();
+
+            List<BasicBall> ballList = getObjects(BasicBall.class);
+            for(BasicBall ball : ballList) {
+                BallPool.getInstance().revert(ball);
+            }
+            removeObjects(ballList);
+
             Greenfoot.setWorld(myWorld);
             managescore.notifyObservers(0);
             myWorld.resetMainWorld();
@@ -431,7 +446,11 @@ public class MainWorld extends World implements IGameProgress
         if(getObjects(Brick.class).isEmpty())
         {
             // remove ball from world. Reset into original location. removeObject(ball); does NOT work.
-            removeObjects(getObjects(BasicBall.class));
+            List<BasicBall> ballList = getObjects(BasicBall.class);
+            for(BasicBall ball : ballList) {
+                BallPool.getInstance().revert(ball);
+            }
+            removeObjects(ballList);
 
             // reset to original location
             resetPosition();
@@ -444,7 +463,7 @@ public class MainWorld extends World implements IGameProgress
     public void nextLevel()
     {
         removeObjects(getObjects(PowerSquare.class));
-        BallPool.getInstance().reset();
+//        BallPool.getInstance().reset();
 
         // fader effect. Consume screen
         fader = new Fader();
