@@ -1,6 +1,5 @@
 package com.loserland.actors;
 
-public interface ScoreObserver {
+public interface IObserver {
     void update(int score);
 }
-

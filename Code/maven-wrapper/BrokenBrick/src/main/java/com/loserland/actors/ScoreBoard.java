@@ -11,7 +11,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, and Greenfoot)
 // allow to change font
 
 import java.awt.Graphics;
-public class ScoreBoard extends Actor implements ScoreObserver, Storable<GameScore>
+public class ScoreBoard extends Actor implements IObserver, Storable<GameScore>
 {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     // declare instance variables

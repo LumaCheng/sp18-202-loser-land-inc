@@ -1,7 +1,7 @@
 package com.loserland.actors;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
@@ -10,7 +10,7 @@ import java.net.*;
 import com.loserland.configs.*;
 import com.loserland.context.GameContext;
 
-public class HighScoreBoard extends Actor implements ScoreObserver {
+public class HighScoreBoard extends Actor implements IObserver {
 
     private static HighScoreBoard instance = new HighScoreBoard();
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);

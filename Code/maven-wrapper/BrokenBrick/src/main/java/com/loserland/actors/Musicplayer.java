@@ -10,7 +10,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class MusicPlayer extends Actor implements ScoreObserver
+public class MusicPlayer extends Actor implements IObserver
 {
 
     private static MusicPlayer instance;
@@ -22,7 +22,7 @@ public class MusicPlayer extends Actor implements ScoreObserver
     private StopState stopState = new StopState();
 //    int volume;
 
-    private State currentState;
+    private IState currentState;
 
 
     private MusicPlayer() {
@@ -73,7 +73,7 @@ public class MusicPlayer extends Actor implements ScoreObserver
         }
     }
 
-    public State getCurrentState(){
+    public IState getCurrentState(){
         return currentState;
     }
 }
