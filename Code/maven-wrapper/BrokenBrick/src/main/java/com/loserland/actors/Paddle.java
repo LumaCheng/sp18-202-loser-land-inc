@@ -2,9 +2,8 @@ package com.loserland.actors;
 
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
+import com.loserland.context.BallPool;
 import com.loserland.context.GameContext;
-import com.loserland.context.GamePaddle;
-import com.loserland.context.Storable;
 import com.loserland.controller.ControllerEvent;
 import com.loserland.controller.ControllerObserver;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
@@ -18,14 +17,12 @@ import java.util.List;
  * @version (a version number or a date)
  */
 public class Paddle extends Actor implements ControllerObserver {
-//public class Paddle extends Actor implements ControllerObserver, Storable<GamePaddle> {
     // Declare class
-//    private BasicBall ball ;
     private boolean haveBall;
-    private static boolean startBounce;
     private int enlarge ;
     private int shrink;        
     private int mouseX, mouseY;
+    private boolean shouldPause = false;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     /**
      * Act - do whatever the com.loserland.actors.Paddle wants to do. This method is called whenever
@@ -91,25 +88,26 @@ public class Paddle extends Actor implements ControllerObserver {
     // method called to create new ball after original ball dies and removed from world.
     public void newBall() 
     {
-        BasicBall ball = new BasicBall();
+        List<BasicBall> balls = BallPool.getInstance().fetch(1);
+        BasicBall ball = balls.get(0);
         haveBall = true;
-        startBounce = false;
         getWorld().addObject(ball, getX(), getY() - (ball.getImage().getHeight()));
     }
 
     // moves paddle accordingly with mouse input
     public void moveMe(int distance)
     {
-        setLocation(getX()+distance, getY());
+        if(!shouldPause) {
+            setLocation(getX() + distance, getY());
 
-        List<BasicBall> ballList = getWorld().getObjects(BasicBall.class);
-        for(BasicBall ball:ballList) {
-            if (haveBall()) {
-                // calls method in ball for ball to move along with paddle
-                ball.move(distance);
+            List<BasicBall> ballList = getWorld().getObjects(BasicBall.class);
+            for (BasicBall ball : ballList) {
+                if (haveBall()) {
+                    // calls method in ball for ball to move along with paddle
+                    ball.move(distance);
+                }
             }
         }
-
     }
     // mutator to access boolean information of ball status
     public boolean haveBall()
@@ -145,9 +143,6 @@ public class Paddle extends Actor implements ControllerObserver {
         return true;
     }
 
-    public static void setStartBounce(boolean startBounce) {Paddle.startBounce = startBounce;}
-    public static boolean getStartBounce() { return startBounce; }
-
     @Override
     public void controllerEventReceived(ControllerEvent event) {
         if (event.type == ControllerEvent.CommandType.MOVE) {
@@ -169,8 +164,11 @@ public class Paddle extends Actor implements ControllerObserver {
         expandImage(width);
     }
 
-//    @Override
-//    public GamePaddle save() {
-//        return new GamePaddle(getImage().getWidth());
-//    }
+    public void pause() {
+        shouldPause = true;
+    }
+
+    public void resume() {
+        shouldPause = false;
+    }
 }

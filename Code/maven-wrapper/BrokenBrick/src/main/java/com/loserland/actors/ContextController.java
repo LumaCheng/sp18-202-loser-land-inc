@@ -6,7 +6,7 @@ import com.loserland.configs.ConfigFactory;
 import com.loserland.context.GameContext;
 import com.loserland.worlds.*;
 
-public class ContextController implements ScoreObserver {
+public class ContextController implements IObserver {
 
     MainWorld mainWorld;
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);

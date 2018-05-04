@@ -1,14 +1,8 @@
 package com.loserland.worlds;
-import com.loserland.actors.Back;
-import com.loserland.actors.CoverPage;
-import com.loserland.actors.GameOver;
-import com.loserland.actors.HighScoreBoard;
-import com.loserland.actors.ICommand;
-import com.loserland.actors.IReceiver;
-import com.loserland.actors.MenuButton;
-import com.loserland.actors.MenuCommand;
+import com.loserland.actors.*;
 import com.loserland.configs.Config;
 import com.loserland.configs.ConfigFactory;
+import com.loserland.context.GameCheckPoint;
 import com.loserland.context.GameContext;
 import com.loserland.context.GameProgressManager;
 import com.loserland.controller.Controller;
@@ -33,15 +27,17 @@ public class MyWorld extends World
     private CoverPage menu;
     private GameOver gameOver;
     private MainWorld mainWorld;
-    private PauseWorld pauseWorld;
     private MenuButton startGame;
     private MenuButton loadGame;
     private MenuButton highScore;
+    private MenuButton animeButton;
     private ICommand startClick ;
     private ICommand loadClick ;
     private ICommand scoreClick ;
+    private ICommand animeClick;
     private HighScoreBoard highScoreBoard;
     private Back back;
+    private Anime anime;
     private List<MenuButton> buttonsList = new ArrayList<>();
 
     GreenfootSound backgroundMusic;
@@ -66,7 +62,7 @@ public class MyWorld extends World
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
         // Sets the order of display of Actors
-        setPaintOrder(MenuButton.class, CoverPage.class, GameOver.class, Back.class, HighScoreBoard.class);
+        setPaintOrder(Anime.class, MenuButton.class, CoverPage.class, GameOver.class, Back.class, HighScoreBoard.class);
         //initialize UI components and put place
         initMenu();
     }
@@ -75,11 +71,11 @@ public class MyWorld extends World
     private void initMenu() {
         //Creating three worlds
         mainWorld = new MainWorld();
-        pauseWorld = new PauseWorld();
         mainWorld.setMyWorld(this);
-        pauseWorld.setMyWorld(this);
-        mainWorld.setPauseWorld(pauseWorld);
-        pauseWorld.setMainWorld(mainWorld);
+
+
+        anime = new Anime();
+        anime.animeGif.pause();
 
         //creating Buttons on the menu
         startGame = new MenuButton(config.get(GameContext.START_BUTTON), config.get(GameContext.START_HOVER),
@@ -88,15 +84,19 @@ public class MyWorld extends World
                 config.get(GameContext.LOAD_PRESSED));
         highScore = new MenuButton(config.get(GameContext.SCORE_BUTTON), config.get(GameContext.SCORE_HOVER),
                 config.get(GameContext.SCORE_PRESSED));
+        animeButton = new MenuButton(config.get(GameContext.ABOUT_BUTTON), config.get(GameContext.ABOUT_HOVER),
+                config.get(GameContext.ABOUT_PRESSED));
         highScoreBoard = HighScoreBoard.getInstance();
 
         buttonsList.add(startGame);
         buttonsList.add(loadGame);
         buttonsList.add(highScore);
+        buttonsList.add(animeButton);
 
         startClick = new MenuCommand();
         loadClick = new MenuCommand();
         scoreClick = new MenuCommand();
+        animeClick = new MenuCommand();
 
         startClick.setReceiver(
                 new IReceiver() {
@@ -110,9 +110,12 @@ public class MyWorld extends World
         loadClick.setReceiver(
                 new IReceiver() {
                     public void doAction() {
-                        mainWorld.restore(GameProgressManager.getInstance().load());
-                        Greenfoot.setWorld(mainWorld);
-                        loadGame.resetImage();
+                        GameCheckPoint checkPoint = GameProgressManager.getInstance().load();
+                        if (checkPoint != null){
+                            mainWorld.restore(checkPoint);
+                            Greenfoot.setWorld(mainWorld);
+                            loadGame.resetImage();
+                        }
                     }
                 }
         );
@@ -122,23 +125,34 @@ public class MyWorld extends World
                     public void doAction() {
                         removeObject(gameOver);
                         removeObject(menu);
-                        removeObject(startGame);
-                        removeObject(highScore);
-                        removeObject(loadGame);
+                        for(MenuButton menuButton: buttonsList){
+                            removeObject(menuButton);
+                        }
                         highScore.resetImage();
                         highScoreBoard.ShowScore();
                     }
                 }
         ) ;
+        animeClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        addObject(anime, 350, 260);
+                        anime.animeGif.resume();
+                    }
+                }
+        ) ;
+
         startGame.setCommand(startClick);
         loadGame.setCommand(loadClick);
         highScore.setCommand(scoreClick);
+        animeButton.setCommand(animeClick);
 
         //Add objects to MyWorld
         addObject (highScoreBoard, 350, 250);
-        addObject (startGame, 615,395);
-        addObject (loadGame, 615,435);
-        addObject (highScore, 615,475);
+        addObject (startGame, 615,365);
+        addObject (loadGame, 615,405);
+        addObject (highScore, 615,445);
+        addObject (animeButton, 615,485);
 
         menu = new CoverPage();
         menu.setImage(config.get(GameContext.MENU_IMG));
@@ -155,16 +169,14 @@ public class MyWorld extends World
 
     public void setGameOver() {
         removeObject(menu);
-        removeObject(startGame);
-        removeObject(loadGame);
-        removeObject(highScore);
+        for(MenuButton menuButton: buttonsList){
+            removeObject(menuButton);
+        }
     }
 
     public void resetMainWorld() {
         mainWorld = new MainWorld();
         mainWorld.setMyWorld(this);
-        mainWorld.setPauseWorld(pauseWorld);
-        pauseWorld.setMainWorld(mainWorld);
     }
 
     // each act check for death, mouse input and whether to create new level
@@ -202,16 +214,21 @@ public class MyWorld extends World
 
 
         if (mouse.clicked(back)) {
-                addObject (startGame, 615,395);
-                addObject (loadGame, 615,435);
-                addObject (highScore, 615,475);;
-                addObject (gameOver, 350, 260);
-                addObject (menu, 350, 260);
+            addObject (startGame, 615,365);
+            addObject (loadGame, 615,405);
+            addObject (highScore, 615,445);
+            addObject (animeButton, 615,485);
+            addObject (gameOver, 350, 260);
+            addObject (menu, 350, 260);
         }
 
         if (mouse.clicked(gameOver)){
                 removeObject(gameOver);
                 highScoreBoard.ShowScore();
+        }
+
+        if(mouse.clicked(anime)){
+            removeObject(anime);
         }
     }
 }

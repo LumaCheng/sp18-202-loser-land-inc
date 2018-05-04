@@ -9,6 +9,8 @@ public class GameContext {
 
     public static final String MENU_IMG = "page.menu.image";
     public static final String MAIN_IMG = "page.main.image";
+    public static final String GAMEOVER_IMG = "page.end.image";
+    public static final String SCORE_BG_IMG = "page.score.image";
 
     public static final String PLAYER_LIVES ="player.lives";
 
@@ -28,6 +30,10 @@ public class GameContext {
     public static final String SCORE_HOVER = "page.score.hover";
     public static final String SCORE_PRESSED = "page.score.pressed";
 
+    public static final String ABOUT_BUTTON = "page.about.button";
+    public static final String ABOUT_HOVER = "page.about.hover";
+    public static final String ABOUT_PRESSED = "page.about.pressed";
+
     public static final String RESUME_BUTTON = "page.resume.button";
     public static final String RESUME_HOVER = "page.resume.hover";
     public static final String RESUME_PRESSED = "page.resume.pressed";
@@ -40,11 +46,9 @@ public class GameContext {
     public static final String EXIT_HOVER = "page.exit.hover";
     public static final String EXIT_PRESSED = "page.exit.pressed";
 
-
     public static final String WORLD_WIDTH = "world.width";
     public static final String WORLD_HEIGHT = "world.height";
     public static final String WORLD_CELL_SIZE = "world.cell.size";
-
 
     public static String BALL_BOUNCE_SND = "ball.bounce.sound";
     public static String BALL_HIT_BRICK_SND = "ball.hitBrick.sound";
@@ -55,6 +59,7 @@ public class GameContext {
     public static String BALL_INIT_Y = "ball.initY";
     public static String BALL_SPEED = "ball.speed";
 
+    public static String SMOKE_IMG = "smoke.image";
     public static String FIREBALL = "fireBall.image";
     public static String FIRE_SMOKE = "fireSmoke.image";
     public static String EXPLOSION_IMG = "explosion.image";
@@ -64,6 +69,18 @@ public class GameContext {
     public static String FIRE_BURN_SND = "fireBurn.sound";
 
     public static String POWER_LIST = "powerSquare.list";
+
+    public static String NORMAL_PWR_IMG = "normalPower.image";
+    public static String PYROBLAST_PWR_IMG = "pyroblastPower.image";
+    public static String MULTIBALL_PWR_IMG = "multiballPower.image";
+    public static String FIRE_PWR_IMG = "firePower.image";
+    public static String SPEEDUP_PWR_IMG = "speedUpPower.image";
+    public static String SPEEDDOWN_PWR_IMG = "speedDownPower.image";
+    public static String LARGE_PAD_PWR_IMG = "largePaddlePower.image";
+    public static String SMALL_PAD_PWR_IMG = "smallPaddlePower.image";
+    public static String GOLDEN_EGG_PWR_IMG = "goldenEggPower.image";
+    public static String GOLDEN_EGG_PWR_RATE = "goldenEggPower.rate";
+    public static String GOLDEN_EGG_CUSTOM_PWR_RATE = "goldenEggCustomPowerRate";
 
     public static String SCOREBOARD_HEIGHT = "game.scoreboard.height";
     public static String SCOREBOARD_WIDTH = "game.scoreboard.width";
@@ -79,6 +96,7 @@ public class GameContext {
     public static final String VOLUME_DOWN_IMG = "volume.down.image";
     public static final String HIGHSCORE_FONT_SIZE = "highscore.font.size";
 
+    public static final String POINTY_IMG = "pointy.image";
     public static final String PADDLE_IMG = "paddle.image";
     public static final String PAUSE_STAGE_IMG = "pause.stage.image";
 
@@ -86,6 +104,9 @@ public class GameContext {
 
     public static final String MULTIBALL_IMAGE = "multiball.image";
     public static final String MULTIBALL_NUMBER = "multiball.number";
+    public static final String GIFIMAGE_ANIME = "gif.image.anime";
+
+    public static final String BALL_POOL_SIZE = "ball.pool.size";
 
     public enum BallType implements KeyEnum {
         NORMAL("ball.image"),

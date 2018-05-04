@@ -12,7 +12,7 @@ import greenfoot.GreenfootImage;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Volumeup extends Actor implements ScoreObserver
+public class Volumeup extends Actor implements IObserver
 {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     private GreenfootImage button = new GreenfootImage(config.get(GameContext.VOLUME_UP_IMG));

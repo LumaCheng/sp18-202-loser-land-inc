@@ -95,7 +95,7 @@ public class KeyBoardController extends Controller {
         world_abs_y = (world_abs_y > world.getHeight() ? world.getHeight() : world_abs_y);
 
         world_abs_x = (world_abs_x < 0 ? 0 : world_abs_x);
-        world_abs_x = (world_abs_x > world.getWidth() ? world.getHeight() : world_abs_x);
+        world_abs_x = (world_abs_x > world.getWidth() ? world.getWidth() : world_abs_x);
 
         event.x = world_abs_x;
         event.y = world_abs_y;

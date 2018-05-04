@@ -5,7 +5,7 @@ import com.loserland.context.GameContext;
 import greenfoot.*;
 import greenfoot.GreenfootImage;
 
-public class PlayState extends Actor implements State  {
+public class PlayState extends Actor implements IState  {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
     GreenfootImage currentImage = new GreenfootImage(config.get(GameContext.PLAYER_PAUSE_IMG));
     private int WIDTH = config.get(Integer.class, GameContext.PLAYER_SIZE);

@@ -25,11 +25,13 @@ import com.loserland.context.*;
 import com.loserland.controller.Controller;
 import com.loserland.controller.KeyBoardController;
 import com.loserland.controller.MouseController;
+import com.loserland.context.GameCheckPoint;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootSound;
 import greenfoot.World;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.SerializationUtils;
@@ -47,13 +49,21 @@ public class MainWorld extends World implements IGameProgress
 
     private Fader fader;
     private MyWorld myWorld;
-    private PauseWorld pauseWorld;
+    private MainWorld mainWorld = this;
     private ContextController contextController = new ContextController();
 
     private ScoreBoard scoreBoard;
     private LevelLabel levelLabel;
     private Paddle paddle;
 
+    private MenuButton resume ;
+    private MenuButton save ;
+    private MenuButton exit ;
+    private ICommand resumeClick ;
+    private ICommand saveClick ;
+    private ICommand exitClick ;
+    private PausePage pausePage ;
+    private List<MenuButton> buttonsList = new ArrayList<>();
 
     private Pointy aim = new Pointy();  
 
@@ -103,7 +113,7 @@ public class MainWorld extends World implements IGameProgress
         super(config.get(Integer.class, GameContext.WORLD_WIDTH), config.get(Integer.class, GameContext.WORLD_HEIGHT), config.get(Integer.class, GameContext.WORLD_CELL_SIZE));
 
         // Sets the order of display of Actors
-        setPaintOrder(Back.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, LevelLabel.class);
+        setPaintOrder(MenuButton.class, PausePage.class, Back.class, Fader.class,BasicBall.class,Pointy.class,Paddle.class, Smoke.class, Lives.class, ScoreBoard.class, LevelLabel.class);
 
         //initialize UI components and put place
         initMusic();
@@ -189,6 +199,57 @@ public class MainWorld extends World implements IGameProgress
     private void initUI() {
         setBackground(config.get(GameContext.MAIN_IMG));
 
+        resume = new MenuButton(config.get(GameContext.RESUME_BUTTON), config.get(GameContext.RESUME_HOVER),
+                config.get(GameContext.RESUME_PRESSED));
+        save = new MenuButton(config.get(GameContext.SAVE_BUTTON), config.get(GameContext.SAVE_HOVER),
+                config.get(GameContext.SAVE_PRESSED));
+        exit = new MenuButton(config.get(GameContext.EXIT_BUTTON), config.get(GameContext.EXIT_HOVER),
+                config.get(GameContext.EXIT_PRESSED));
+        buttonsList.add(resume);
+        buttonsList.add(save);
+        buttonsList.add(exit);
+
+        resumeClick = new MenuCommand();
+        saveClick = new MenuCommand();
+        exitClick = new MenuCommand();
+        resumeClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        removeObject(pausePage);
+                        removeObject(resume);
+                        removeObject(save);
+                        removeObject(exit);
+                        resume();
+                    }
+                }
+        ) ;
+
+        saveClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        GameProgressManager.getInstance().add(mainWorld.save());
+                        save.resetImage();
+                    }
+                }
+        );
+
+        exitClick.setReceiver(
+                new IReceiver() {
+                    public void doAction() {
+                        Greenfoot.setWorld(myWorld);
+                        musicPlayer.setCurrentState("stop");
+                        myWorld.resetMainWorld();
+                        exit.resetImage();
+                    }
+                }
+        ) ;
+        resume.setCommand(resumeClick);
+        save.setCommand(saveClick);
+        exit.setCommand(exitClick);
+
+        pausePage = new PausePage();
+        pausePage.setImage(config.get(GameContext.PAUSE_STAGE_IMG));
+
         paddle = new Paddle();
         addObject(paddle, getWidth()/2, getHeight()-26);
 
@@ -247,6 +308,7 @@ public class MainWorld extends World implements IGameProgress
     // each act check for death, mouse input and whether to create new level
     public void act()
     {
+        checkBall();
         checkLevel();
         checkMouse();
         checkLives();
@@ -255,10 +317,16 @@ public class MainWorld extends World implements IGameProgress
         keyboard.polling();
     }
 
+    private void checkBall() {
+        if(getObjects(BasicBall.class).size() == 0) {
+            getStartAgain();
+            takeLife();
+        }
+    }
+
     public void setMyWorld(MyWorld myWorld){
         this.myWorld = myWorld;
     }
-    public void setPauseWorld(PauseWorld pauseWorld) { this.pauseWorld = pauseWorld;}
 
 
     // checks if player looses life
@@ -271,10 +339,16 @@ public class MainWorld extends World implements IGameProgress
             gameOverSound();
             // Display GameOver screen
             myWorld.setGameOver();
+
+            List<BasicBall> ballList = getObjects(BasicBall.class);
+            for(BasicBall ball : ballList) {
+                BallPool.getInstance().revert(ball);
+            }
+            removeObjects(ballList);
+
             Greenfoot.setWorld(myWorld);
+            managescore.notifyObservers(0);
             myWorld.resetMainWorld();
-            currentState.setGameStage(GameStageLoader.getInstance().load());
-            render(currentState);
         }
     }
 
@@ -293,6 +367,15 @@ public class MainWorld extends World implements IGameProgress
         renderLivesBar(currentState.getGameLives());
     }
 
+    public boolean checkButtonClicked(){
+        for(MenuButton menuButton: buttonsList){
+            if(mouse.clicked(menuButton)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     // reward points according to destroyed brick
     public void addPoints(int points)
     {
@@ -304,27 +387,55 @@ public class MainWorld extends World implements IGameProgress
     // checks for player input from mouse
     public void checkMouse()
     {
-        if(mouse.clicked(volumeup) && musicPlayer.isPlaying()){
+        if(mouse.clicked(volumeup)){
             volume = volume <= 95 ? volume+5 : volume;
             managevolume.notifyObservers(volume);
         }
-        else if(mouse.clicked(volumedown) && musicPlayer.isPlaying()){
+        else if(mouse.clicked(volumedown)){
             volume = volume >= 5? volume-5 : volume;
             managevolume.notifyObservers(volume);
         }
 
         else if(mouse.clicked(pause)){
-            Greenfoot.setWorld(pauseWorld);
+            pause();
+            addObject (pausePage, 350, 260);
+            addObject (resume, 350,180);
+            addObject (save, 350,250);
+            addObject (exit, 350,320);
         }
-        else if(Greenfoot.mouseClicked(musicPlayer)){
+        else if(mouse.clicked(musicPlayer)){
             musicPlayer.changeState();
         }
-        else if(mouse.clicked(null)){
+
+        else if(mouse.clicked(null) && !checkButtonClicked()){
             start = true;
             // launches ball according to angle of launch
             launchBall();
             // removes pointer
             removeObject(aim);
+        }
+        for(MenuButton menuButton: buttonsList){
+            if(mouse.clicked(menuButton)){
+                menuButton.click();
+            }
+            if(Greenfoot.mouseMoved(menuButton)){
+                menuButton.hover();
+                for(MenuButton button: buttonsList){
+                    if(button != menuButton){
+                        button.resetImage();
+                    }
+                }
+            }
+            if(Greenfoot.mousePressed(menuButton)){
+                menuButton.press();
+            }
+        }
+
+        if(Greenfoot.mouseMoved(pausePage)){
+
+            for(MenuButton menuButton: buttonsList){
+                menuButton.resetImage();
+            }
         }
 
     }
@@ -335,7 +446,11 @@ public class MainWorld extends World implements IGameProgress
         if(getObjects(Brick.class).isEmpty())
         {
             // remove ball from world. Reset into original location. removeObject(ball); does NOT work.
-            removeObjects(getObjects(BasicBall.class));
+            List<BasicBall> ballList = getObjects(BasicBall.class);
+            for(BasicBall ball : ballList) {
+                BallPool.getInstance().revert(ball);
+            }
+            removeObjects(ballList);
 
             // reset to original location
             resetPosition();
@@ -347,6 +462,9 @@ public class MainWorld extends World implements IGameProgress
     // create new level
     public void nextLevel()
     {
+        removeObjects(getObjects(PowerSquare.class));
+//        BallPool.getInstance().reset();
+
         // fader effect. Consume screen
         fader = new Fader();
         addObject (fader, 400, 300);
@@ -428,6 +546,7 @@ public class MainWorld extends World implements IGameProgress
         List<BasicBall> ballList = getObjects(BasicBall.class);
         List<Smoke> smokeList = getObjects(Smoke.class);
         List<PowerSquare> powerSquareList = getObjects(PowerSquare.class);
+        List<Paddle> paddleList = getObjects(Paddle.class);
         for(BasicBall ball : ballList) {
             ball.pause();
         }
@@ -439,12 +558,17 @@ public class MainWorld extends World implements IGameProgress
         for(PowerSquare powerSquare : powerSquareList) {
             powerSquare.pause();
         }
+
+        for(Paddle paddle : paddleList) {
+            paddle.pause();
+        }
     }
 
     public void resume() {
         List<BasicBall> ballList = getObjects(BasicBall.class);
         List<Smoke> smokeList = getObjects(Smoke.class);
         List<PowerSquare> powerSquareList = getObjects(PowerSquare.class);
+        List<Paddle> paddleList = getObjects(Paddle.class);
         for(BasicBall ball : ballList) {
             ball.resume();
         }
@@ -455,6 +579,10 @@ public class MainWorld extends World implements IGameProgress
 
         for(PowerSquare powerSquare : powerSquareList) {
             powerSquare.resume();
+        }
+
+        for(Paddle paddle : paddleList) {
+            paddle.resume();
         }
     }
 }

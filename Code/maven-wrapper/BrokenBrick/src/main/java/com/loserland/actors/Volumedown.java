@@ -11,7 +11,7 @@ import com.loserland.context.GameContext;
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class Volumedown extends Actor implements ScoreObserver
+public class Volumedown extends Actor implements IObserver
 {
     private Config config = ConfigFactory.getInstance().getConfig(GameContext.GAME_DEFAULT_CONFIG_FILENAME);
 

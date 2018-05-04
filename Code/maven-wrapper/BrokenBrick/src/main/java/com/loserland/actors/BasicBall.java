@@ -1,5 +1,6 @@
 package com.loserland.actors;
 
+import com.loserland.context.BallPool;
 import com.loserland.utils.GifImage;
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 import static java.lang.Math.*;
@@ -9,6 +10,12 @@ import com.loserland.configs.*;
 import java.util.List;
 
 public class BasicBall extends SmoothMover implements IBall {
+
+    public String getReuseIdentifier() {
+        return reuseIdentifier;
+    }
+
+    private String reuseIdentifier;
 
     private IBall ball = this;
 
@@ -37,11 +44,13 @@ public class BasicBall extends SmoothMover implements IBall {
      * the 'Act' or 'Run' button gets pressed in the environment.
      */
 
-    public BasicBall() {
+    public BasicBall(String reuseIdentifier) {
+        this.reuseIdentifier = reuseIdentifier;
         setParam();
     }
 
     private void setParam() {
+        setRotation(0);
         setBallBounceSound(config.get(GameContext.BALL_BOUNCE_SND));
         setBallHitBrickSound(config.get(GameContext.BALL_HIT_BRICK_SND));
         setBallHitWallSound(config.get(GameContext.BALL_HIT_WALL_SND));
@@ -142,12 +151,13 @@ public class BasicBall extends SmoothMover implements IBall {
             changeY = -changeY;
             // Fixes multi-kill bug
             setLocation(getX(),getY() + 1);
-            PowerGenerator.generatePowerSquare(this, brick);
+
         }
         else {
             // moves ball in opposite direction after collision
             changeX = -changeX;
         }
+        PowerGenerator.generatePowerSquare(this, brick);
         // changes brick appearance accordingly
         brick.effect();
         // sound effect
@@ -169,22 +179,22 @@ public class BasicBall extends SmoothMover implements IBall {
         if (getY() >= getWorld().getHeight()-10) {
             // send to method for update on counter
             ballDead();
-            getWorld().removeObject(this);
         }
     }
 
     private void ballDead()
     {
-        // reset to original position. Updates status to world
-        ((MainWorld) getWorld()).getStartAgain();
-        ((MainWorld) getWorld()).takeLife();
+        reset();
+
+        getWorld().removeObject(this);
+        BallPool.getInstance().revert(this);
     }
 
     // checks to see if ball made contact with paddle
     public void checkPaddleCollision()
     {
         Paddle paddle = (Paddle) getOneIntersectingObject(Paddle.class);
-        if (paddle != null && paddle.getStartBounce()) {
+        if (paddle != null) {
             // bounce if made contact
             ball.bounce(paddle);
         }
@@ -216,11 +226,18 @@ public class BasicBall extends SmoothMover implements IBall {
             double mult = lowestSpeed / speed;
             changeX *= mult;
             changeY *= mult;
-        }speed = Math.sqrt(changeX * changeX + changeY * changeY);
+        }
 
+        setLocation(getX(), getY() - Math.abs(getImage().getWidth() - getImage().getHeight()));
         // sound effect
         if (ballBounceSound != null)
             Greenfoot.playSound(ballBounceSound);
+    }
+
+    public void reset() {
+        setParam();
+        onPaddle = true;
+        setDecorator(this);
     }
 
     public void replaceBall()
@@ -263,10 +280,7 @@ public class BasicBall extends SmoothMover implements IBall {
     public void launch(int mouseX, int mouseY)
     {
         // change to negative so ball can move upwards
-        if(!Paddle.getStartBounce()) {
-            Paddle.setStartBounce(true);
-            setLocation(getX(), getY() - 5);
-        }
+        setLocation(getX(), getY() - 5);
         trajectoryPath(mouseX,mouseY);
         // ball launched
         onPaddle = false;

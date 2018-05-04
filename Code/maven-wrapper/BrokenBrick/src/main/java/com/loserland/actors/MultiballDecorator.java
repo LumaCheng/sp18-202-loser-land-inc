@@ -1,6 +1,7 @@
 package com.loserland.actors;
 
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
+import com.loserland.context.BallPool;
 import com.loserland.worlds.MainWorld;
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
@@ -54,19 +55,7 @@ public class MultiballDecorator implements IBall, IBallDecorator {
 
     @Override
     public void checkBallMiss() {
-        if (basicBall.getY() == basicBall.getWorld().getHeight()-1) {
-            // send to method for setGameLevel on counter
-            ballDead();
-            basicBall.getWorld().removeObject(basicBall);
-        }
-    }
-
-    private void ballDead() {
-        if(basicBall.getWorld().getObjects(BasicBall.class).size() == 1) {
-            // reset to original position. Updates status to world
-            ((MainWorld) basicBall.getWorld()).getStartAgain();
-            ((MainWorld) basicBall.getWorld()).takeLife();
-        }
+        basicBall.checkBallMiss();
     }
 
     @Override
