@@ -26,14 +26,3 @@ Nope. We had two meetings in the last week. In the meeting, each team members we
 - Communication
 
 We had good communication in this two meetings, so we efficiently got the consensus on the project’s topic and details.
-
-- Simplicity
-
-
-- Feedback
-
-
-- Courage
-
-
-- Respect

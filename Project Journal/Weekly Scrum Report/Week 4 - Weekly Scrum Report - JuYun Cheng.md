@@ -1,6 +1,6 @@
 # Weekly Scrum Report
 
-Date: 2018-04-22
+Date: 2018-04-29
 
 ## Stand-up Questions
 
@@ -9,34 +9,22 @@ Date: 2018-04-22
 In this week, I finished implementing the feature that can store current scores in local file and read the previous scores stored in the same file.
 Every time the game is over, not only adding this score to an array, but also sorting the array in descending order.
 Since the high score board only shows ten top scores, so sorting array is an important part to fulfill these requirement.
-While gamer press the score board button, high score board draw a new greenfoot image and draw one score in a line in these picture.
+While gamer press the score board button, high score board draw a new GreenFoot image and draw one score in a line in these picture.
 Therefore, these high score board view is generated dynamically.
-I finish all the high score board tasks in this week.
+
 
 - What am I planning to work on next?
 
-I will start to implement music player and integrate observer pattern in it.
-Gamer can play or stop the background music and they can also change the volume of music.
-So, I need to implement the feature that can turn down or up the volume.
+I almost done my works, but still have some issues need to solve.
+I will refactor my code and fix some issues in next week.
 
 - What tasks are blocked waiting on another team member?
 
-Nope. My current task is independent from other team member's tasks.
+Nope.
 
 ## XP Core Values
-
-- Communication
-
-
-- Simplicity
-
 
 - Feedback
 
 I got some good advices and feedbacks form other team members.
 Based on these feedback, I can polish the details of functions and make my high score board look better.
-
-- Courage
-
-
-- Respect
