@@ -6,7 +6,7 @@
 
     <groupId>com.loserland</groupId>
     <artifactId>BrokenBrick</artifactId>
-    <version>0.3</version>
+    <version>1.2</version>
 
     <repositories>
         <repository>
